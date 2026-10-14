@@ -148,57 +148,51 @@ input:focus,select:focus{border-color:#4781f5;box-shadow:0 0 0 4px #3b82f319}
   <p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
 </section>
 </div>
-
+```html
 <script>
-/* IMPORTANT: Replace these two values with your own Supabase project details. */
-const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co/rest/v1/";
-const SUPABASE_KEY = "sb_publishable_-K1rmvgR-CP0b7NQarePxQ_NLIeanq3
-";
+const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_-K1rmvgR-CP0b7NQarePxQ_NLIeanq3";
 
 const form = document.getElementById("registerForm");
 const message = document.getElementById("message");
 const createButton = document.getElementById("createButton");
 
-function showMessage(text, type) {
+function showMessage(text, type = "error") {
   message.textContent = text;
-  message.className = "message " + (type || "");
+  message.className = "message " + type;
   message.style.display = "block";
 }
 
 let db = null;
 
-try {
-  const configured =
-    SUPABASE_URL.startsWith("https://") &&
-    !SUPABASE_URL.includes("PASTE_") &&
-    SUPABASE_KEY.trim() !== "" &&
-    !SUPABASE_KEY.includes("PASTE_");
-
-  if (configured && window.supabase) {
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  }
-} catch (error) {
-  console.error("Supabase initialization failed:", error);
+if (
+  window.supabase &&
+  typeof window.supabase.createClient === "function"
+) {
+  db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+} else {
+  showMessage("Supabase library load nahi hui. Page refresh karo.", "error");
 }
 
-document.getElementById("togglePassword").addEventListener("click", function() {
+document.getElementById("togglePassword").addEventListener("click", function () {
   const password = document.getElementById("password");
   const icon = this.querySelector("i");
   const show = password.type === "password";
 
   password.type = show ? "text" : "password";
-  icon.className = show ? "fa-regular fa-eye-slash" : "fa-regular fa-eye";
-  this.setAttribute("aria-label", show ? "Hide password" : "Show password");
+  icon.className = show
+    ? "fa-regular fa-eye-slash"
+    : "fa-regular fa-eye";
 });
 
-form.addEventListener("submit", async function(event) {
+form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   if (!db) {
-    showMessage(
-      "Supabase connect nahi hua. Code mein apna Project URL aur Publishable Key add karo.",
-      "error"
-    );
+    showMessage("Supabase connect nahi hua. Project URL aur Publishable Key check karo.");
     return;
   }
 
@@ -208,13 +202,14 @@ form.addEventListener("submit", async function(event) {
   const course = document.getElementById("course").value;
   const password = document.getElementById("password").value;
 
-  if (!name || !email || !studentId || !course || password.length < 8) {
-    showMessage("Please fill all fields correctly. Password must be at least 8 characters.", "error");
+  if (!form.checkValidity()) {
+    form.reportValidity();
     return;
   }
 
   createButton.disabled = true;
   createButton.textContent = "Creating account...";
+  showMessage("Account create ho raha hai...", "info");
 
   try {
     const { data, error } = await db.auth.signUp({
@@ -224,30 +219,49 @@ form.addEventListener("submit", async function(event) {
         data: {
           full_name: name,
           student_id: studentId,
-          course: course
+          course: course,
+          role: "student"
         },
-        emailRedirectTo: window.location.origin + window.location.pathname.replace(/[^/]*$/, "login.html")
+        emailRedirectTo: window.location.origin +
+          window.location.pathname.replace(/[^/]*$/, "login.html")
       }
     });
 
     if (error) throw error;
 
-    if (data.user && data.user.identities && data.user.identities.length === 0) {
-      showMessage("This email may already be registered. Please sign in or use another email.", "error");
-    } else if (data.session) {
-      showMessage("Account created successfully! You can now sign in.", "success");
-      form.reset();
-    } else {
-      showMessage("Registration submitted! Check your email to confirm your account, then sign in.", "success");
-      form.reset();
+    if (data.user && data.user.identities &&
+        data.user.identities.length === 0) {
+      showMessage(
+        "Ye email pehle se registered ho sakta hai. Login karo ya doosra email use karo.",
+        "error"
+      );
+      return;
     }
+
+    if (data.session) {
+      showMessage(
+        "Account created successfully! Ab login kar sakti ho.",
+        "success"
+      );
+    } else {
+      showMessage(
+        "Registration submitted! Apna email inbox check karo aur confirmation link par click karo.",
+        "success"
+      );
+    }
+
+    form.reset();
+
   } catch (error) {
+    console.error("Registration error:", error);
     showMessage(error.message || "Registration failed. Please try again.", "error");
   } finally {
     createButton.disabled = false;
-    createButton.innerHTML = 'Create Account <i class="fa-solid fa-arrow-right"></i>';
+    createButton.innerHTML =
+      'Create Account <i class="fa-solid fa-arrow-right"></i>';
   }
 });
 </script>
+```
 </body>
 </html>
