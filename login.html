@@ -1,397 +1,73 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | CampusConnect</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 25px;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #eaf1ff, #f4edff, #e8f7ff);
-  color: #182342;
-}
-
-.container {
-  width: 100%;
-  max-width: 980px;
-  min-height: 590px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: white;
-  border-radius: 26px;
-  overflow: hidden;
-  box-shadow: 0 25px 70px rgba(43, 75, 150, 0.16);
-  animation: appear .7s ease;
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.left {
-  position: relative;
-  overflow: hidden;
-  padding: 48px 40px;
-  color: white;
-  background: linear-gradient(145deg, #2563eb, #5146e5 65%, #7955e8);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.circle {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,.09);
-}
-
-.circle.one {
-  width: 260px;
-  height: 260px;
-  right: -100px;
-  top: -80px;
-}
-
-.circle.two {
-  width: 200px;
-  height: 200px;
-  left: -100px;
-  bottom: 30px;
-}
-
-.brand, .welcome, .features, .left-bottom {
-  position: relative;
-  z-index: 1;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.logo {
-  width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: rgba(255,255,255,.2);
-  font-size: 21px;
-}
-
-.welcome {
-  margin-top: 45px;
-  margin-bottom: 35px;
-}
-
-.welcome h1 {
-  font-size: clamp(28px, 3vw, 37px);
-  line-height: 1.25;
-  margin-bottom: 17px;
-  letter-spacing: -1px;
-}
-
-.welcome p {
-  color: #e0e7ff;
-  line-height: 1.8;
-  font-size: 14px;
-}
-
-.features {
-  display: grid;
-  gap: 20px;
-}
-
-.feature {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  font-size: 14px;
-  color: #f1f5ff;
-}
-
-.feature-icon {
-  width: 43px;
-  height: 43px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 13px;
-  background: rgba(255,255,255,.16);
-  font-size: 17px;
-  transition: .25s;
-}
-
-.feature:hover .feature-icon {
-  transform: translateY(-4px) rotate(-5deg);
-  background: rgba(255,255,255,.28);
-}
-
-.left-bottom {
-  margin-top: 35px;
-  font-size: 12px;
-  color: #dbe5ff;
-}
-
-.right {
-  padding: 48px 43px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.back {
-  color: #64748b;
-  text-decoration: none;
-  font-size: 13px;
-  margin-bottom: 32px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-}
-
-.back:hover {
-  color: #2563eb;
-}
-
-.right h2 {
-  font-size: 29px;
-  letter-spacing: -.8px;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  color: #78839a;
-  font-size: 13px;
-  line-height: 1.7;
-  margin-bottom: 26px;
-}
-
-.role-label, .field-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #34415c;
-  margin-bottom: 10px;
-}
-
-.roles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 23px;
-}
-
-.role {
-  border: 1.5px solid #e3e8f2;
-  background: #fff;
-  padding: 14px 10px;
-  border-radius: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  color: #536079;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  transition: .25s;
-}
-
-.role i {
-  font-size: 16px;
-}
-
-.role:hover {
-  border-color: #93b4ff;
-  transform: translateY(-2px);
-}
-
-.role.active {
-  background: #eff5ff;
-  border-color: #3674ef;
-  color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37,99,235,.08);
-}
-
-.field {
-  margin-bottom: 18px;
-}
-
-.input-wrap {
-  position: relative;
-}
-
-.input-wrap i {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8a96ad;
-  font-size: 14px;
-}
-
-input {
-  width: 100%;
-  padding: 15px 44px;
-  border: 1.5px solid #e3e8f2;
-  border-radius: 12px;
-  outline: none;
-  font-family: inherit;
-  font-size: 13px;
-  color: #24304a;
-  transition: .25s;
-  background: #fcfdff;
-}
-
-input:focus {
-  border-color: #4781f5;
-  box-shadow: 0 0 0 4px rgba(59,130,246,.1);
-  background: white;
-}
-
-input::placeholder {
-  color: #a4adbd;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: none;
-  color: #8a96ad;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 15px;
-  margin-top: 4px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(100deg, #2563eb, #6250e8);
-  color: white;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(55,91,220,.23);
-  transition: .25s;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(55,91,220,.3);
-}
-
-.message {
-  display: none;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 10px;
-  background: #fff7e6;
-  color: #8a5700;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.register {
-  margin-top: 23px;
-  text-align: center;
-  color: #7a859b;
-  font-size: 12px;
-}
-
-.register a {
-  color: #3269e8;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.register a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 700px) {
-  body {
-    padding: 15px;
-    align-items: flex-start;
-  }
-
-  .container {
-    grid-template-columns: 1fr;
-    max-width: 440px;
-    margin: auto;
-  }
-
-  .left {
-    padding: 25px 25px 28px;
-  }
-
-  .welcome {
-    margin: 27px 0 22px;
-  }
-
-  .welcome h1 {
-    font-size: 27px;
-  }
-
-  .features {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .feature {
-    font-size: 11px;
-    gap: 9px;
-  }
-
-  .feature-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
-  }
-
-  .left-bottom {
-    margin-top: 22px;
-  }
-
-  .right {
-    padding: 30px 25px;
-  }
-
-  .back {
-    margin-bottom: 25px;
-  }
-
-  .right h2 {
-    font-size: 26px;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:25px;font-family:Inter,sans-serif;background:linear-gradient(135deg,#eaf1ff,#f4edff,#e8f7ff);color:#182342}
+.container{width:100%;max-width:980px;min-height:590px;display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 25px 70px #2b4b9629;animation:appear .7s ease}
+@keyframes appear{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.left{position:relative;overflow:hidden;padding:48px 40px;color:#fff;background:linear-gradient(145deg,#2563eb,#5146e5 65%,#7955e8);display:flex;flex-direction:column;justify-content:space-between}
+.circle{position:absolute;border-radius:50%;background:#ffffff17}
+.circle.one{width:260px;height:260px;right:-100px;top:-80px}
+.circle.two{width:200px;height:200px;left:-100px;bottom:30px}
+.brand,.welcome,.features,.left-bottom{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800}
+.logo{width:45px;height:45px;display:grid;place-items:center;border-radius:14px;background:#ffffff33;font-size:21px}
+.welcome{margin:45px 0 35px}
+.welcome h1{font-size:clamp(28px,3vw,37px);line-height:1.25;margin-bottom:17px;letter-spacing:-1px}
+.welcome p{color:#e0e7ff;line-height:1.8;font-size:14px}
+.features{display:grid;gap:20px}
+.feature{display:flex;align-items:center;gap:15px;font-size:14px;color:#f1f5ff}
+.feature-icon{width:43px;height:43px;flex-shrink:0;display:grid;place-items:center;border-radius:13px;background:#ffffff29;font-size:17px;transition:.25s}
+.feature:hover .feature-icon{transform:translateY(-4px) rotate(-5deg);background:#ffffff47}
+.left-bottom{margin-top:35px;font-size:12px;color:#dbe5ff}
+.right{padding:48px 43px;display:flex;flex-direction:column;justify-content:center}
+.back{color:#64748b;text-decoration:none;font-size:13px;margin-bottom:32px;display:inline-flex;align-items:center;gap:8px;width:fit-content}
+.back:hover{color:#2563eb}
+.right h2{font-size:29px;letter-spacing:-.8px;margin-bottom:10px}
+.subtitle{color:#78839a;font-size:13px;line-height:1.7;margin-bottom:26px}
+.role-label,.field-label{display:block;font-size:12px;font-weight:700;color:#34415c;margin-bottom:10px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:23px}
+.role{border:1.5px solid #e3e8f2;background:#fff;padding:14px 10px;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;color:#536079;font-family:inherit;font-size:13px;font-weight:600;transition:.25s}
+.role i{font-size:16px}
+.role:hover{border-color:#93b4ff;transform:translateY(-2px)}
+.role.active{background:#eff5ff;border-color:#3674ef;color:#2563eb;box-shadow:0 4px 12px #2563eb14}
+.field{margin-bottom:18px}
+.input-wrap{position:relative}
+.input-wrap>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8a96ad;font-size:14px}
+input{width:100%;padding:15px 44px;border:1.5px solid #e3e8f2;border-radius:12px;outline:none;font-family:inherit;font-size:13px;color:#24304a;transition:.25s;background:#fcfdff}
+input:focus{border-color:#4781f5;box-shadow:0 0 0 4px #3b82f31a;background:#fff}
+input::placeholder{color:#a4adbd}
+.toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);border:none;background:none;color:#8a96ad;cursor:pointer;padding:5px}
+.login-btn{width:100%;padding:15px;margin-top:4px;border:none;border-radius:12px;background:linear-gradient(100deg,#2563eb,#6250e8);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px #375bdc3b;transition:.25s}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px #375bdc4d}
+.login-btn:disabled{opacity:.65;cursor:wait;transform:none}
+.message{display:none;padding:12px;margin-top:15px;border-radius:10px;background:#fff7e6;color:#8a5700;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.register{margin-top:23px;text-align:center;color:#7a859b;font-size:12px}
+.register a{color:#3269e8;text-decoration:none;font-weight:700}
+.register a:hover{text-decoration:underline}
+@media(max-width:700px){
+body{padding:15px;align-items:flex-start}
+.container{grid-template-columns:1fr;max-width:440px;margin:auto}
+.left{padding:25px 25px 28px}
+.welcome{margin:27px 0 22px}
+.welcome h1{font-size:27px}
+.features{grid-template-columns:1fr 1fr;gap:12px}
+.feature{font-size:11px;gap:9px}
+.feature-icon{width:36px;height:36px;font-size:14px}
+.left-bottom{margin-top:22px}
+.right{padding:30px 25px}
+.back{margin-bottom:25px}
+.right h2{font-size:26px}
 }
 </style>
 </head>
@@ -399,196 +75,186 @@ input::placeholder {
 <body>
 <div class="container">
 
-  <section class="left">
-    <div class="circle one"></div>
-    <div class="circle two"></div>
+<section class="left">
+  <div class="circle one"></div>
+  <div class="circle two"></div>
 
-    <div class="brand">
-      <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
-      <span>CampusConnect</span>
+  <div class="brand">
+    <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
+    <span>CampusConnect</span>
+  </div>
+
+  <div>
+    <div class="welcome">
+      <h1>Your Campus,<br>One Connected<br>Community.</h1>
+      <p>Everything you need for a better campus experience, all in one place.</p>
     </div>
 
-    <div>
-      <div class="welcome">
-        <h1>Your Campus,<br>One Connected<br>Community.</h1>
-        <p>Everything you need for a better campus experience, all in one place.</p>
-      </div>
+    <div class="features">
+      <div class="feature"><div class="feature-icon"><i class="fa-solid fa-clipboard-list"></i></div><span>Complaints & Maintenance</span></div>
+      <div class="feature"><div class="feature-icon"><i class="fa-solid fa-bullhorn"></i></div><span>College Notices</span></div>
+      <div class="feature"><div class="feature-icon"><i class="fa-solid fa-magnifying-glass"></i></div><span>Lost & Found</span></div>
+      <div class="feature"><div class="feature-icon"><i class="fa-solid fa-bell"></i></div><span>Campus Updates</span></div>
+    </div>
+  </div>
 
-      <div class="features">
-        <div class="feature">
-          <div class="feature-icon"><i class="fa-solid fa-clipboard-list"></i></div>
-          <span>Complaints & Maintenance</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><i class="fa-solid fa-bullhorn"></i></div>
-          <span>College Notices</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-          <span>Lost & Found</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
-          <span>Campus Updates</span>
-        </div>
+  <div class="left-bottom">© 2026 CampusConnect · Connecting Campus Life</div>
+</section>
+
+<section class="right">
+  <a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+
+  <h2>Welcome back! 👋</h2>
+  <p class="subtitle">Sign in to access your campus dashboard.</p>
+
+  <form id="loginForm">
+    <span class="role-label">I am logging in as</span>
+
+    <div class="roles">
+      <button class="role active" type="button" data-role="Student"><i class="fa-solid fa-user-graduate"></i> Student</button>
+      <button class="role" type="button" data-role="Admin"><i class="fa-solid fa-user-shield"></i> Admin</button>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="email">Email Address</label>
+      <div class="input-wrap">
+        <i class="fa-regular fa-envelope"></i>
+        <input id="email" type="email" placeholder="Enter your email address" autocomplete="email" required>
       </div>
     </div>
 
-    <div class="left-bottom">© 2026 CampusConnect · Connecting Campus Life</div>
-  </section>
-
-  <section class="right">
-    <a class="back" href="index.html">
-      <i class="fa-solid fa-arrow-left"></i> Back to Home
-    </a>
-
-    <h2>Welcome back! 👋</h2>
-    <p class="subtitle">Sign in to access your campus dashboard.</p>
-
-    <form id="loginForm">
-      <span class="role-label">I am logging in as</span>
-
-      <div class="roles">
-        <button class="role active" type="button" data-role="Student">
-          <i class="fa-solid fa-user-graduate"></i> Student
-        </button>
-        <button class="role" type="button" data-role="Admin">
-          <i class="fa-solid fa-user-shield"></i> Admin
+    <div class="field">
+      <label class="field-label" for="password">Password</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+        <button class="toggle-password" type="button" id="togglePassword" aria-label="Show password">
+          <i class="fa-regular fa-eye"></i>
         </button>
       </div>
+    </div>
 
-      <div class="field">
-        <label class="field-label" for="email">Email Address</label>
-        <div class="input-wrap">
-          <i class="fa-regular fa-envelope"></i>
-          <input id="email" type="email" placeholder="Enter your email address" required>
-        </div>
-      </div>
+    <button class="login-btn" type="submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+  </form>
 
-      <div class="field">
-        <label class="field-label" for="password">Password</label>
-        <div class="input-wrap">
-          <i class="fa-solid fa-lock"></i>
-          <input id="password" type="password" placeholder="Enter your password" required>
-          <button class="toggle-password" type="button" id="togglePassword" aria-label="Show password">
-            <i class="fa-regular fa-eye"></i>
-          </button>
-        </div>
-      </div>
-
-      <button class="login-btn" type="submit">
-        Sign In <i class="fa-solid fa-arrow-right"></i>
-      </button>
-
-      <div class="message" id="message"></div>
-    </form>
-
-    <p class="register">
-      New to CampusConnect? <a href="register.html">Create an account</a>
-    </p>
-  </section>
-
+  <p class="register">New to CampusConnect? <a href="register.html">Create an account</a></p>
+</section>
 </div>
 
+<!-- Load Supabase BEFORE the login JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co/rest/v1/";
+"use strict";
+
+// Supabase project URL (not the REST API URL)
+const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co";
+
+// Use your project's PUBLIC publishable key.
+// Never put a secret or service_role key in website code.
 const SUPABASE_KEY = "sb_publishable_-K1rmvgR-CP0b7NQarePxQ_NLIeanq3";
 
-const configured =
-  SUPABASE_URL.startsWith("https://") &&
-  !SUPABASE_URL.includes("PASTE_") &&
-  SUPABASE_KEY.trim() !== "" &&
-  !SUPABASE_KEY.includes("PASTE_");
-
-const db = configured
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-  : null;
-
+let db = null;
 let selectedRole = "Student";
 
+const message = document.getElementById("message");
+const loginForm = document.getElementById("loginForm");
+const loginButton = loginForm.querySelector(".login-btn");
+
+function showMessage(text, type = "error") {
+  message.style.display = "block";
+  message.textContent = text;
+
+  if (type === "success") {
+    message.style.background = "#e8f8ed";
+    message.style.color = "#176b3b";
+  } else if (type === "info") {
+    message.style.background = "#eff5ff";
+    message.style.color = "#2457ad";
+  } else {
+    message.style.background = "#fff0f0";
+    message.style.color = "#b42332";
+  }
+}
+
+// Select Student or Admin
 document.querySelectorAll(".role").forEach(button => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".role").forEach(item =>
-      item.classList.remove("active")
-    );
+    document.querySelectorAll(".role").forEach(item => item.classList.remove("active"));
     button.classList.add("active");
     selectedRole = button.dataset.role;
+    message.style.display = "none";
   });
 });
 
-document.getElementById("togglePassword").addEventListener("click", function() {
-  const password = document.getElementById("password");
+// Show/hide password
+document.getElementById("togglePassword").addEventListener("click", function () {
+  const passwordInput = document.getElementById("password");
   const icon = this.querySelector("i");
-  const show = password.type === "password";
+  const showing = passwordInput.type === "password";
 
-  password.type = show ? "text" : "password";
-  icon.className = show
-    ? "fa-regular fa-eye-slash"
-    : "fa-regular fa-eye";
+  passwordInput.type = showing ? "text" : "password";
+  icon.className = showing ? "fa-regular fa-eye-slash" : "fa-regular fa-eye";
+  this.setAttribute("aria-label", showing ? "Hide password" : "Show password");
 });
 
-document.getElementById("loginForm").addEventListener("submit", async function(event) {
+// Initialize Supabase safely
+if (window.supabase && typeof window.supabase.createClient === "function") {
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  showMessage("Supabase library load nahi hui. Internet connection check karke page refresh karo.");
+}
+
+// Sign in
+loginForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  const message = document.getElementById("message");
-  const button = this.querySelector(".login-btn");
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  message.style.display = "block";
-  message.style.background = "#fff7e6";
-  message.style.color = "#8a5700";
-
   if (!db) {
-    message.textContent = "Add your Supabase Project URL and Publishable Key first.";
+    showMessage("Supabase connect nahi hua. Page refresh karo; agar error rahe, CDN/library check karni hogi.");
     return;
   }
 
-  button.disabled = true;
-  message.textContent = "Signing in...";
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  loginButton.disabled = true;
+  showMessage("Signing in...", "info");
 
   try {
     const { data, error } = await db.auth.signInWithPassword({
-      email,
-      password
+      email: email,
+      password: password
     });
 
     if (error) throw error;
 
     const user = data.user;
-    const metadata = user.user_metadata || {};
+    const role = user?.user_metadata?.role;
 
-    // Admin access must be assigned explicitly in Supabase user metadata.
-    const isAdmin = metadata.role === "admin";
-
-    if (selectedRole === "Admin" && !isAdmin) {
+    if (selectedRole === "Admin" && role !== "admin") {
       await db.auth.signOut();
-      throw new Error("This account is not registered as an admin.");
+      throw new Error("This account is not assigned as Admin. Use a student account or assign admin role in Supabase.");
     }
 
-    if (selectedRole === "Student" && isAdmin) {
+    if (selectedRole === "Student" && role === "admin") {
       await db.auth.signOut();
-      throw new Error("Please select Admin for this account.");
+      throw new Error("This account is an Admin account. Please select Admin.");
     }
 
-    message.style.background = "#e8f8ed";
-    message.style.color = "#176b3b";
-    message.textContent = "Login successful! Opening dashboard...";
+    showMessage("Login successful! Opening dashboard...", "success");
 
     window.location.href = selectedRole === "Admin"
       ? "admin.html"
       : "student.html";
 
   } catch (error) {
-    message.style.background = "#fff0f0";
-    message.style.color = "#b42332";
-    message.textContent = error.message || "Login failed. Check your details.";
+    showMessage(error.message || "Login failed. Please check your email and password.");
   } finally {
-    button.disabled = false;
+    loginButton.disabled = false;
   }
 });
 </script>
 </body>
 </html>
-
-
+```
