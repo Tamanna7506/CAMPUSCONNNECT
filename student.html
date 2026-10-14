@@ -7,7 +7,7 @@
 <title>Student Dashboard | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,sans-serif;background:#f5f7fc;color:#1d2945}
@@ -22,15 +22,13 @@ nav a i{width:19px;text-align:center;font-size:15px}
 nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
 .sidebar-bottom{margin-top:auto}
 .help{padding:16px;background:linear-gradient(145deg,#eef3ff,#f6f0ff);border-radius:14px;margin:25px 3px}
-.help i{color:#4e65e9;font-size:20px}
-.help h4{font-size:12px;margin:12px 0 6px}
+.help i{color:#4e65e9;font-size:20px}.help h4{font-size:12px;margin:12px 0 6px}
 .help p{font-size:10px;color:#7b879d;line-height:1.7}
 .help a{display:inline-block;margin-top:10px;color:#315fdd;text-decoration:none;font-size:11px;font-weight:700}
 .profile{border-top:1px solid #edf0f6;padding:18px 6px 0;display:flex;align-items:center;gap:10px}
 .avatar{width:39px;height:39px;display:grid;place-items:center;border-radius:50%;background:#e3ebff;color:#315ed7;font-weight:800}
-.profile-info{min-width:0;flex:1}
-.profile-info strong{display:block;font-size:11px}
-.profile-info span{display:block;font-size:10px;color:#8a96aa;margin-top:4px}
+.profile-info{min-width:0;flex:1;overflow-wrap:anywhere}
+.profile-info strong{display:block;font-size:11px}.profile-info span{display:block;font-size:10px;color:#8a96aa;margin-top:4px}
 .main{flex:1;min-width:0;padding:29px 35px 40px}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:30px}
 .breadcrumb{font-size:11px;color:#8a95a9;margin-bottom:7px}
@@ -44,14 +42,11 @@ nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
 .welcome p{font-size:12px;color:#e1e7ff;line-height:1.8;max-width:420px;position:relative;z-index:1}
 .welcome-icon{position:relative;z-index:1;width:90px;height:90px;border-radius:24px;background:#ffffff20;display:grid;place-items:center;font-size:39px;transform:rotate(5deg);flex-shrink:0}
 .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
-.section-head h3{font-size:15px}
-.section-head span{font-size:11px;color:#8994a9}
+.section-head h3{font-size:15px}.section-head span{font-size:11px;color:#8994a9}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:30px}
 .stat{background:white;border:1px solid #edf0f7;border-radius:16px;padding:19px;display:flex;align-items:center;gap:13px}
 .stat-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:17px;flex-shrink:0}
-.blue{background:#eaf1ff;color:#3470eb}
-.purple{background:#f0eaff;color:#8054df}
-.orange{background:#fff1e4;color:#e68a34}
+.blue{background:#eaf1ff;color:#3470eb}.purple{background:#f0eaff;color:#8054df}.orange{background:#fff1e4;color:#e68a34}
 .stat small{font-size:10px;color:#8994a9;display:block;margin-bottom:7px}
 .stat strong{font-size:23px;letter-spacing:-.5px}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
@@ -64,58 +59,25 @@ nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
 .card h4{font-size:14px;margin-bottom:8px}
 .card p{font-size:11px;color:#8490a5;line-height:1.8;flex:1}
 .card a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#3266e6;font-size:11px;font-weight:700;margin-top:18px;width:fit-content}
-.card a:hover{gap:12px}
 .notice{margin-top:27px;background:white;border:1px solid #edf0f7;border-radius:17px;padding:21px}
 .notice-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
-.notice-title h3{font-size:14px}
-.notice-title a{font-size:11px;color:#3266e6;text-decoration:none;font-weight:700}
+.notice-title h3{font-size:14px}.notice-title a{font-size:11px;color:#3266e6;text-decoration:none;font-weight:700}
 .notice-item{display:flex;gap:13px;padding:14px 0;border-top:1px solid #f0f2f7;align-items:flex-start}
 .notice-icon{width:37px;height:37px;border-radius:11px;background:#edf3ff;color:#3266e6;display:grid;place-items:center;flex-shrink:0}
 .notice-item h4{font-size:11px;margin:2px 0 6px}
-.notice-item p{font-size:10px;color:#8994a9;line-height:1.7}
+.notice-item p{font-size:10px;color:#8994a9;line-height:1.7;overflow-wrap:anywhere}
 .footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:28px}
+.status{font-size:11px;color:#78839a;margin:0 0 14px;overflow-wrap:anywhere}
+.logout{border:0;background:#fff0f0;color:#b42332;border-radius:9px;padding:10px;cursor:pointer;width:100%;font-weight:600}
 @media(max-width:900px){.sidebar{width:205px}.main{padding:25px 22px}.stats{gap:10px}.stat{padding:14px;gap:9px}.stat strong{font-size:20px}}
-@media(max-width:650px){
- .layout{display:block}
- .sidebar{width:100%;padding:13px 16px;border-right:0;border-bottom:1px solid #e9edf5}
- .brand{padding:0 4px 13px}
- .nav-label,.sidebar-bottom{display:none}
- nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}
- nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
- nav a i{font-size:13px}
- .main{padding:22px 16px 30px}
- .topbar{margin-bottom:22px}
- .topbar h1{font-size:20px}
- .top-right{gap:8px}
- .welcome{padding:23px 19px}
- .welcome h2{font-size:20px}
- .welcome p{font-size:11px}
- .welcome-icon{width:60px;height:60px;font-size:25px;border-radius:17px}
- .stats{gap:9px}
- .stat{padding:12px 9px;display:block}
- .stat-icon{width:34px;height:34px;font-size:14px;margin-bottom:11px}
- .stat small{font-size:9px;line-height:1.5;min-height:26px}
- .stat strong{font-size:21px}
- .cards{gap:11px}
- .card{padding:15px;min-height:190px}
- .card-icon{width:39px;height:39px;font-size:16px}
- .card h4{font-size:12px}
- .card p{font-size:10px}
- .card a{font-size:10px}
-}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px 16px;border-right:0;border-bottom:1px solid #e9edf5}.brand{padding:0 4px 13px}.nav-label,.help{display:none}nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}nav a i{font-size:13px}.sidebar-bottom{margin-top:12px}.profile{padding:10px 4px 0}.logout{margin-top:10px}.main{padding:22px 16px 30px}.topbar{margin-bottom:22px}.topbar h1{font-size:20px}.top-right{gap:8px}.welcome{padding:23px 19px}.welcome h2{font-size:20px}.welcome p{font-size:11px}.welcome-icon{width:60px;height:60px;font-size:25px;border-radius:17px}.stats{gap:9px}.stat{padding:12px 9px;display:block}.stat-icon{width:34px;height:34px;font-size:14px;margin-bottom:11px}.stat small{font-size:9px;line-height:1.5;min-height:26px}.stat strong{font-size:21px}.cards{gap:11px}.card{padding:15px;min-height:190px}.card-icon{width:39px;height:39px;font-size:16px}.card h4{font-size:12px}.card p{font-size:10px}.card a{font-size:10px}}
 @media(max-width:370px){.cards{grid-template-columns:1fr}.welcome-icon{display:none}}
 </style>
 </head>
-
 <body>
 <div class="layout">
-
 <aside class="sidebar">
-  <div class="brand">
-    <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
-    <span>CampusConnect</span>
-  </div>
-
+  <div class="brand"><div class="logo"><i class="fa-solid fa-graduation-cap"></i></div><span>CampusConnect</span></div>
   <div class="nav-label">STUDENT MENU</div>
   <nav>
     <a class="active" href="student.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -124,135 +86,150 @@ nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
     <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
     <a href="services.html"><i class="fa-solid fa-screwdriver-wrench"></i> Services</a>
   </nav>
-
   <div class="sidebar-bottom">
-    <div class="help">
-      <i class="fa-regular fa-circle-question"></i>
-      <h4>Need some help?</h4>
-      <p>Have a question or facing a campus issue? Submit a complaint and keep track of it.</p>
-      <a href="complaint.html">Get support <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
+    <div class="help"><i class="fa-regular fa-circle-question"></i><h4>Need some help?</h4><p>Have a question or facing a campus issue? Submit a complaint and keep track of it.</p><a href="complaint.html">Get support <i class="fa-solid fa-arrow-right"></i></a></div>
     <div class="profile">
       <div class="avatar"><i class="fa-solid fa-user"></i></div>
-      <div class="profile-info">
-        <strong>Student User</strong>
-        <span>Student Account</span>
-      </div>
+      <div class="profile-info"><strong id="studentName">Student User</strong><span id="studentEmail">Student Account</span></div>
     </div>
+    <button class="logout" id="logoutButton"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
   </div>
 </aside>
 
 <main class="main">
-  <header class="topbar">
-    <div>
-      <div class="breadcrumb">Home / Dashboard</div>
-      <h1>Student Dashboard</h1>
-    </div>
-    <div class="top-right">
-      <button class="icon-btn" id="noticeButton" aria-label="View notices">
-        <i class="fa-regular fa-bell"></i>
-      </button>
-      <div class="top-avatar"><i class="fa-solid fa-user-graduate"></i></div>
-    </div>
-  </header>
-
-  <section class="welcome">
-    <div>
-      <h2>Welcome to CampusConnect! 👋</h2>
-      <p>Your campus life, made simpler. Manage complaints, discover college notices and stay connected with your campus community.</p>
-    </div>
-    <div class="welcome-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-  </section>
-
-  <div class="section-head">
-    <h3>Your Overview</h3>
-    <span>Campus at a glance</span>
+<header class="topbar">
+  <div><div class="breadcrumb">Home / Dashboard</div><h1>Student Dashboard</h1></div>
+  <div class="top-right">
+    <button class="icon-btn" id="noticeButton" aria-label="View notices"><i class="fa-regular fa-bell"></i></button>
+    <div class="top-avatar"><i class="fa-solid fa-user-graduate"></i></div>
   </div>
+</header>
 
-  <section class="stats">
-    <div class="stat">
-      <div class="stat-icon blue"><i class="fa-solid fa-clipboard-check"></i></div>
-      <div><small>My Complaints</small><strong>0</strong></div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-      <div><small>College Notices</small><strong>0</strong></div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div>
-      <div><small>My Lost & Found</small><strong>0</strong></div>
-    </div>
-  </section>
+<section class="welcome">
+  <div><h2 id="welcomeHeading">Welcome to CampusConnect! 👋</h2><p>Your campus life, made simpler. Manage complaints, discover college notices and stay connected with your campus community.</p></div>
+  <div class="welcome-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+</section>
 
-  <div class="section-head">
-    <h3>Campus Services</h3>
-    <span>Choose a service</span>
-  </div>
+<div class="section-head"><h3>Your Overview</h3><span>Campus at a glance</span></div>
+<section class="stats">
+  <div class="stat"><div class="stat-icon blue"><i class="fa-solid fa-clipboard-check"></i></div><div><small>My Complaints</small><strong id="complaintCount">—</strong></div></div>
+  <div class="stat"><div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div><div><small>College Notices</small><strong id="noticeCount">—</strong></div></div>
+  <div class="stat"><div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div><div><small>Lost & Found</small><strong id="lostCount">—</strong></div></div>
+</section>
+<p class="status" id="dashboardMessage">Loading dashboard...</p>
 
-  <section class="cards">
-    <article class="card">
-      <div class="card-top">
-        <div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
-        <i class="fa-solid fa-arrow-up-right-from-square arrow"></i>
-      </div>
-      <h4>Complaints & Maintenance</h4>
-      <p>Report classroom, laboratory, electrical or other campus issues. Add a photo if needed.</p>
-      <a href="complaint.html">Submit a complaint <i class="fa-solid fa-arrow-right"></i></a>
-    </article>
+<div class="section-head"><h3>Campus Services</h3><span>Choose a service</span></div>
+<section class="cards">
+  <article class="card"><div class="card-top"><div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></div><h4>Complaints & Maintenance</h4><p>Report classroom, laboratory, electrical or other campus issues. Add a photo if needed.</p><a href="complaint.html">Submit a complaint <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="card"><div class="card-top"><div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></div><h4>College Notices</h4><p>Stay updated with announcements, events, examinations and important college information.</p><a href="notices.html">View notices <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="card"><div class="card-top"><div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></div><h4>Lost & Found</h4><p>Report lost belongings or share details of items you have found on campus, with photos.</p><a href="lost-found.html">Explore items <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="card"><div class="card-top"><div class="card-icon blue"><i class="fa-solid fa-screwdriver-wrench"></i></div><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></div><h4>Service Requests</h4><p>Find campus support and submit requests for assistance with college facilities.</p><a href="services.html">Explore services <i class="fa-solid fa-arrow-right"></i></a></article>
+</section>
 
-    <article class="card">
-      <div class="card-top">
-        <div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-        <i class="fa-solid fa-arrow-up-right-from-square arrow"></i>
-      </div>
-      <h4>College Notices</h4>
-      <p>Stay updated with announcements, events, examinations and important college information.</p>
-      <a href="notices.html">View notices <i class="fa-solid fa-arrow-right"></i></a>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div>
-        <i class="fa-solid fa-arrow-up-right-from-square arrow"></i>
-      </div>
-      <h4>Lost & Found</h4>
-      <p>Report lost belongings or share details of items you have found on campus, with photos.</p>
-      <a href="lost-found.html">Explore items <i class="fa-solid fa-arrow-right"></i></a>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <div class="card-icon blue"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-        <i class="fa-solid fa-arrow-up-right-from-square arrow"></i>
-      </div>
-      <h4>Service Requests</h4>
-      <p>Find campus support and submit requests for assistance with college facilities.</p>
-      <a href="services.html">Explore services <i class="fa-solid fa-arrow-right"></i></a>
-    </article>
-  </section>
-
-  <section class="notice" id="noticeSection">
-    <div class="notice-title">
-      <h3><i class="fa-regular fa-bell" style="color:#4f67e8;margin-right:8px"></i>Campus Updates</h3>
-      <a href="notices.html">All notices <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-    <div class="notice-item">
-      <div class="notice-icon"><i class="fa-solid fa-circle-info"></i></div>
-      <div>
-        <h4>Welcome to CampusConnect</h4>
-        <p>Your college updates and announcements will appear here when the notices module is connected.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="footer">© 2026 CampusConnect · Built for a better campus experience</div>
+<section class="notice" id="noticeSection">
+  <div class="notice-title"><h3><i class="fa-regular fa-bell" style="color:#4f67e8;margin-right:8px"></i>Campus Updates</h3><a href="notices.html">All notices <i class="fa-solid fa-arrow-right"></i></a></div>
+  <div id="latestNotices"><div class="notice-item"><div class="notice-icon"><i class="fa-solid fa-circle-info"></i></div><div><h4>Loading announcements...</h4><p>Please wait.</p></div></div></div>
+</section>
+<div class="footer">© 2026 CampusConnect · Built for a better campus experience</div>
 </main>
 </div>
 
 <script>
-document.getElementById("noticeButton").addEventListener("click", function(){
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+const configured = SUPABASE_URL.startsWith("https://") &&
+  !SUPABASE_URL.includes("PASTE_") &&
+  SUPABASE_KEY.trim() !== "" &&
+  !SUPABASE_KEY.includes("PASTE_");
+
+const db = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+document.getElementById("noticeButton").addEventListener("click", () => {
   document.getElementById("noticeSection").scrollIntoView({behavior:"smooth"});
 });
+
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  if (db) await db.auth.signOut();
+  window.location.href = "login.html";
+});
+
+function addNoticeItem(titleText, descriptionText) {
+  const row = document.createElement("div");
+  row.className = "notice-item";
+  const icon = document.createElement("div");
+  icon.className = "notice-icon";
+  icon.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+  const content = document.createElement("div");
+  const title = document.createElement("h4");
+  title.textContent = titleText;
+  const description = document.createElement("p");
+  description.textContent = descriptionText;
+  content.append(title, description);
+  row.append(icon, content);
+  document.getElementById("latestNotices").appendChild(row);
+}
+
+async function loadDashboard() {
+  const status = document.getElementById("dashboardMessage");
+
+  if (!db) {
+    status.textContent = "Add your Supabase Project URL and Publishable Key in this file.";
+    return;
+  }
+
+  try {
+    const {data: authData, error: authError} = await db.auth.getUser();
+    if (authError || !authData.user) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const user = authData.user;
+    const name = user.user_metadata?.full_name || user.email?.split("@")[0] || "Student";
+    document.getElementById("studentName").textContent = name;
+    document.getElementById("studentEmail").textContent = user.email || "Student Account";
+    document.getElementById("welcomeHeading").textContent = "Welcome, " + name + "! 👋";
+
+    const [complaintsResult, noticesResult, lostResult] = await Promise.all([
+      db.from("complaints").select("id", {count:"exact", head:true}).eq("student_email", user.email),
+      db.from("notices").select("id", {count:"exact", head:true}),
+      db.from("lost_found").select("id", {count:"exact", head:true}).eq("contact_email", user.email)
+    ]);
+
+    document.getElementById("complaintCount").textContent =
+      complaintsResult.error ? "—" : complaintsResult.count;
+    document.getElementById("noticeCount").textContent =
+      noticesResult.error ? "—" : noticesResult.count;
+    document.getElementById("lostCount").textContent =
+      lostResult.error ? "—" : lostResult.count;
+
+    document.getElementById("latestNotices").innerHTML = "";
+    const {data: latest, error: latestError} = await db
+      .from("notices")
+      .select("title,description,category,notice_date")
+      .order("notice_date", {ascending:false})
+      .limit(3);
+
+    if (latestError) throw latestError;
+
+    if (!latest || !latest.length) {
+      addNoticeItem("No announcements yet", "New college notices will appear here.");
+    } else {
+      latest.forEach(n => addNoticeItem(
+        n.title || "College Notice",
+        (n.category ? n.category + " · " : "") +
+        (n.notice_date || "") + " — " + (n.description || "")
+      ));
+    }
+
+    status.textContent = "Dashboard connected to Supabase.";
+  } catch (error) {
+    status.textContent = "Dashboard could not load: " + error.message;
+  }
+}
+
+loadDashboard();
 </script>
 </body>
 </html>
