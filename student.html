@@ -133,21 +133,23 @@ nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
 <div class="footer">© 2026 CampusConnect · Built for a better campus experience</div>
 </main>
 </div>
-
+```html
 <script>
-const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co/rest/v1/";
-const SUPABASE_KEY = "sb_publishable_-K1rmvgR-CP0b7NQarePxQ_NLIeanq3
-";
+const SUPABASE_URL = "https://gmmavvaoxtmcrziiplwr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_-K1rmvgR-CP0b7NQarePxQ_NLIeanq3";
 
-const configured = SUPABASE_URL.startsWith("https://") &&
-  !SUPABASE_URL.includes("PASTE_") &&
-  SUPABASE_KEY.trim() !== "" &&
-  !SUPABASE_KEY.includes("PASTE_");
+const status = document.getElementById("dashboardMessage");
 
-const db = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let db = null;
+
+if (window.supabase && typeof window.supabase.createClient === "function") {
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  status.textContent = "Supabase library load nahi hui. Page refresh karo.";
+}
 
 document.getElementById("noticeButton").addEventListener("click", () => {
-  document.getElementById("noticeSection").scrollIntoView({behavior:"smooth"});
+  document.getElementById("noticeSection").scrollIntoView({ behavior: "smooth" });
 });
 
 document.getElementById("logoutButton").addEventListener("click", async () => {
@@ -158,63 +160,79 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
 function addNoticeItem(titleText, descriptionText) {
   const row = document.createElement("div");
   row.className = "notice-item";
+
   const icon = document.createElement("div");
   icon.className = "notice-icon";
   icon.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+
   const content = document.createElement("div");
   const title = document.createElement("h4");
   title.textContent = titleText;
+
   const description = document.createElement("p");
   description.textContent = descriptionText;
+
   content.append(title, description);
   row.append(icon, content);
   document.getElementById("latestNotices").appendChild(row);
 }
 
 async function loadDashboard() {
-  const status = document.getElementById("dashboardMessage");
+  if (!db) return;
 
-  if (!db) {
-    status.textContent = "Add your Supabase Project URL and Publishable Key in this file.";
-    return;
-  }
+  status.textContent = "Loading dashboard...";
 
   try {
-    const {data: authData, error: authError} = await db.auth.getUser();
+    const { data: authData, error: authError } = await db.auth.getUser();
+
     if (authError || !authData.user) {
       window.location.href = "login.html";
       return;
     }
 
     const user = authData.user;
-    const name = user.user_metadata?.full_name || user.email?.split("@")[0] || "Student";
+    const email = user.email;
+    const name = user.user_metadata?.full_name || email?.split("@")[0] || "Student";
+
     document.getElementById("studentName").textContent = name;
-    document.getElementById("studentEmail").textContent = user.email || "Student Account";
+    document.getElementById("studentEmail").textContent = email || "Student Account";
     document.getElementById("welcomeHeading").textContent = "Welcome, " + name + "! 👋";
 
     const [complaintsResult, noticesResult, lostResult] = await Promise.all([
-      db.from("complaints").select("id", {count:"exact", head:true}).eq("student_email", user.email),
-      db.from("notices").select("id", {count:"exact", head:true}),
-      db.from("lost_found").select("id", {count:"exact", head:true}).eq("contact_email", user.email)
+      db.from("complaints")
+        .select("id", { count: "exact", head: true })
+        .ilike("student_email", email || ""),
+      db.from("notices")
+        .select("id", { count: "exact", head: true }),
+      db.from("lost_found")
+        .select("id", { count: "exact", head: true })
+        .ilike("contact_email", email || "")
     ]);
 
+    if (complaintsResult.error) console.error("Complaints:", complaintsResult.error);
+    if (noticesResult.error) console.error("Notices:", noticesResult.error);
+    if (lostResult.error) console.error("Lost & Found:", lostResult.error);
+
     document.getElementById("complaintCount").textContent =
-      complaintsResult.error ? "—" : complaintsResult.count;
+      complaintsResult.error ? "Error" : (complaintsResult.count ?? 0);
+
     document.getElementById("noticeCount").textContent =
-      noticesResult.error ? "—" : noticesResult.count;
+      noticesResult.error ? "Error" : (noticesResult.count ?? 0);
+
     document.getElementById("lostCount").textContent =
-      lostResult.error ? "—" : lostResult.count;
+      lostResult.error ? "Error" : (lostResult.count ?? 0);
 
     document.getElementById("latestNotices").innerHTML = "";
-    const {data: latest, error: latestError} = await db
+
+    const { data: latest, error: latestError } = await db
       .from("notices")
       .select("title,description,category,notice_date")
-      .order("notice_date", {ascending:false})
+      .order("notice_date", { ascending: false })
       .limit(3);
 
     if (latestError) throw latestError;
 
-    if (!latest || !latest.length) {
+    if (!latest || latest.length === 0) {
       addNoticeItem("No announcements yet", "New college notices will appear here.");
     } else {
       latest.forEach(n => addNoticeItem(
@@ -226,11 +244,14 @@ async function loadDashboard() {
 
     status.textContent = "Dashboard connected to Supabase.";
   } catch (error) {
+    console.error("Dashboard error:", error);
     status.textContent = "Dashboard could not load: " + error.message;
   }
 }
 
 loadDashboard();
 </script>
+```
+
 </body>
 </html>
