@@ -7,6 +7,8 @@
 <title>College Notices | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,sans-serif;background:#f4f7fc;color:#1c2945;padding:24px}
@@ -38,6 +40,7 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
 .primary{border:0;border-radius:10px;padding:12px 17px;background:linear-gradient(100deg,#2563eb,#6652e7);color:white;font:700 12px Inter;cursor:pointer}
 .secondary{border:1px solid #e0e6f0;border-radius:10px;padding:12px 17px;background:white;color:#65728a;font:600 12px Inter;cursor:pointer}
 .buttons{display:flex;gap:10px;flex-wrap:wrap}
+button:disabled{opacity:.6;cursor:wait}
 .heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .heading h2{font-size:17px}
 .count{font-size:10px;color:#3268e9;background:#edf3ff;padding:7px 10px;border-radius:8px}
@@ -49,7 +52,7 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
 .datebox span{font-size:10px;font-weight:700;text-transform:uppercase;margin-top:3px}
 .tag{display:inline-block;font-size:10px;font-weight:700;color:#6950d9;background:#f1edff;padding:5px 8px;border-radius:7px;margin-bottom:9px}
 .notice h3{font-size:14px;margin-bottom:8px;line-height:1.5}
-.notice p{font-size:11px;color:#7e8aa0;line-height:1.8;overflow-wrap:anywhere}
+.notice p{font-size:11px;color:#7e8aa0;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
 .notice img{max-width:100%;max-height:260px;object-fit:contain;border-radius:11px;margin-top:12px;display:block}
 .meta{font-size:10px;color:#a0aabd;margin-top:12px}
 .notice-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
@@ -59,13 +62,17 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
 .empty i{font-size:30px;margin-bottom:13px;color:#b4c1dc}
 .empty h3{font-size:13px;color:#5f6e88;margin-bottom:7px}
 .empty p{font-size:11px;line-height:1.7}
-#message{display:none;margin-bottom:15px;padding:12px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:11px;line-height:1.7}
+#message{display:none;margin-bottom:15px;padding:12px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:11px;line-height:1.7;overflow-wrap:anywhere}
+#message.success{background:#e9f9ef;color:#176b3b}
+#message.error{background:#fff0f0;color:#b42332}
 .footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:27px}
 @media(max-width:600px){body{padding:14px}.hero{padding:22px}.hero h1{font-size:22px}.hero-icon{font-size:29px}.toolbar{flex-direction:column}.grid{grid-template-columns:1fr;gap:0}.notice{grid-template-columns:50px 1fr;gap:12px;padding:14px}.datebox{width:49px;height:58px}.datebox strong{font-size:19px}.notice h3{font-size:13px}.admin-panel{padding:17px}}
 </style>
 </head>
+
 <body>
 <div class="container">
+
 <a href="student.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
 <header class="hero">
@@ -76,16 +83,18 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
   <i class="fa-solid fa-bell hero-icon"></i>
 </header>
 
-<div id="message"></div>
+<div id="message" role="status"></div>
 
 <section class="admin-panel" id="adminPanel">
   <h2><i class="fa-solid fa-pen-to-square" style="color:#4d6de6"></i> Create a Notice</h2>
-  <p>Add an announcement with an optional image. This demo keeps notices only in the current page session.</p>
+  <p>Publish college announcements with an optional image.</p>
+
   <form id="noticeForm">
     <div class="field">
       <label for="title">Notice Title *</label>
       <input id="title" required maxlength="120" placeholder="e.g. Semester Examination Schedule">
     </div>
+
     <div class="grid">
       <div class="field">
         <label for="category">Category *</label>
@@ -98,15 +107,18 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
           <option>Important</option>
         </select>
       </div>
+
       <div class="field">
         <label for="noticeDate">Notice Date *</label>
         <input id="noticeDate" type="date" required>
       </div>
     </div>
+
     <div class="field">
       <label for="description">Notice Details *</label>
       <textarea id="description" required maxlength="3000" placeholder="Write the complete announcement here..."></textarea>
     </div>
+
     <div class="field">
       <label for="noticeImage">Attach Image (Optional)</label>
       <div class="upload">
@@ -115,15 +127,21 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
         <img id="imagePreview" alt="Notice image preview">
       </div>
     </div>
+
     <div class="buttons">
-      <button class="primary" type="submit"><i class="fa-solid fa-plus"></i> Publish Notice</button>
+      <button class="primary" id="publishButton" type="submit">
+        <i class="fa-solid fa-plus"></i> Publish Notice
+      </button>
       <button class="secondary" type="button" id="cancelButton">Cancel</button>
     </div>
   </form>
 </section>
 
 <div class="toolbar">
-  <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Search notices..."></div>
+  <div class="search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input id="search" type="search" placeholder="Search notices...">
+  </div>
   <select id="filter" aria-label="Filter notices">
     <option value="All">All Categories</option>
     <option>General</option>
@@ -138,15 +156,36 @@ input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
   <h2>Latest Announcements</h2>
   <span class="count" id="count">0 Notices</span>
 </div>
+
 <div class="list" id="noticeList">
-  <div class="empty"><i class="fa-regular fa-bell-slash"></i><h3>No notices yet</h3><p>College announcements will appear here when notices are published.</p></div>
+  <div class="empty">
+    <i class="fa-regular fa-bell-slash"></i>
+    <h3>Loading notices...</h3>
+    <p>Please wait.</p>
+  </div>
 </div>
+
 <div class="footer">© 2026 CampusConnect · College Announcements</div>
 </div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const isAdmin = params.get("role") === "admin";
+// Add your own Supabase project details here.
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+const configured =
+  SUPABASE_URL.startsWith("https://") &&
+  !SUPABASE_URL.includes("PASTE_") &&
+  SUPABASE_KEY.trim() !== "" &&
+  !SUPABASE_KEY.includes("PASTE_");
+
+const db = configured
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+// Demo navigation: admin panel is displayed when URL has ?role=admin.
+const isAdmin = new URLSearchParams(location.search).get("role") === "admin";
+
 const adminPanel = document.getElementById("adminPanel");
 const noticeForm = document.getElementById("noticeForm");
 const noticeImage = document.getElementById("noticeImage");
@@ -155,143 +194,295 @@ const message = document.getElementById("message");
 const noticeList = document.getElementById("noticeList");
 const search = document.getElementById("search");
 const filter = document.getElementById("filter");
+const publishButton = document.getElementById("publishButton");
+
 let notices = [];
-let imageData = "";
+let imageFile = null;
+let previewURL = null;
 
-if(isAdmin) adminPanel.style.display = "block";
+if (isAdmin) adminPanel.style.display = "block";
 
-noticeImage.addEventListener("change", function(){
-  const file = this.files[0];
-  imageData = "";
-  imagePreview.style.display = "none";
-  if(!file) return;
-  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-    alert("Choose a JPG, PNG or WEBP image.");
-    this.value = "";
-    return;
-  }
-  if(file.size > 5*1024*1024){
-    alert("Image must be smaller than 5 MB.");
-    this.value = "";
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = () => {
-    imageData = reader.result;
-    imagePreview.src = imageData;
-    imagePreview.style.display = "block";
-  };
-  reader.readAsDataURL(file);
-});
+document.getElementById("noticeDate").value =
+  new Date().toLocaleDateString("en-CA");
 
-function showMessage(text){
+function showMessage(text, type = "") {
   message.textContent = text;
+  message.className = type;
   message.style.display = "block";
 }
 
-noticeForm.addEventListener("submit", function(event){
-  event.preventDefault();
-  if(!isAdmin){
-    showMessage("Admin demo mode is required to publish notices.");
-    return;
-  }
-  notices.unshift({
-    id: Date.now(),
-    title: document.getElementById("title").value.trim(),
-    category: document.getElementById("category").value,
-    date: document.getElementById("noticeDate").value,
-    description: document.getElementById("description").value.trim(),
-    image: imageData
-  });
-  renderNotices();
-  noticeForm.reset();
-  imageData = "";
+noticeImage.addEventListener("change", function () {
+  const file = this.files[0];
+  imageFile = null;
+
+  if (previewURL) URL.revokeObjectURL(previewURL);
+  previewURL = null;
   imagePreview.removeAttribute("src");
   imagePreview.style.display = "none";
-  showMessage("Demo notice published on this page. It is not saved online or shared with other users.");
-});
 
-function renderNotices(){
-  const query = search.value.toLowerCase();
-  const category = filter.value;
-  const visible = notices.filter(n =>
-    (category === "All" || n.category === category) &&
-    (n.title.toLowerCase().includes(query) ||
-     n.description.toLowerCase().includes(query) ||
-     n.category.toLowerCase().includes(query))
-  );
-  document.getElementById("count").textContent = visible.length + (visible.length === 1 ? " Notice" : " Notices");
-  noticeList.innerHTML = "";
+  if (!file) return;
 
-  if(!visible.length){
-    noticeList.innerHTML = '<div class="empty"><i class="fa-regular fa-bell-slash"></i><h3>No matching notices</h3><p>Try a different search or publish a new notice in admin demo mode.</p></div>';
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    this.value = "";
+    showMessage("Choose a JPG, PNG or WEBP image.", "error");
     return;
   }
 
-  visible.forEach(n => {
+  if (file.size > 5 * 1024 * 1024) {
+    this.value = "";
+    showMessage("Image must be smaller than 5 MB.", "error");
+    return;
+  }
+
+  imageFile = file;
+  previewURL = URL.createObjectURL(file);
+  imagePreview.src = previewURL;
+  imagePreview.style.display = "block";
+});
+
+async function uploadNoticeImage(file) {
+  if (!file) return null;
+
+  const extension = file.name.split(".").pop().toLowerCase();
+  const safeExtension = ["jpg", "jpeg", "png", "webp"].includes(extension)
+    ? extension : "jpg";
+
+  const path = "notices/" + Date.now() + "-" +
+    Math.random().toString(36).slice(2) + "." + safeExtension;
+
+  const { error } = await db.storage
+    .from("campus-photos")
+    .upload(path, file, {
+      upsert: false,
+      contentType: file.type
+    });
+
+  if (error) throw new Error("Image upload failed: " + error.message);
+  return path;
+}
+
+noticeForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  if (!isAdmin) {
+    showMessage("Open the admin notices page to publish a notice.", "error");
+    return;
+  }
+
+  if (!db) {
+    showMessage("Add your Supabase Project URL and Publishable Key in this file first.", "error");
+    return;
+  }
+
+  publishButton.disabled = true;
+  publishButton.textContent = "Publishing...";
+
+  try {
+    const imagePath = await uploadNoticeImage(imageFile);
+
+    const newNotice = {
+      title: document.getElementById("title").value.trim(),
+      category: document.getElementById("category").value,
+      notice_date: document.getElementById("noticeDate").value,
+      description: document.getElementById("description").value.trim(),
+      image_url: imagePath
+    };
+
+    const { error } = await db.from("notices").insert([newNotice]);
+    if (error) throw error;
+
+    noticeForm.reset();
+    document.getElementById("noticeDate").value =
+      new Date().toLocaleDateString("en-CA");
+
+    imageFile = null;
+    if (previewURL) URL.revokeObjectURL(previewURL);
+    previewURL = null;
+    imagePreview.removeAttribute("src");
+    imagePreview.style.display = "none";
+
+    showMessage("Notice published successfully!", "success");
+    await loadNotices();
+  } catch (error) {
+    showMessage("Could not publish notice: " + error.message, "error");
+  } finally {
+    publishButton.disabled = false;
+    publishButton.innerHTML = '<i class="fa-solid fa-plus"></i> Publish Notice';
+  }
+});
+
+async function loadNotices() {
+  if (!db) {
+    noticeList.innerHTML = "";
+    const box = document.createElement("div");
+    box.className = "empty";
+    const title = document.createElement("h3");
+    title.textContent = "Supabase connection required";
+    const text = document.createElement("p");
+    text.textContent = "Add your Project URL and Publishable Key to load notices.";
+    box.append(title, text);
+    noticeList.appendChild(box);
+    document.getElementById("count").textContent = "0 Notices";
+    return;
+  }
+
+  noticeList.innerHTML =
+    '<div class="empty"><h3>Loading notices...</h3></div>';
+
+  const { data, error } = await db
+    .from("notices")
+    .select("*")
+    .order("notice_date", { ascending: false });
+
+  if (error) {
+    noticeList.innerHTML = "";
+    const box = document.createElement("div");
+    box.className = "empty";
+    const title = document.createElement("h3");
+    title.textContent = "Unable to load notices";
+    const text = document.createElement("p");
+    text.textContent = error.message;
+    box.append(title, text);
+    noticeList.appendChild(box);
+    document.getElementById("count").textContent = "0 Notices";
+    return;
+  }
+
+  notices = data || [];
+  renderNotices();
+}
+
+async function deleteNotice(id) {
+  if (!isAdmin) return;
+  if (!confirm("Are you sure you want to delete this notice?")) return;
+
+  const { error } = await db.from("notices").delete().eq("id", id);
+
+  if (error) {
+    showMessage("Could not delete notice: " + error.message, "error");
+    return;
+  }
+
+  showMessage("Notice deleted successfully.", "success");
+  await loadNotices();
+}
+
+async function renderNotices() {
+  const query = search.value.trim().toLowerCase();
+  const category = filter.value;
+
+  const visible = notices.filter(n =>
+    (category === "All" || n.category === category) &&
+    (
+      (n.title || "").toLowerCase().includes(query) ||
+      (n.description || "").toLowerCase().includes(query) ||
+      (n.category || "").toLowerCase().includes(query)
+    )
+  );
+
+  document.getElementById("count").textContent =
+    visible.length + (visible.length === 1 ? " Notice" : " Notices");
+
+  noticeList.innerHTML = "";
+
+  if (!visible.length) {
+    const box = document.createElement("div");
+    box.className = "empty";
+    const title = document.createElement("h3");
+    title.textContent = "No matching notices";
+    const text = document.createElement("p");
+    text.textContent = "Try a different search or check back later.";
+    box.append(title, text);
+    noticeList.appendChild(box);
+    return;
+  }
+
+  for (const n of visible) {
     const card = document.createElement("article");
     card.className = "notice";
 
-    const date = document.createElement("div");
-    date.className = "datebox";
-    const parsed = new Date(n.date + "T12:00:00");
+    const dateBox = document.createElement("div");
+    dateBox.className = "datebox";
+
+    const dateValue = n.notice_date || n.created_at?.slice(0, 10);
+    const parsed = dateValue ? new Date(dateValue + "T12:00:00") : new Date();
+
     const day = document.createElement("strong");
     day.textContent = parsed.getDate();
+
     const month = document.createElement("span");
-    month.textContent = parsed.toLocaleString("en", {month:"short"});
-    date.append(day, month);
+    month.textContent = parsed.toLocaleString("en", { month: "short" });
+
+    dateBox.append(day, month);
 
     const content = document.createElement("div");
+
     const tag = document.createElement("span");
     tag.className = "tag";
-    tag.textContent = n.category;
+    tag.textContent = n.category || "General";
+
     const title = document.createElement("h3");
-    title.textContent = n.title;
+    title.textContent = n.title || "Untitled notice";
+
     const description = document.createElement("p");
-    description.textContent = n.description;
+    description.textContent = n.description || "";
+
     const meta = document.createElement("div");
     meta.className = "meta";
-    meta.textContent = "CampusConnect · " + n.date;
+    meta.textContent = "CampusConnect · " + (dateValue || "");
+
     content.append(tag, title, description);
 
-    if(n.image){
-      const img = document.createElement("img");
-      img.src = n.image;
-      img.alt = "Notice attachment";
-      content.appendChild(img);
+    if (n.image_url) {
+      const { data: signedData, error: signedError } = await db.storage
+        .from("campus-photos")
+        .createSignedUrl(n.image_url, 3600);
+
+      if (!signedError && signedData?.signedUrl) {
+        const img = document.createElement("img");
+        img.src = signedData.signedUrl;
+        img.alt = "Notice attachment";
+        content.appendChild(img);
+      }
     }
+
     content.appendChild(meta);
 
-    if(isAdmin){
+    if (isAdmin) {
       const actions = document.createElement("div");
       actions.className = "notice-actions";
+
       const remove = document.createElement("button");
       remove.className = "delete";
-      remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete demo notice';
-      remove.addEventListener("click", () => {
-        notices = notices.filter(item => item.id !== n.id);
-        renderNotices();
-        showMessage("Demo notice removed from this page.");
-      });
+      remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete Notice';
+      remove.addEventListener("click", () => deleteNotice(n.id));
+
       actions.appendChild(remove);
       content.appendChild(actions);
     }
 
-    card.append(date, content);
+    card.append(dateBox, content);
     noticeList.appendChild(card);
-  });
+  }
 }
 
 search.addEventListener("input", renderNotices);
 filter.addEventListener("change", renderNotices);
+
 document.getElementById("cancelButton").addEventListener("click", () => {
   noticeForm.reset();
-  imageData = "";
+  document.getElementById("noticeDate").value =
+    new Date().toLocaleDateString("en-CA");
+
+  imageFile = null;
+  if (previewURL) URL.revokeObjectURL(previewURL);
+  previewURL = null;
+  imagePreview.removeAttribute("src");
   imagePreview.style.display = "none";
   message.style.display = "none";
 });
 
-document.getElementById("noticeDate").value = new Date().toLocaleDateString("en-CA");
+loadNotices();
 </script>
 </body>
 </html>
