@@ -7,6 +7,7 @@
 <title>Admin Dashboard | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,sans-serif;background:#f4f7fc;color:#1c2945}
@@ -50,30 +51,30 @@ nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
 .stat .note{font-size:10px;color:#9aa4b7;margin-top:6px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .card{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;transition:.2s}
-.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #243d7510}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px #243d7510}
 .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
 .card-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:18px}
 .card h4{font-size:14px;margin-bottom:8px}
 .card p{font-size:11px;color:#8390a5;line-height:1.8}
-.card button{margin-top:17px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
-.card button:hover{background:#dfe9ff}
+.card button,.action-btn{margin-top:17px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
+.card button:hover,.action-btn:hover{background:#dfe9ff}
 .activity{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;margin-top:25px}
 .activity h3{font-size:14px;margin-bottom:14px}
-.activity-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-top:1px solid #f0f2f7}
-.activity-icon{width:35px;height:35px;flex-shrink:0;border-radius:10px;background:#edf3ff;color:#3266e6;display:grid;place-items:center}
-.activity-row h4{font-size:11px;margin:2px 0 6px}
-.activity-row p{font-size:10px;color:#8994a9;line-height:1.7}
+#message{display:none;background:#fff6e5;color:#885b08;padding:12px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.complaint-list{margin-top:25px;background:white;border:1px solid #edf0f7;border-radius:16px;padding:20px}
+.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.list-top h3{font-size:15px}
+.small-btn{border:0;background:#edf3ff;color:#3266e6;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:700}
+.complaint{border-top:1px solid #edf0f7;padding:17px 0;display:grid;gap:9px}
+.complaint h4{font-size:13px}
+.complaint p{font-size:12px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
+.meta{font-size:10px;color:#8a95a9}
+.status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status-row select{padding:8px;border:1px solid #dfe5f0;border-radius:8px;background:#fff;font:11px Inter}
+.empty{font-size:12px;color:#8390a5;padding:18px 0}
 .footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:25px}
-#message{display:none;background:#fff6e5;color:#885b08;padding:12px;border-radius:10px;margin-bottom:18px;font-size:11px;line-height:1.7}
 @media(max-width:950px){.sidebar{width:200px}.main{padding:23px 18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){
-.layout{display:block}.sidebar{width:100%;padding:13px 14px;border-right:0;border-bottom:1px solid #e9edf5}
-.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}
-nav{display:flex;overflow-x:auto;gap:5px}nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
-.main{padding:20px 14px}.topbar h1{font-size:20px}.main .welcome{padding:21px}.welcome h2{font-size:19px}.welcome i{font-size:30px}
-.stats{gap:10px}.stat{padding:13px}.stat strong{font-size:21px}
-.grid{grid-template-columns:1fr}.card{padding:18px}
-}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px 14px;border-right:0;border-bottom:1px solid #e9edf5}.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}nav{display:flex;overflow-x:auto;gap:5px}nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}.main{padding:20px 14px}.topbar h1{font-size:20px}.welcome{padding:21px}.welcome h2{font-size:19px}.welcome i{font-size:30px}.stats{gap:10px}.stat{padding:13px}.stat strong{font-size:21px}.grid{grid-template-columns:1fr}.card{padding:18px}}
 </style>
 </head>
 <body>
@@ -83,98 +84,153 @@ nav{display:flex;overflow-x:auto;gap:5px}nav a{white-space:nowrap;padding:10px;f
   <div class="nav-label">ADMIN MENU</div>
   <nav>
     <a class="active" href="admin.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-    <a href="complaint.html"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
+    <a href="#complaintList"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
     <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
     <a href="lost-found.html"><i class="fa-solid fa-magnifying-glass"></i> Lost & Found</a>
-    <a href="#" id="usersLink"><i class="fa-solid fa-users"></i> Users</a>
   </nav>
-  <div class="sidebar-bottom">
-    <div class="admin-profile">
-      <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
-      <div><strong>College Admin</strong><span>Administrator</span></div>
-    </div>
-  </div>
+  <div class="sidebar-bottom"><div class="admin-profile"><div class="avatar"><i class="fa-solid fa-user-shield"></i></div><div><strong>College Admin</strong><span>Administrator</span></div></div></div>
 </aside>
 
 <main class="main">
   <header class="topbar">
     <div><div class="crumb">Home / Admin</div><h1>Admin Dashboard</h1></div>
-    <div class="topright"><span class="badge">● Demo Mode</span><div class="top-avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+    <div class="topright"><span class="badge">● Connected Dashboard</span><div class="top-avatar"><i class="fa-solid fa-user-shield"></i></div></div>
   </header>
 
-  <div id="message"></div>
+  <div id="message" role="status" aria-live="polite"></div>
 
   <section class="welcome">
-    <div>
-      <h2>Welcome, Administrator! 👋</h2>
-      <p>Manage campus complaints, announcements, lost items and student services from one central dashboard.</p>
-    </div>
+    <div><h2>Welcome, Administrator! 👋</h2><p>Manage campus complaints, announcements, lost items and student services from one central dashboard.</p></div>
     <i class="fa-solid fa-chart-pie"></i>
   </section>
 
-  <div class="section-head"><h3>Campus Overview</h3><span>Sample statistics</span></div>
-
+  <div class="section-head"><h3>Campus Overview</h3><span>Live database statistics</span></div>
   <section class="stats">
-    <div class="stat"><div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><small>Total Complaints</small><strong>0</strong><div class="note">All reported issues</div></div>
-    <div class="stat"><div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div><small>Active Notices</small><strong>0</strong><div class="note">College announcements</div></div>
-    <div class="stat"><div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div><small>Lost & Found</small><strong>0</strong><div class="note">Item reports</div></div>
-    <div class="stat"><div class="stat-icon green"><i class="fa-solid fa-users"></i></div><small>Registered Users</small><strong>0</strong><div class="note">Student accounts</div></div>
+    <div class="stat"><div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><small>Total Complaints</small><strong id="totalComplaints">—</strong><div class="note">All reported issues</div></div>
+    <div class="stat"><div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div><small>Active Notices</small><strong id="totalNotices">—</strong><div class="note">College announcements</div></div>
+    <div class="stat"><div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div><small>Lost & Found</small><strong id="totalLostFound">—</strong><div class="note">Item reports</div></div>
+    <div class="stat"><div class="stat-icon green"><i class="fa-solid fa-users"></i></div><small>Registered Users</small><strong>—</strong><div class="note">Not connected yet</div></div>
   </section>
 
   <div class="section-head"><h3>Management Centre</h3><span>Choose a module</span></div>
-
   <section class="grid">
     <article class="card">
       <div class="card-head"><div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
-      <h4>Manage Complaints</h4>
-      <p>Review reported campus issues and prepare to track their status and resolution.</p>
-      <button onclick="showMessage('Complaint management interface opened in demo mode. Real student reports will appear after database integration.')">Manage Complaints <i class="fa-solid fa-arrow-right"></i></button>
+      <h4>Manage Complaints</h4><p>Review student complaints and update their status.</p>
+      <button onclick="document.getElementById('complaintList').scrollIntoView({behavior:'smooth'})">View Complaints <i class="fa-solid fa-arrow-right"></i></button>
     </article>
-
     <article class="card">
       <div class="card-head"><div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
-      <h4>Manage Notices</h4>
-      <p>Prepare college announcements for events, examinations and important updates.</p>
+      <h4>Manage Notices</h4><p>Open college announcements and notice management.</p>
       <button onclick="location.href='notices.html'">Manage Notices <i class="fa-solid fa-arrow-right"></i></button>
     </article>
-
     <article class="card">
       <div class="card-head"><div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
-      <h4>Manage Lost & Found</h4>
-      <p>Review lost and found reports and help students reconnect with their belongings.</p>
+      <h4>Manage Lost & Found</h4><p>Review lost and found item reports.</p>
       <button onclick="location.href='lost-found.html'">View Reports <i class="fa-solid fa-arrow-right"></i></button>
     </article>
-
     <article class="card">
-      <div class="card-head"><div class="card-icon green"><i class="fa-solid fa-users"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
-      <h4>Manage Users</h4>
-      <p>Plan how student accounts and administrator access will be managed.</p>
-      <button onclick="showMessage('User management is currently a demo. We will add secure accounts and permissions when Supabase is connected.')">Manage Users <i class="fa-solid fa-arrow-right"></i></button>
+      <div class="card-head"><div class="card-icon green"><i class="fa-solid fa-rotate"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
+      <h4>Refresh Dashboard</h4><p>Reload complaint and notice statistics from Supabase.</p>
+      <button onclick="loadDashboard()">Refresh Data <i class="fa-solid fa-arrow-rotate-right"></i></button>
     </article>
   </section>
 
-  <section class="activity">
-    <h3><i class="fa-solid fa-clock-rotate-left" style="color:#536be7;margin-right:8px"></i>Recent Activity</h3>
-    <div class="activity-row">
-      <div class="activity-icon"><i class="fa-solid fa-circle-info"></i></div>
-      <div><h4>Admin dashboard is ready</h4><p>This is a sample activity. New complaints and reports will appear here after database integration.</p></div>
-    </div>
+  <section class="complaint-list" id="complaintList">
+    <div class="list-top"><h3><i class="fa-solid fa-clipboard-list" style="color:#3266e6;margin-right:7px"></i>Student Complaints</h3><button class="small-btn" onclick="loadDashboard()">Refresh</button></div>
+    <div id="complaints"><p class="empty">Loading complaints...</p></div>
   </section>
 
+  <section class="activity"><h3><i class="fa-solid fa-circle-info" style="color:#536be7;margin-right:8px"></i>Dashboard Information</h3><p class="empty">Complaints submitted through the website appear here when Supabase permissions are configured correctly.</p></section>
   <div class="footer">© 2026 CampusConnect · Administration Portal</div>
 </main>
 </div>
+
 <script>
-function showMessage(text){
-  const box=document.getElementById("message");
-  box.textContent=text;
-  box.style.display="block";
-  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+const SUPABASE_URL = "PASTE_PROJECT_URL";
+const SUPABASE_KEY = "PASTE_PUBLISHABLE_KEY";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showMessage(text, success = false) {
+  const box = document.getElementById("message");
+  box.textContent = text;
+  box.style.display = "block";
+  box.style.background = success ? "#e8f8ee" : "#fff0f0";
+  box.style.color = success ? "#176b3a" : "#a32020";
 }
-document.getElementById("usersLink").addEventListener("click",function(event){
-  event.preventDefault();
-  showMessage("User management will be connected after we set up the database and secure admin permissions.");
-});
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
+async function loadDashboard() {
+  if (SUPABASE_URL.includes("PASTE_") || SUPABASE_KEY.includes("PASTE_")) {
+    showMessage("Add your Supabase Project URL and Publishable Key in admin.html.");
+    return;
+  }
+
+  document.getElementById("complaints").innerHTML = '<p class="empty">Loading complaints...</p>';
+
+  const [complaintsResult, noticesResult, lostResult] = await Promise.all([
+    db.from("complaints").select("*").order("created_at", { ascending: false }),
+    db.from("notices").select("id", { count: "exact", head: true }),
+    db.from("lost_found").select("id", { count: "exact", head: true })
+  ]);
+
+  if (complaintsResult.error) {
+    document.getElementById("complaints").innerHTML = '<p class="empty">Could not load complaints: ' + safe(complaintsResult.error.message) + '</p>';
+    showMessage("Complaint loading failed. Check Supabase URL, key and SELECT policy.");
+    document.getElementById("totalComplaints").textContent = "!";
+    return;
+  }
+
+  const complaints = complaintsResult.data || [];
+  document.getElementById("totalComplaints").textContent = complaints.length;
+  document.getElementById("totalNotices").textContent = noticesResult.error ? "—" : (noticesResult.count ?? 0);
+  document.getElementById("totalLostFound").textContent = lostResult.error ? "—" : (lostResult.count ?? 0);
+
+  if (noticesResult.error || lostResult.error) {
+    showMessage("Complaints loaded; some other statistics need read permissions.", true);
+  } else {
+    showMessage("Dashboard data loaded from Supabase.", true);
+  }
+
+  const holder = document.getElementById("complaints");
+  if (!complaints.length) {
+    holder.innerHTML = '<p class="empty">No complaints found yet. Submit a test complaint from the student page.</p>';
+    return;
+  }
+
+  holder.innerHTML = complaints.map(c => `
+    <article class="complaint">
+      <h4>${safe(c.title)} <span class="meta">#${safe(c.id)}</span></h4>
+      <p>${safe(c.description)}</p>
+      <p><strong>Student:</strong> ${safe(c.student_name)} · ${safe(c.student_email)}<br>
+      <strong>Category:</strong> ${safe(c.category)} · <strong>Location:</strong> ${safe(c.location)}</p>
+      <div class="status-row">
+        <span class="meta">Status:</span>
+        <select id="status-${safe(c.id)}" aria-label="Complaint status">
+          <option ${c.status === "Pending" ? "selected" : ""}>Pending</option>
+          <option ${c.status === "In Progress" ? "selected" : ""}>In Progress</option>
+          <option ${c.status === "Resolved" ? "selected" : ""}>Resolved</option>
+        </select>
+        <button class="small-btn" onclick="updateStatus(${Number(c.id)}, document.getElementById('status-${safe(c.id)}').value)">Save Status</button>
+      </div>
+      ${c.photo_url ? `<p class="meta">Photo saved: ${safe(c.photo_url)} (private file)</p>` : ""}
+      <p class="meta">${safe(c.created_at ? new Date(c.created_at).toLocaleString() : "")}</p>
+    </article>
+  `).join("");
+}
+async function updateStatus(id, status) {
+  const { error } = await db.from("complaints").update({ status }).eq("id", id);
+  if (error) {
+    showMessage("Could not update status: " + error.message + ". Update policy may be required.");
+    return;
+  }
+  showMessage("Complaint status updated.", true);
+  loadDashboard();
+}
+loadDashboard();
 </script>
 </body>
 </html>
