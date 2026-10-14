@@ -7,6 +7,7 @@
 <title>Submit Complaint | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,sans-serif;background:#f4f7fd;color:#1c2945;padding:24px}
@@ -36,15 +37,15 @@ textarea{resize:vertical;min-height:125px;line-height:1.7}
 .actions{display:flex;gap:12px;margin-top:25px}
 button{font-family:Inter,sans-serif;cursor:pointer}
 .submit{flex:1;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#2563eb,#6652e7);color:white;font-size:13px;font-weight:700}
+.submit:disabled{opacity:.65;cursor:wait}
 .cancel{padding:14px 20px;border:1px solid #dfe5f0;border-radius:11px;background:white;color:#66738c;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
-#message{display:none;margin-top:18px;padding:14px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:12px;line-height:1.7}
+#message{display:none;margin-top:18px;padding:14px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
 @media(max-width:600px){body{padding:14px}.header{padding:22px}.header h1{font-size:22px}.form-card{padding:21px}.grid{grid-template-columns:1fr;gap:0}.actions{flex-direction:column-reverse}.cancel{width:100%}}
 </style>
 </head>
 <body>
 <div class="container">
   <a class="back" href="student.html"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
-
   <header class="header">
     <h1><i class="fa-solid fa-clipboard-list"></i> Complaints & Maintenance</h1>
     <p>Facing a campus issue? Tell us about it so the college administration can address it.</p>
@@ -53,7 +54,6 @@ button{font-family:Inter,sans-serif;cursor:pointer}
   <section class="form-card">
     <h2>Submit a Complaint</h2>
     <p class="intro">Fill in the details below. Adding a photo is optional.</p>
-
     <form id="complaintForm">
       <div class="grid">
         <div class="field">
@@ -65,7 +65,6 @@ button{font-family:Inter,sans-serif;cursor:pointer}
           <input id="email" type="email" placeholder="Enter your email" required>
         </div>
       </div>
-
       <div class="grid">
         <div class="field">
           <label for="category">Complaint Category *</label>
@@ -85,17 +84,14 @@ button{font-family:Inter,sans-serif;cursor:pointer}
           <input id="location" type="text" placeholder="e.g. Room 204, Library" required>
         </div>
       </div>
-
       <div class="field">
         <label for="title">Complaint Title *</label>
         <input id="title" type="text" placeholder="Briefly describe the issue" required>
       </div>
-
       <div class="field">
         <label for="description">Description *</label>
         <textarea id="description" placeholder="Explain the issue and any details that may help..." required></textarea>
       </div>
-
       <div class="field">
         <label for="photo">Attach a Photo (Optional)</label>
         <div class="upload">
@@ -108,41 +104,46 @@ button{font-family:Inter,sans-serif;cursor:pointer}
         </div>
         <p class="hint">A photo can help explain the problem, but you can submit without one.</p>
       </div>
-
       <div class="actions">
         <a class="cancel" href="student.html">Cancel</a>
         <button class="submit" type="submit">Submit Complaint <i class="fa-solid fa-arrow-right"></i></button>
       </div>
-      <div id="message"></div>
+      <div id="message" role="status" aria-live="polite"></div>
     </form>
   </section>
 </div>
 
 <script>
+const SUPABASE_URL = "PASTE_PROJECT_URL";
+const SUPABASE_KEY = "PASTE_PUBLISHABLE_KEY";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById("complaintForm");
 const photoInput = document.getElementById("photo");
 const preview = document.getElementById("preview");
 const removePhoto = document.getElementById("removePhoto");
 const message = document.getElementById("message");
+const submitButton = form.querySelector('button[type="submit"]');
 
-photoInput.addEventListener("change", function(){
+function showMessage(text, success = false) {
+  message.style.display = "block";
+  message.style.background = success ? "#e8f8ee" : "#fff0f0";
+  message.style.color = success ? "#176b3a" : "#a32020";
+  message.textContent = text;
+  message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+photoInput.addEventListener("change", function () {
   const file = this.files[0];
-
-  if(!file){
+  if (!file) {
     preview.style.display = "none";
     removePhoto.style.display = "none";
     return;
   }
 
-  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-    alert("Please choose a JPG, PNG or WEBP image.");
-    this.value = "";
-    preview.style.display = "none";
-    removePhoto.style.display = "none";
-    return;
-  }
-
-  if(file.size > 5 * 1024 * 1024){
-    alert("Photo must be smaller than 5 MB.");
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
+      file.size > 5 * 1024 * 1024) {
+    alert("Choose a JPG, PNG or WEBP image smaller than 5 MB.");
     this.value = "";
     preview.style.display = "none";
     removePhoto.style.display = "none";
@@ -154,19 +155,67 @@ photoInput.addEventListener("change", function(){
   removePhoto.style.display = "inline-block";
 });
 
-removePhoto.addEventListener("click", function(){
+removePhoto.addEventListener("click", function () {
   photoInput.value = "";
   preview.removeAttribute("src");
   preview.style.display = "none";
   removePhoto.style.display = "none";
 });
 
-document.getElementById("complaintForm").addEventListener("submit", function(event){
+form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  message.style.display = "block";
-  message.textContent = "Your form is filled in correctly! This is currently a demo: the complaint and photo are not saved or sent to the admin yet. We will connect Supabase for real storage.";
-  message.scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (SUPABASE_URL.includes("PASTE_") || SUPABASE_KEY.includes("PASTE_")) {
+    showMessage("First add your Supabase Project URL and Publishable Key in the code.");
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+
+  try {
+    let photoPath = null;
+    const file = photoInput.files[0];
+
+    if (file) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = Date.now() + "-" + safeName;
+
+      const { data, error } = await db.storage
+        .from("campus-photos")
+        .upload(path, file);
+
+      if (error) throw error;
+      photoPath = data.path;
+    }
+
+    const complaint = {
+      student_name: document.getElementById("name").value.trim(),
+      student_email: document.getElementById("email").value.trim(),
+      category: document.getElementById("category").value,
+      location: document.getElementById("location").value.trim(),
+      title: document.getElementById("title").value.trim(),
+      description: document.getElementById("description").value.trim(),
+      photo_url: photoPath
+    };
+
+    const { error } = await db.from("complaints").insert([complaint]);
+    if (error) throw error;
+
+    showMessage("Complaint submitted successfully! It has been saved in CampusConnect.", true);
+    form.reset();
+    preview.removeAttribute("src");
+    preview.style.display = "none";
+    removePhoto.style.display = "none";
+
+  } catch (error) {
+    console.error("Complaint submission error:", error);
+    showMessage("Could not submit complaint: " + (error.message || "Unknown error") +
+      ". Check your Supabase URL, key, table permissions and Storage policy.");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Submit Complaint <i class="fa-solid fa-arrow-right"></i>';
+  }
 });
 </script>
 </body>
