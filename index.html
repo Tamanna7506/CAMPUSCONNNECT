@@ -1,0 +1,1191 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<title>CampusConnect | Your Campus, Connected</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --blue: #2563eb;
+    --blue-light: #60a5fa;
+    --purple: #7c3aed;
+    --dark: #172554;
+    --muted: #64748b;
+    --bg: #f5f7ff;
+    --white: #ffffff;
+    --border: #e8edf7;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: var(--dark);
+    background: var(--bg);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 4px;
+}
+
+/* NAVIGATION */
+
+.navbar {
+    min-height: 78px;
+    padding: 14px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255,255,255,.92);
+    border-bottom: 1px solid #e8edf7;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(16px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+    white-space: nowrap;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 22px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #1d4ed8, #60a5fa);
+    box-shadow: 0 7px 18px #2563eb35;
+}
+
+.logo span {
+    color: #3b82f6;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+}
+
+.nav-links a {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    transition: color .25s;
+}
+
+.nav-links a:hover {
+    color: var(--blue);
+}
+
+.nav-links .nav-cta {
+    padding: 13px 20px;
+    color: white;
+    background: linear-gradient(100deg, #2563eb, #3b82f6);
+    border-radius: 11px;
+    box-shadow: 0 6px 16px #2563eb30;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.nav-links .nav-cta:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 23px #2563eb40;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 570px;
+    padding: 65px 7% 75px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    align-items: center;
+    gap: 55px;
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(125deg, #eaf1ff, #f5f1ff 60%, #eaf8ff);
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.hero::before {
+    width: 360px;
+    height: 360px;
+    top: -190px;
+    right: -80px;
+    background: #60a5fa25;
+    animation: float 8s ease-in-out infinite;
+}
+
+.hero::after {
+    width: 280px;
+    height: 280px;
+    bottom: -200px;
+    left: 35%;
+    background: #a78bfa20;
+    animation: float 9s ease-in-out infinite reverse;
+}
+
+.hero-content {
+    min-width: 0;
+    animation: fadeUp .8s ease both;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    margin-bottom: 25px;
+    border: 1px solid #d7e4ff;
+    border-radius: 30px;
+    background: #ffffffb8;
+    color: #315ac7;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 4px #22c55e20;
+}
+
+h1 {
+    margin-bottom: 23px;
+    font-size: clamp(39px, 4.5vw, 62px);
+    line-height: 1.13;
+    letter-spacing: -2.5px;
+    font-weight: 800;
+}
+
+.gradient-text {
+    background: linear-gradient(95deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-description {
+    max-width: 510px;
+    margin-bottom: 29px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.95;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 14px 20px;
+    border: 0;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .28s, box-shadow .28s, background .28s;
+}
+
+.btn-primary {
+    color: white;
+    background: linear-gradient(100deg, #2563eb, #3b82f6);
+    box-shadow: 0 8px 22px #2563eb35;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px #2563eb45;
+}
+
+.btn-secondary {
+    color: #334155;
+    background: white;
+    border: 1px solid #dce5f4;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    border-color: #9dbbff;
+}
+
+.hero-note {
+    margin-top: 22px;
+    color: #94a3b8;
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+/* DASHBOARD VISUAL */
+
+.hero-art {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+    padding: 10px 0;
+    animation: fadeUp .9s ease .1s both;
+}
+
+.art-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #dbeafe, #e9e5ff);
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    animation: float 7s ease-in-out infinite;
+}
+
+.dashboard-preview {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 390px;
+    padding: 25px;
+    border: 1px solid #ffffff;
+    border-radius: 25px;
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 25px 65px #284b9d20;
+    transition: box-shadow .35s, transform .35s;
+}
+
+.dashboard-preview:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 32px 75px #284b9d2b;
+}
+
+.preview-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 23px;
+}
+
+.preview-label {
+    margin-bottom: 7px;
+    color: #94a3b8;
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.preview-title {
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.avatar {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #dbeafe, #e9d5ff);
+    font-size: 22px;
+}
+
+.preview-banner {
+    padding: 20px;
+    margin-bottom: 17px;
+    border-radius: 17px;
+    color: white;
+    background: linear-gradient(120deg, #1d4ed8, #4f46e5);
+    box-shadow: 0 8px 20px #2563eb25;
+}
+
+.preview-banner small {
+    font-size: 9px;
+    letter-spacing: 1px;
+    opacity: .85;
+}
+
+.preview-banner h3 {
+    margin: 10px 0 8px;
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+.preview-banner p {
+    font-size: 10px;
+    line-height: 1.8;
+    color: #e0eaff;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+
+.preview-item {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 10px;
+    border: 1px solid #edf1fa;
+    border-radius: 13px;
+    background: #fff;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+}
+
+.preview-item:hover {
+    transform: translateY(-4px);
+    border-color: #bfd2ff;
+    box-shadow: 0 8px 18px #2563eb12;
+}
+
+.preview-emoji {
+    flex-shrink: 0;
+    font-size: 22px;
+    transition: transform .3s;
+}
+
+.preview-item:hover .preview-emoji {
+    transform: scale(1.25) rotate(-8deg);
+}
+
+.preview-item strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.preview-item small {
+    display: block;
+    color: #94a3b8;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* FLOATING BADGES - OUTSIDE THE DASHBOARD */
+
+.floating-badges {
+    width: 100%;
+    max-width: 390px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 3;
+}
+
+.float-badge {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 14px;
+    border: 1px solid #ffffff;
+    border-radius: 14px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 8px 25px #284b9d13;
+    color: #334155;
+    font-size: 10px;
+    line-height: 1.5;
+    font-weight: 700;
+    animation: gentleFloat 4s ease-in-out infinite;
+}
+
+.badge-two {
+    animation-delay: -2s;
+}
+
+.badge-icon {
+    flex-shrink: 0;
+    font-size: 19px;
+    transition: transform .3s;
+}
+
+.float-badge:hover .badge-icon {
+    transform: scale(1.3) rotate(-10deg);
+}
+
+/* SECTION HEADINGS */
+
+.section {
+    padding: 75px 7%;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-heading .mini {
+    margin-bottom: 13px;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    margin-bottom: 13px;
+    font-size: clamp(28px, 3.5vw, 39px);
+    letter-spacing: -1.4px;
+}
+
+.section-heading > p:last-child {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* SERVICE CARDS */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 19px;
+}
+
+.service-card {
+    min-width: 0;
+    padding: 25px 22px;
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+}
+
+.service-card::after {
+    content: "";
+    height: 4px;
+    width: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, #2563eb, #a78bfa);
+    transition: width .35s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    border-color: #cbdcff;
+    box-shadow: 0 18px 38px #234b9516;
+}
+
+.service-card:hover::after {
+    width: 100%;
+}
+
+.service-icon {
+    width: 57px;
+    height: 57px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 22px;
+    border-radius: 17px;
+    font-size: 27px;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.13) rotate(-7deg);
+    box-shadow: 0 8px 18px #2563eb14;
+}
+
+.blue { background: #e8efff; }
+.purple { background: #f0eaff; }
+.orange { background: #fff0dc; }
+.green { background: #e0f9ed; }
+
+.service-card h3 {
+    margin-bottom: 11px;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.service-card p {
+    min-height: 76px;
+    color: #718096;
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+.service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    transition: gap .25s;
+}
+
+.service-card:hover .service-link {
+    gap: 12px;
+}
+
+/* ABOUT BANNER */
+
+.about {
+    margin: 0 7% 75px;
+    padding: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: white;
+    border-radius: 24px;
+    background: linear-gradient(115deg, #1d4ed8, #4338ca 70%, #6366f1);
+}
+
+.about::after {
+    content: "";
+    width: 260px;
+    height: 260px;
+    position: absolute;
+    z-index: -1;
+    top: -140px;
+    right: -50px;
+    border-radius: 50%;
+    background: #ffffff12;
+}
+
+.about h2 {
+    margin-bottom: 13px;
+    font-size: clamp(21px, 3vw, 28px);
+    line-height: 1.4;
+}
+
+.about p {
+    max-width: 590px;
+    color: #dbeafe;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.about .btn {
+    flex-shrink: 0;
+    color: #1d4ed8;
+    background: white;
+}
+
+.about .btn:hover {
+    transform: translateY(-4px);
+}
+
+/* GET STARTED */
+
+.get-started {
+    padding-top: 0;
+}
+
+.get-started .btn {
+    margin-top: 20px;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 35px 7%;
+    color: white;
+    background: #101c3b;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.footer-brand {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.footer-brand span {
+    color: #93b4ff;
+}
+
+footer p {
+    margin-top: 9px;
+    color: #9eaccb;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+}
+
+.footer-links a {
+    color: #d3dcf2;
+    font-size: 11px;
+    transition: color .2s;
+}
+
+.footer-links a:hover {
+    color: #93b4ff;
+}
+
+.footer-bottom {
+    padding-top: 22px;
+    margin-top: 25px;
+    border-top: 1px solid #ffffff15;
+}
+
+/* ANIMATIONS */
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TABLETS */
+
+@media (max-width: 1050px) {
+    .hero {
+        gap: 30px;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .navbar {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .about {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 720px) {
+    .navbar {
+        min-height: 70px;
+        padding: 12px 5%;
+    }
+
+    .logo {
+        gap: 8px;
+        font-size: 18px;
+    }
+
+    .logo-icon {
+        width: 37px;
+        height: 37px;
+        border-radius: 12px;
+    }
+
+    .nav-links {
+        gap: 14px;
+    }
+
+    .nav-links a {
+        font-size: 11px;
+    }
+
+    .nav-links a:nth-child(2),
+    .nav-links a:nth-child(3) {
+        display: none;
+    }
+
+    .nav-links .nav-cta {
+        padding: 11px 13px;
+    }
+
+    .hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+        padding: 48px 6% 45px;
+    }
+
+    h1 {
+        font-size: clamp(38px, 9vw, 53px);
+        letter-spacing: -1.8px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .hero-art {
+        max-width: 440px;
+        margin: 0 auto;
+        gap: 13px;
+    }
+
+    .dashboard-preview {
+        padding: 21px;
+        border-radius: 22px;
+    }
+
+    .art-circle {
+        width: 260px;
+        height: 260px;
+    }
+
+    .floating-badges {
+        gap: 9px;
+    }
+
+    .float-badge {
+        padding: 10px 11px;
+        font-size: 9px;
+    }
+
+    .badge-icon {
+        font-size: 17px;
+    }
+
+    .section {
+        padding: 55px 6%;
+    }
+
+    .services-grid {
+        gap: 13px;
+    }
+
+    .service-card {
+        padding: 20px 16px;
+        border-radius: 17px;
+    }
+
+    .service-icon {
+        width: 49px;
+        height: 49px;
+        margin-bottom: 17px;
+        font-size: 24px;
+        border-radius: 14px;
+    }
+
+    .service-card h3 {
+        font-size: 13px;
+    }
+
+    .service-card p {
+        min-height: 95px;
+        font-size: 10px;
+    }
+
+    .about {
+        margin: 0 6% 55px;
+        padding: 28px 23px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    footer {
+        padding: 30px 6%;
+    }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+    .logo {
+        font-size: 16px;
+    }
+
+    .nav-links .nav-cta {
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .preview-grid {
+        gap: 8px;
+    }
+
+    .preview-item {
+        gap: 7px;
+        padding: 11px 7px;
+    }
+
+    .preview-emoji {
+        font-size: 18px;
+    }
+
+    .preview-item strong {
+        font-size: 9px;
+    }
+
+    .preview-item small {
+        font-size: 8px;
+    }
+
+    .floating-badges {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .float-badge {
+        justify-content: flex-start;
+    }
+
+    .services-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .service-card p {
+        min-height: auto;
+    }
+}
+
+/* RESPECT REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a href="#home" class="logo" aria-label="CampusConnect Home">
+        <div class="logo-icon">🎓</div>
+        <div>Campus<span>Connect</span></div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#login" class="nav-cta">Get Started ↗</a>
+    </nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="eyebrow">
+            <span class="live-dot"></span>
+            YOUR CAMPUS, CONNECTED
+        </div>
+
+        <h1>
+            One Campus.<br>
+            Connected <span class="gradient-text">Together.</span>
+        </h1>
+
+        <p class="hero-description">
+            Your all-in-one college support and communication portal.
+            Access notices, report campus issues, find lost belongings
+            and stay connected with your college community.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#services" class="btn btn-primary">
+                Explore Services <span>→</span>
+            </a>
+
+            <a href="#about" class="btn btn-secondary">
+                Discover More ↗
+            </a>
+        </div>
+
+        <p class="hero-note">
+            ✦ Simple support. Better communication. Connected campus.
+        </p>
+    </div>
+
+    <div class="hero-art">
+        <div class="art-circle"></div>
+
+        <div class="dashboard-preview">
+            <div class="preview-top">
+                <div>
+                    <p class="preview-label">CAMPUSCONNECT PORTAL</p>
+                    <h2 class="preview-title">Your Campus Hub ✨</h2>
+                </div>
+                <div class="avatar">🎓</div>
+            </div>
+
+            <div class="preview-banner">
+                <small>WELCOME TO YOUR CAMPUS</small>
+                <h3>Everything in one place.</h3>
+                <p>
+                    Your college services, all connected through one
+                    convenient platform.
+                </p>
+            </div>
+
+            <div class="preview-grid">
+                <div class="preview-item">
+                    <span class="preview-emoji">📝</span>
+                    <div>
+                        <strong>Complaints</strong>
+                        <small>Report an issue</small>
+                    </div>
+                </div>
+
+                <div class="preview-item">
+                    <span class="preview-emoji">📢</span>
+                    <div>
+                        <strong>Notices</strong>
+                        <small>Latest updates</small>
+                    </div>
+                </div>
+
+                <div class="preview-item">
+                    <span class="preview-emoji">🔎</span>
+                    <div>
+                        <strong>Lost & Found</strong>
+                        <small>Find your items</small>
+                    </div>
+                </div>
+
+                <div class="preview-item">
+                    <span class="preview-emoji">🛠️</span>
+                    <div>
+                        <strong>Services</strong>
+                        <small>Get assistance</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges are now outside the dashboard card -->
+        <div class="floating-badges">
+            <div class="float-badge">
+                <span class="badge-icon">📢</span>
+                <span>Campus Updates</span>
+            </div>
+
+            <div class="float-badge badge-two">
+                <span class="badge-icon">✨</span>
+                <span>One connected campus</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="services">
+    <div class="section-heading">
+        <p class="mini">CAMPUS SERVICES</p>
+        <h2>Everything You Need</h2>
+        <p>
+            Explore the essential services that make college life easier.
+        </p>
+    </div>
+
+    <div class="services-grid">
+        <article class="service-card">
+            <div class="service-icon blue">📝</div>
+            <h3>Complaints & Maintenance</h3>
+            <p>
+                Report classroom, facility or maintenance issues
+                and keep track of your concerns.
+            </p>
+            <a href="#login" class="service-link">
+                Explore service <span>→</span>
+            </a>
+        </article>
+
+        <article class="service-card">
+            <div class="service-icon purple">📢</div>
+            <h3>College Notices</h3>
+            <p>
+                Stay informed about college announcements,
+                important dates and campus events.
+            </p>
+            <a href="#login" class="service-link">
+                View notices <span>→</span>
+            </a>
+        </article>
+
+        <article class="service-card">
+            <div class="service-icon orange">🔎</div>
+            <h3>Lost & Found</h3>
+            <p>
+                Report missing belongings or help fellow students
+                reconnect with their items.
+            </p>
+            <a href="#login" class="service-link">
+                Find an item <span>→</span>
+            </a>
+        </article>
+
+        <article class="service-card">
+            <div class="service-icon green">🛠️</div>
+            <h3>Service Requests</h3>
+            <p>
+                Access campus support and request assistance
+                whenever you need it.
+            </p>
+            <a href="#login" class="service-link">
+                Get assistance <span>→</span>
+            </a>
+        </article>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div>
+        <h2>A better campus starts with connection. 💙</h2>
+        <p>
+            CampusConnect brings essential college support and communication
+            together in one convenient place, helping students and college
+            staff stay informed and connected.
+        </p>
+    </div>
+
+    <a href="#login" class="btn">Get Started →</a>
+</section>
+
+<section class="section get-started" id="login">
+    <div class="section-heading">
+        <p class="mini">READY TO CONNECT?</p>
+        <h2>Your campus, one click away.</h2>
+        <p>
+            Welcome to a simpler way to stay connected with your college.
+        </p>
+
+        <a href="login.html" class="btn btn-primary">
+            Open Login Page →
+        </a>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">
+                Campus<span>Connect</span> 🎓
+            </div>
+            <p>College Support & Communication Portal</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 CampusConnect. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

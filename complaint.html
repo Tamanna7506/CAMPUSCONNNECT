@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Complaint | CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:#f4f7fd;color:#1c2945;padding:24px}
+.container{max-width:850px;margin:auto}
+.back{display:inline-block;margin-bottom:22px;text-decoration:none;color:#3268e9;font-size:13px;font-weight:600}
+.header{background:linear-gradient(120deg,#2563eb,#6853e7);padding:28px;border-radius:20px;color:white;margin-bottom:22px}
+.header h1{font-size:25px;margin-bottom:10px}
+.header p{font-size:13px;line-height:1.7;color:#e2e9ff}
+.form-card{background:white;border:1px solid #e9edf6;border-radius:19px;padding:30px;box-shadow:0 10px 35px #294c8a0b}
+.form-card h2{font-size:19px;margin-bottom:8px}
+.intro{font-size:12px;color:#8490a5;margin-bottom:25px;line-height:1.7}
+.field{margin-bottom:20px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:9px;color:#35415b}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #dfe5f0;border-radius:11px;background:#fcfdff;font:13px Inter,sans-serif;color:#27334d;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
+textarea{resize:vertical;min-height:125px;line-height:1.7}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.hint{font-size:11px;color:#8b96aa;margin-top:7px;line-height:1.6}
+.upload{border:2px dashed #cbd8f5;border-radius:14px;padding:22px;text-align:center;background:#f8faff;cursor:pointer;transition:.2s}
+.upload:hover{border-color:#4c78e8;background:#f0f5ff}
+.upload i{font-size:28px;color:#4c70df;margin-bottom:10px}
+.upload strong{display:block;font-size:13px;margin-bottom:7px}
+.upload span{font-size:11px;color:#8a96aa}
+.upload input{margin-top:14px;border:0;background:transparent;padding:5px;font-size:11px}
+#preview{display:none;max-width:100%;max-height:240px;object-fit:contain;border-radius:12px;margin:15px auto 0}
+.remove{display:none;margin-top:10px;border:0;background:#fff0f0;color:#c33;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:11px}
+.actions{display:flex;gap:12px;margin-top:25px}
+button{font-family:Inter,sans-serif;cursor:pointer}
+.submit{flex:1;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#2563eb,#6652e7);color:white;font-size:13px;font-weight:700}
+.cancel{padding:14px 20px;border:1px solid #dfe5f0;border-radius:11px;background:white;color:#66738c;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+#message{display:none;margin-top:18px;padding:14px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:12px;line-height:1.7}
+@media(max-width:600px){body{padding:14px}.header{padding:22px}.header h1{font-size:22px}.form-card{padding:21px}.grid{grid-template-columns:1fr;gap:0}.actions{flex-direction:column-reverse}.cancel{width:100%}}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="student.html"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+  <header class="header">
+    <h1><i class="fa-solid fa-clipboard-list"></i> Complaints & Maintenance</h1>
+    <p>Facing a campus issue? Tell us about it so the college administration can address it.</p>
+  </header>
+
+  <section class="form-card">
+    <h2>Submit a Complaint</h2>
+    <p class="intro">Fill in the details below. Adding a photo is optional.</p>
+
+    <form id="complaintForm">
+      <div class="grid">
+        <div class="field">
+          <label for="name">Your Name *</label>
+          <input id="name" type="text" placeholder="Enter your full name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email Address *</label>
+          <input id="email" type="email" placeholder="Enter your email" required>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="category">Complaint Category *</label>
+          <select id="category" required>
+            <option value="">Select category</option>
+            <option>Electrical Issue</option>
+            <option>Classroom / Furniture</option>
+            <option>Laboratory Equipment</option>
+            <option>Washroom / Cleanliness</option>
+            <option>Water Supply</option>
+            <option>Internet / Wi-Fi</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="location">Location *</label>
+          <input id="location" type="text" placeholder="e.g. Room 204, Library" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="title">Complaint Title *</label>
+        <input id="title" type="text" placeholder="Briefly describe the issue" required>
+      </div>
+
+      <div class="field">
+        <label for="description">Description *</label>
+        <textarea id="description" placeholder="Explain the issue and any details that may help..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="photo">Attach a Photo (Optional)</label>
+        <div class="upload">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <strong>Upload an image of the issue</strong>
+          <span>JPG, PNG or WEBP · Maximum 5 MB</span>
+          <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+          <img id="preview" alt="Selected complaint photo preview">
+          <button type="button" class="remove" id="removePhoto">Remove Photo</button>
+        </div>
+        <p class="hint">A photo can help explain the problem, but you can submit without one.</p>
+      </div>
+
+      <div class="actions">
+        <a class="cancel" href="student.html">Cancel</a>
+        <button class="submit" type="submit">Submit Complaint <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+      <div id="message"></div>
+    </form>
+  </section>
+</div>
+
+<script>
+const photoInput = document.getElementById("photo");
+const preview = document.getElementById("preview");
+const removePhoto = document.getElementById("removePhoto");
+const message = document.getElementById("message");
+
+photoInput.addEventListener("change", function(){
+  const file = this.files[0];
+
+  if(!file){
+    preview.style.display = "none";
+    removePhoto.style.display = "none";
+    return;
+  }
+
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+    alert("Please choose a JPG, PNG or WEBP image.");
+    this.value = "";
+    preview.style.display = "none";
+    removePhoto.style.display = "none";
+    return;
+  }
+
+  if(file.size > 5 * 1024 * 1024){
+    alert("Photo must be smaller than 5 MB.");
+    this.value = "";
+    preview.style.display = "none";
+    removePhoto.style.display = "none";
+    return;
+  }
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  removePhoto.style.display = "inline-block";
+});
+
+removePhoto.addEventListener("click", function(){
+  photoInput.value = "";
+  preview.removeAttribute("src");
+  preview.style.display = "none";
+  removePhoto.style.display = "none";
+});
+
+document.getElementById("complaintForm").addEventListener("submit", function(event){
+  event.preventDefault();
+
+  message.style.display = "block";
+  message.textContent = "Your form is filled in correctly! This is currently a demo: the complaint and photo are not saved or sent to the admin yet. We will connect Supabase for real storage.";
+  message.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+</script>
+</body>
+</html>

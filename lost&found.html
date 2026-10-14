@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost & Found | CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:#f4f7fd;color:#1c2945;padding:24px}
+.container{max-width:950px;margin:auto}
+.back{display:inline-block;margin-bottom:22px;text-decoration:none;color:#3268e9;font-size:13px;font-weight:600}
+.header{background:linear-gradient(120deg,#2563eb,#6853e7);padding:28px;border-radius:20px;color:white;margin-bottom:22px}
+.header h1{font-size:25px;margin-bottom:10px}
+.header p{font-size:13px;line-height:1.8;color:#e2e9ff}
+.tabs{display:flex;gap:10px;margin-bottom:22px}
+.tab{flex:1;padding:13px;border:1px solid #e0e6f2;background:white;border-radius:12px;color:#68758d;font:600 12px Inter;cursor:pointer}
+.tab.active{background:#edf3ff;color:#2863e9;border-color:#7da1fa}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.form-card,.items-card{background:white;border:1px solid #e9edf6;border-radius:18px;padding:24px;box-shadow:0 10px 30px #294c8a08}
+h2{font-size:18px;margin-bottom:8px}
+.sub{font-size:11px;color:#8490a5;line-height:1.7;margin-bottom:23px}
+.field{margin-bottom:17px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#35415b}
+input,select,textarea{width:100%;padding:12px;border:1px solid #dfe5f0;border-radius:10px;background:#fcfdff;font:12px Inter;color:#27334d;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
+textarea{resize:vertical;min-height:95px;line-height:1.7}
+.upload{border:2px dashed #cbd8f5;border-radius:12px;padding:16px;text-align:center;background:#f8faff}
+.upload i{font-size:24px;color:#4c70df;margin-bottom:10px}
+.upload p{font-size:11px;color:#8390a6;line-height:1.7}
+.upload input{margin-top:12px;border:0;background:transparent;font-size:11px}
+#preview{display:none;max-width:100%;max-height:180px;object-fit:contain;border-radius:10px;margin:12px auto 0}
+.remove{display:none;border:0;background:#fff0f0;color:#c33;padding:8px 12px;border-radius:8px;margin-top:10px;cursor:pointer;font-size:11px}
+.submit{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#2563eb,#6652e7);color:white;font:700 13px Inter;cursor:pointer}
+.items-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px;gap:10px}
+.items-head h2{margin:0}
+.demo{font-size:10px;color:#8b96aa}
+.empty{padding:35px 10px;text-align:center;color:#8b96aa;border:1px dashed #e0e6f0;border-radius:13px}
+.empty i{font-size:28px;color:#b2c0dc;margin-bottom:12px}
+.empty h3{font-size:13px;color:#65738c;margin-bottom:7px}
+.empty p{font-size:11px;line-height:1.7}
+.item{border:1px solid #e9edf6;border-radius:13px;padding:13px;margin-top:12px}
+.item img{width:100%;max-height:180px;object-fit:cover;border-radius:9px;margin-bottom:12px}
+.item h3{font-size:13px;margin-bottom:7px;overflow-wrap:anywhere}
+.item p{font-size:11px;color:#78859b;line-height:1.7;overflow-wrap:anywhere}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:5px 8px;border-radius:7px;background:#edf3ff;color:#3268e9;margin-bottom:9px}
+#message{display:none;padding:12px;background:#fff6e5;color:#885b08;border-radius:10px;font-size:11px;line-height:1.7;margin-top:14px}
+@media(max-width:700px){body{padding:14px}.header{padding:22px}.header h1{font-size:22px}.layout{grid-template-columns:1fr}.form-card,.items-card{padding:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="student.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+<header class="header">
+<h1><i class="fa-solid fa-magnifying-glass"></i> Lost & Found</h1>
+<p>Lost something on campus? Found an item? Share its details to help reconnect belongings with their owners.</p>
+</header>
+
+<div class="tabs">
+<button type="button" class="tab active" data-type="Lost Item"><i class="fa-solid fa-circle-exclamation"></i> I Lost Something</button>
+<button type="button" class="tab" data-type="Found Item"><i class="fa-solid fa-hand-holding-heart"></i> I Found Something</button>
+</div>
+
+<div class="layout">
+<section class="form-card">
+<h2 id="formTitle">Report a Lost Item</h2>
+<p class="sub">Enter the item details below. A photo is optional.</p>
+
+<form id="itemForm">
+<div class="field">
+<label for="itemName">Item Name *</label>
+<input id="itemName" type="text" placeholder="e.g. Blue water bottle" required>
+</div>
+
+<div class="field">
+<label for="ownerName">Your Name *</label>
+<input id="ownerName" type="text" placeholder="Enter your name" required>
+</div>
+
+<div class="field">
+<label for="contact">Contact Email *</label>
+<input id="contact" type="email" placeholder="Enter your email" required>
+</div>
+
+<div class="field">
+<label for="location">Location *</label>
+<input id="location" type="text" placeholder="Where was it lost or found?" required>
+</div>
+
+<div class="field">
+<label for="date">Date *</label>
+<input id="date" type="date" required>
+</div>
+
+<div class="field">
+<label for="description">Description *</label>
+<textarea id="description" placeholder="Describe the item, colour, identifying details..." required></textarea>
+</div>
+
+<div class="field">
+<label for="photo">Item Photo (Optional)</label>
+<div class="upload">
+<i class="fa-solid fa-cloud-arrow-up"></i>
+<p>Upload an image of the item<br>JPG, PNG or WEBP · Maximum 5 MB</p>
+<input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+<img id="preview" alt="Item photo preview">
+<button class="remove" type="button" id="removePhoto">Remove Photo</button>
+</div>
+</div>
+
+<button class="submit" type="submit">Submit Report <i class="fa-solid fa-arrow-right"></i></button>
+<div id="message"></div>
+</form>
+</section>
+
+<section class="items-card">
+<div class="items-head">
+<h2>Recent Reports</h2>
+<span class="demo">This session</span>
+</div>
+<div id="itemsList">
+<div class="empty">
+<i class="fa-solid fa-box-open"></i>
+<h3>No reports added yet</h3>
+<p>Reports created in this demo will appear here until you refresh the page.</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+
+<script>
+let selectedType = "Lost Item";
+const tabs = document.querySelectorAll(".tab");
+const photoInput = document.getElementById("photo");
+const preview = document.getElementById("preview");
+const removePhoto = document.getElementById("removePhoto");
+const message = document.getElementById("message");
+let photoUrl = "";
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    selectedType = tab.dataset.type;
+    document.getElementById("formTitle").textContent =
+      selectedType === "Lost Item" ? "Report a Lost Item" : "Report a Found Item";
+    document.querySelector(".submit").innerHTML =
+      selectedType === "Lost Item" ? 'Submit Lost Item <i class="fa-solid fa-arrow-right"></i>' :
+      'Submit Found Item <i class="fa-solid fa-arrow-right"></i>';
+  });
+});
+
+photoInput.addEventListener("change", function(){
+  const file = this.files[0];
+  if(!file) return;
+
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+    alert("Please choose a JPG, PNG or WEBP image.");
+    this.value = "";
+    return;
+  }
+  if(file.size > 5 * 1024 * 1024){
+    alert("Photo must be smaller than 5 MB.");
+    this.value = "";
+    return;
+  }
+
+  if(photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = URL.createObjectURL(file);
+  preview.src = photoUrl;
+  preview.style.display = "block";
+  removePhoto.style.display = "inline-block";
+});
+
+removePhoto.addEventListener("click", () => {
+  photoInput.value = "";
+  preview.removeAttribute("src");
+  preview.style.display = "none";
+  removePhoto.style.display = "none";
+  if(photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = "";
+});
+
+document.getElementById("itemForm").addEventListener("submit", function(event){
+  event.preventDefault();
+
+  const name = document.getElementById("itemName").value.trim();
+  const owner = document.getElementById("ownerName").value.trim();
+  const location = document.getElementById("location").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const date = document.getElementById("date").value;
+  const file = photoInput.files[0];
+
+  const card = document.createElement("article");
+  card.className = "item";
+
+  if(file){
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.alt = "Reported item";
+    card.appendChild(img);
+  }
+
+  const tag = document.createElement("span");
+  tag.className = "tag";
+  tag.textContent = selectedType;
+  card.appendChild(tag);
+
+  const heading = document.createElement("h3");
+  heading.textContent = name;
+  card.appendChild(heading);
+
+  const details = document.createElement("p");
+  details.textContent = "Reported by: " + owner + " · Location: " + location +
+    " · Date: " + date + " · " + description;
+  card.appendChild(details);
+
+  const list = document.getElementById("itemsList");
+  if(list.querySelector(".empty")) list.innerHTML = "";
+  list.prepend(card);
+
+  message.style.display = "block";
+  message.textContent = "Demo report added to this page. It will disappear after a refresh and is not visible to other users yet. We will connect Supabase to save reports and photos online.";
+
+  this.reset();
+  preview.removeAttribute("src");
+  preview.style.display = "none";
+  removePhoto.style.display = "none";
+  if(photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = "";
+  message.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+</script>
+</body>
+</html>

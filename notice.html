@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Notices | CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:#f4f7fc;color:#1c2945;padding:24px}
+.container{max-width:1000px;margin:auto}
+.back{display:inline-block;margin-bottom:22px;text-decoration:none;color:#3268e9;font-size:13px;font-weight:600}
+.hero{background:linear-gradient(115deg,#2563eb,#6250e8,#8061ed);padding:29px;border-radius:20px;color:white;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.hero h1{font-size:26px;margin-bottom:10px}
+.hero p{font-size:12px;color:#e3e9ff;line-height:1.8}
+.hero-icon{font-size:40px;color:#ffffffd9}
+.toolbar{display:flex;gap:12px;margin-bottom:20px}
+.search{flex:1;position:relative}
+.search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8995aa}
+.search input{width:100%;padding:13px 14px 13px 40px;border:1px solid #e0e6f0;border-radius:11px;background:white;font:12px Inter;outline:none}
+.search input:focus{border-color:#5280ef}
+select{padding:12px;border:1px solid #e0e6f0;border-radius:11px;background:white;color:#596680;font:12px Inter;outline:none}
+.admin-panel{display:none;background:white;border:1px solid #e6ebf5;border-radius:17px;padding:22px;margin-bottom:24px}
+.admin-panel h2{font-size:17px;margin-bottom:8px}
+.admin-panel>p{font-size:11px;color:#8490a5;margin-bottom:20px;line-height:1.7}
+.field{margin-bottom:15px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}
+input,textarea{width:100%;padding:12px;border:1px solid #dfe5f0;border-radius:10px;font:12px Inter;outline:none;background:#fcfdff}
+textarea{resize:vertical;min-height:90px;line-height:1.7}
+input:focus,textarea:focus{border-color:#5280ef;box-shadow:0 0 0 3px #5280ef19}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.upload{border:2px dashed #ccd8f2;border-radius:11px;padding:14px;background:#f8faff}
+.upload p{font-size:11px;color:#8290a6;margin-bottom:8px}
+.upload input{border:0;background:transparent;padding:4px}
+#imagePreview{display:none;max-width:100%;max-height:200px;margin-top:10px;border-radius:10px}
+.primary{border:0;border-radius:10px;padding:12px 17px;background:linear-gradient(100deg,#2563eb,#6652e7);color:white;font:700 12px Inter;cursor:pointer}
+.secondary{border:1px solid #e0e6f0;border-radius:10px;padding:12px 17px;background:white;color:#65728a;font:600 12px Inter;cursor:pointer}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.heading h2{font-size:17px}
+.count{font-size:10px;color:#3268e9;background:#edf3ff;padding:7px 10px;border-radius:8px}
+.list{display:grid;gap:15px}
+.notice{background:white;border:1px solid #e8edf6;border-radius:16px;padding:21px;display:grid;grid-template-columns:65px 1fr;gap:17px;transition:.2s}
+.notice:hover{box-shadow:0 10px 25px #243d750c;transform:translateY(-2px)}
+.datebox{width:62px;height:68px;border-radius:13px;background:#edf3ff;color:#3268e9;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.datebox strong{font-size:22px}
+.datebox span{font-size:10px;font-weight:700;text-transform:uppercase;margin-top:3px}
+.tag{display:inline-block;font-size:10px;font-weight:700;color:#6950d9;background:#f1edff;padding:5px 8px;border-radius:7px;margin-bottom:9px}
+.notice h3{font-size:14px;margin-bottom:8px;line-height:1.5}
+.notice p{font-size:11px;color:#7e8aa0;line-height:1.8;overflow-wrap:anywhere}
+.notice img{max-width:100%;max-height:260px;object-fit:contain;border-radius:11px;margin-top:12px;display:block}
+.meta{font-size:10px;color:#a0aabd;margin-top:12px}
+.notice-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.notice-actions button{padding:8px 10px;border-radius:8px;border:1px solid #e1e7f2;background:white;color:#586780;font:600 10px Inter;cursor:pointer}
+.notice-actions .delete{color:#c43b48}
+.empty{background:white;border:1px dashed #dce4f2;border-radius:15px;text-align:center;padding:40px 15px;color:#8995aa}
+.empty i{font-size:30px;margin-bottom:13px;color:#b4c1dc}
+.empty h3{font-size:13px;color:#5f6e88;margin-bottom:7px}
+.empty p{font-size:11px;line-height:1.7}
+#message{display:none;margin-bottom:15px;padding:12px;border-radius:10px;background:#fff6e5;color:#885b08;font-size:11px;line-height:1.7}
+.footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:27px}
+@media(max-width:600px){body{padding:14px}.hero{padding:22px}.hero h1{font-size:22px}.hero-icon{font-size:29px}.toolbar{flex-direction:column}.grid{grid-template-columns:1fr;gap:0}.notice{grid-template-columns:50px 1fr;gap:12px;padding:14px}.datebox{width:49px;height:58px}.datebox strong{font-size:19px}.notice h3{font-size:13px}.admin-panel{padding:17px}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="student.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+<header class="hero">
+  <div>
+    <h1><i class="fa-solid fa-bullhorn"></i> College Notices</h1>
+    <p>Stay informed about college events, examinations, announcements and important updates.</p>
+  </div>
+  <i class="fa-solid fa-bell hero-icon"></i>
+</header>
+
+<div id="message"></div>
+
+<section class="admin-panel" id="adminPanel">
+  <h2><i class="fa-solid fa-pen-to-square" style="color:#4d6de6"></i> Create a Notice</h2>
+  <p>Add an announcement with an optional image. This demo keeps notices only in the current page session.</p>
+  <form id="noticeForm">
+    <div class="field">
+      <label for="title">Notice Title *</label>
+      <input id="title" required maxlength="120" placeholder="e.g. Semester Examination Schedule">
+    </div>
+    <div class="grid">
+      <div class="field">
+        <label for="category">Category *</label>
+        <select id="category" required style="width:100%;padding:12px;border:1px solid #dfe5f0;border-radius:10px;font:12px Inter;background:#fcfdff">
+          <option value="">Choose category</option>
+          <option>General</option>
+          <option>Examination</option>
+          <option>Events</option>
+          <option>Holiday</option>
+          <option>Important</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="noticeDate">Notice Date *</label>
+        <input id="noticeDate" type="date" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="description">Notice Details *</label>
+      <textarea id="description" required maxlength="3000" placeholder="Write the complete announcement here..."></textarea>
+    </div>
+    <div class="field">
+      <label for="noticeImage">Attach Image (Optional)</label>
+      <div class="upload">
+        <p>JPG, PNG or WEBP · Maximum 5 MB</p>
+        <input type="file" id="noticeImage" accept="image/jpeg,image/png,image/webp">
+        <img id="imagePreview" alt="Notice image preview">
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="primary" type="submit"><i class="fa-solid fa-plus"></i> Publish Notice</button>
+      <button class="secondary" type="button" id="cancelButton">Cancel</button>
+    </div>
+  </form>
+</section>
+
+<div class="toolbar">
+  <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Search notices..."></div>
+  <select id="filter" aria-label="Filter notices">
+    <option value="All">All Categories</option>
+    <option>General</option>
+    <option>Examination</option>
+    <option>Events</option>
+    <option>Holiday</option>
+    <option>Important</option>
+  </select>
+</div>
+
+<div class="heading">
+  <h2>Latest Announcements</h2>
+  <span class="count" id="count">0 Notices</span>
+</div>
+<div class="list" id="noticeList">
+  <div class="empty"><i class="fa-regular fa-bell-slash"></i><h3>No notices yet</h3><p>College announcements will appear here when notices are published.</p></div>
+</div>
+<div class="footer">© 2026 CampusConnect · College Announcements</div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const isAdmin = params.get("role") === "admin";
+const adminPanel = document.getElementById("adminPanel");
+const noticeForm = document.getElementById("noticeForm");
+const noticeImage = document.getElementById("noticeImage");
+const imagePreview = document.getElementById("imagePreview");
+const message = document.getElementById("message");
+const noticeList = document.getElementById("noticeList");
+const search = document.getElementById("search");
+const filter = document.getElementById("filter");
+let notices = [];
+let imageData = "";
+
+if(isAdmin) adminPanel.style.display = "block";
+
+noticeImage.addEventListener("change", function(){
+  const file = this.files[0];
+  imageData = "";
+  imagePreview.style.display = "none";
+  if(!file) return;
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+    alert("Choose a JPG, PNG or WEBP image.");
+    this.value = "";
+    return;
+  }
+  if(file.size > 5*1024*1024){
+    alert("Image must be smaller than 5 MB.");
+    this.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    imageData = reader.result;
+    imagePreview.src = imageData;
+    imagePreview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
+
+function showMessage(text){
+  message.textContent = text;
+  message.style.display = "block";
+}
+
+noticeForm.addEventListener("submit", function(event){
+  event.preventDefault();
+  if(!isAdmin){
+    showMessage("Admin demo mode is required to publish notices.");
+    return;
+  }
+  notices.unshift({
+    id: Date.now(),
+    title: document.getElementById("title").value.trim(),
+    category: document.getElementById("category").value,
+    date: document.getElementById("noticeDate").value,
+    description: document.getElementById("description").value.trim(),
+    image: imageData
+  });
+  renderNotices();
+  noticeForm.reset();
+  imageData = "";
+  imagePreview.removeAttribute("src");
+  imagePreview.style.display = "none";
+  showMessage("Demo notice published on this page. It is not saved online or shared with other users.");
+});
+
+function renderNotices(){
+  const query = search.value.toLowerCase();
+  const category = filter.value;
+  const visible = notices.filter(n =>
+    (category === "All" || n.category === category) &&
+    (n.title.toLowerCase().includes(query) ||
+     n.description.toLowerCase().includes(query) ||
+     n.category.toLowerCase().includes(query))
+  );
+  document.getElementById("count").textContent = visible.length + (visible.length === 1 ? " Notice" : " Notices");
+  noticeList.innerHTML = "";
+
+  if(!visible.length){
+    noticeList.innerHTML = '<div class="empty"><i class="fa-regular fa-bell-slash"></i><h3>No matching notices</h3><p>Try a different search or publish a new notice in admin demo mode.</p></div>';
+    return;
+  }
+
+  visible.forEach(n => {
+    const card = document.createElement("article");
+    card.className = "notice";
+
+    const date = document.createElement("div");
+    date.className = "datebox";
+    const parsed = new Date(n.date + "T12:00:00");
+    const day = document.createElement("strong");
+    day.textContent = parsed.getDate();
+    const month = document.createElement("span");
+    month.textContent = parsed.toLocaleString("en", {month:"short"});
+    date.append(day, month);
+
+    const content = document.createElement("div");
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = n.category;
+    const title = document.createElement("h3");
+    title.textContent = n.title;
+    const description = document.createElement("p");
+    description.textContent = n.description;
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = "CampusConnect · " + n.date;
+    content.append(tag, title, description);
+
+    if(n.image){
+      const img = document.createElement("img");
+      img.src = n.image;
+      img.alt = "Notice attachment";
+      content.appendChild(img);
+    }
+    content.appendChild(meta);
+
+    if(isAdmin){
+      const actions = document.createElement("div");
+      actions.className = "notice-actions";
+      const remove = document.createElement("button");
+      remove.className = "delete";
+      remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete demo notice';
+      remove.addEventListener("click", () => {
+        notices = notices.filter(item => item.id !== n.id);
+        renderNotices();
+        showMessage("Demo notice removed from this page.");
+      });
+      actions.appendChild(remove);
+      content.appendChild(actions);
+    }
+
+    card.append(date, content);
+    noticeList.appendChild(card);
+  });
+}
+
+search.addEventListener("input", renderNotices);
+filter.addEventListener("change", renderNotices);
+document.getElementById("cancelButton").addEventListener("click", () => {
+  noticeForm.reset();
+  imageData = "";
+  imagePreview.style.display = "none";
+  message.style.display = "none";
+});
+
+document.getElementById("noticeDate").value = new Date().toLocaleDateString("en-CA");
+</script>
+</body>
+</html>

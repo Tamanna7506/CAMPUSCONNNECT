@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:#f4f7fc;color:#1c2945}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:235px;background:white;border-right:1px solid #e9edf5;padding:24px 16px;display:flex;flex-direction:column;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:#2459d9;padding:5px 8px 32px}
+.logo{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#7255e8);color:white;display:grid;place-items:center}
+.nav-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#9aa4b7;padding:0 12px 12px}
+nav{display:grid;gap:7px}
+nav a{display:flex;align-items:center;gap:12px;padding:13px 12px;text-decoration:none;color:#69758e;font-size:12px;font-weight:600;border-radius:11px}
+nav a i{width:19px;text-align:center}
+nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
+.sidebar-bottom{margin-top:auto}
+.admin-profile{border-top:1px solid #edf0f6;padding:18px 5px 0;display:flex;gap:10px;align-items:center}
+.avatar{width:38px;height:38px;border-radius:50%;background:#e4eaff;color:#315ed7;display:grid;place-items:center}
+.admin-profile strong{font-size:11px;display:block}
+.admin-profile span{font-size:10px;color:#8a96aa;display:block;margin-top:4px}
+.main{flex:1;min-width:0;padding:28px 30px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:27px}
+.crumb{font-size:11px;color:#8a95a9;margin-bottom:7px}
+.topbar h1{font-size:23px;letter-spacing:-.6px}
+.topright{display:flex;align-items:center;gap:12px}
+.badge{font-size:10px;font-weight:700;color:#1e9a68;background:#e6f8ef;padding:7px 10px;border-radius:8px}
+.top-avatar{width:39px;height:39px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#e9d5ff);display:grid;place-items:center;color:#435bd4}
+.welcome{background:linear-gradient(110deg,#2563eb,#5851e5 70%,#8061ed);color:white;padding:25px 27px;border-radius:19px;margin-bottom:26px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.welcome h2{font-size:22px;margin-bottom:9px}
+.welcome p{font-size:12px;line-height:1.8;color:#e2e8ff;max-width:500px}
+.welcome i{font-size:45px;color:#ffffffcf}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.section-head h3{font-size:15px}
+.section-head span{font-size:11px;color:#8a95a9}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:28px}
+.stat{background:white;border:1px solid #edf0f7;border-radius:15px;padding:17px}
+.stat-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px;font-size:16px}
+.blue{background:#eaf1ff;color:#3470eb}
+.purple{background:#f0eaff;color:#8054df}
+.orange{background:#fff1e4;color:#e68a34}
+.green{background:#e4f8ed;color:#24996a}
+.stat small{display:block;color:#8994a9;font-size:10px;margin-bottom:8px}
+.stat strong{font-size:23px}
+.stat .note{font-size:10px;color:#9aa4b7;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #243d7510}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.card-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:18px}
+.card h4{font-size:14px;margin-bottom:8px}
+.card p{font-size:11px;color:#8390a5;line-height:1.8}
+.card button{margin-top:17px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
+.card button:hover{background:#dfe9ff}
+.activity{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;margin-top:25px}
+.activity h3{font-size:14px;margin-bottom:14px}
+.activity-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-top:1px solid #f0f2f7}
+.activity-icon{width:35px;height:35px;flex-shrink:0;border-radius:10px;background:#edf3ff;color:#3266e6;display:grid;place-items:center}
+.activity-row h4{font-size:11px;margin:2px 0 6px}
+.activity-row p{font-size:10px;color:#8994a9;line-height:1.7}
+.footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:25px}
+#message{display:none;background:#fff6e5;color:#885b08;padding:12px;border-radius:10px;margin-bottom:18px;font-size:11px;line-height:1.7}
+@media(max-width:950px){.sidebar{width:200px}.main{padding:23px 18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){
+.layout{display:block}.sidebar{width:100%;padding:13px 14px;border-right:0;border-bottom:1px solid #e9edf5}
+.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}
+nav{display:flex;overflow-x:auto;gap:5px}nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
+.main{padding:20px 14px}.topbar h1{font-size:20px}.main .welcome{padding:21px}.welcome h2{font-size:19px}.welcome i{font-size:30px}
+.stats{gap:10px}.stat{padding:13px}.stat strong{font-size:21px}
+.grid{grid-template-columns:1fr}.card{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand"><div class="logo"><i class="fa-solid fa-graduation-cap"></i></div><span>CampusConnect</span></div>
+  <div class="nav-label">ADMIN MENU</div>
+  <nav>
+    <a class="active" href="admin.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="complaint.html"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
+    <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
+    <a href="lost-found.html"><i class="fa-solid fa-magnifying-glass"></i> Lost & Found</a>
+    <a href="#" id="usersLink"><i class="fa-solid fa-users"></i> Users</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="admin-profile">
+      <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+      <div><strong>College Admin</strong><span>Administrator</span></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div><div class="crumb">Home / Admin</div><h1>Admin Dashboard</h1></div>
+    <div class="topright"><span class="badge">● Demo Mode</span><div class="top-avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+  </header>
+
+  <div id="message"></div>
+
+  <section class="welcome">
+    <div>
+      <h2>Welcome, Administrator! 👋</h2>
+      <p>Manage campus complaints, announcements, lost items and student services from one central dashboard.</p>
+    </div>
+    <i class="fa-solid fa-chart-pie"></i>
+  </section>
+
+  <div class="section-head"><h3>Campus Overview</h3><span>Sample statistics</span></div>
+
+  <section class="stats">
+    <div class="stat"><div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><small>Total Complaints</small><strong>0</strong><div class="note">All reported issues</div></div>
+    <div class="stat"><div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div><small>Active Notices</small><strong>0</strong><div class="note">College announcements</div></div>
+    <div class="stat"><div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div><small>Lost & Found</small><strong>0</strong><div class="note">Item reports</div></div>
+    <div class="stat"><div class="stat-icon green"><i class="fa-solid fa-users"></i></div><small>Registered Users</small><strong>0</strong><div class="note">Student accounts</div></div>
+  </section>
+
+  <div class="section-head"><h3>Management Centre</h3><span>Choose a module</span></div>
+
+  <section class="grid">
+    <article class="card">
+      <div class="card-head"><div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
+      <h4>Manage Complaints</h4>
+      <p>Review reported campus issues and prepare to track their status and resolution.</p>
+      <button onclick="showMessage('Complaint management interface opened in demo mode. Real student reports will appear after database integration.')">Manage Complaints <i class="fa-solid fa-arrow-right"></i></button>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
+      <h4>Manage Notices</h4>
+      <p>Prepare college announcements for events, examinations and important updates.</p>
+      <button onclick="location.href='notices.html'">Manage Notices <i class="fa-solid fa-arrow-right"></i></button>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
+      <h4>Manage Lost & Found</h4>
+      <p>Review lost and found reports and help students reconnect with their belongings.</p>
+      <button onclick="location.href='lost-found.html'">View Reports <i class="fa-solid fa-arrow-right"></i></button>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="card-icon green"><i class="fa-solid fa-users"></i></div><i class="fa-solid fa-arrow-up-right-from-square" style="color:#a1abc0"></i></div>
+      <h4>Manage Users</h4>
+      <p>Plan how student accounts and administrator access will be managed.</p>
+      <button onclick="showMessage('User management is currently a demo. We will add secure accounts and permissions when Supabase is connected.')">Manage Users <i class="fa-solid fa-arrow-right"></i></button>
+    </article>
+  </section>
+
+  <section class="activity">
+    <h3><i class="fa-solid fa-clock-rotate-left" style="color:#536be7;margin-right:8px"></i>Recent Activity</h3>
+    <div class="activity-row">
+      <div class="activity-icon"><i class="fa-solid fa-circle-info"></i></div>
+      <div><h4>Admin dashboard is ready</h4><p>This is a sample activity. New complaints and reports will appear here after database integration.</p></div>
+    </div>
+  </section>
+
+  <div class="footer">© 2026 CampusConnect · Administration Portal</div>
+</main>
+</div>
+<script>
+function showMessage(text){
+  const box=document.getElementById("message");
+  box.textContent=text;
+  box.style.display="block";
+  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+document.getElementById("usersLink").addEventListener("click",function(event){
+  event.preventDefault();
+  showMessage("User management will be connected after we set up the database and secure admin permissions.");
+});
+</script>
+</body>
+</html>
