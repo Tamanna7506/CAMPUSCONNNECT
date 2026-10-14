@@ -7,204 +7,164 @@
 <title>Create Account | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:25px;font-family:Inter,sans-serif;color:#182342;
-  background:linear-gradient(135deg,#eaf1ff,#f4edff,#e8f7ff)
-}
-.container{
-  width:100%;max-width:980px;min-height:620px;display:grid;
-  grid-template-columns: .9fr 1.1fr;background:#fff;border-radius:26px;
-  overflow:hidden;box-shadow:0 25px 70px rgba(43,75,150,.16);
-  animation:appear .6s ease
-}
-@keyframes appear{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-.left{
-  position:relative;overflow:hidden;padding:42px 35px;color:white;
-  background:linear-gradient(145deg,#2563eb,#5146e5 65%,#7955e8);
-  display:flex;flex-direction:column;justify-content:space-between
-}
-.circle{position:absolute;border-radius:50%;background:#ffffff12}
-.one{width:250px;height:250px;right:-100px;top:-70px}
-.two{width:180px;height:180px;left:-80px;bottom:50px}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:25px;font-family:Inter,sans-serif;color:#182342;background:linear-gradient(135deg,#eaf1ff,#f4edff,#e8f7ff)}
+.container{width:100%;max-width:980px;min-height:620px;display:grid;grid-template-columns:.9fr 1.1fr;background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 25px 70px rgba(43,75,150,.16)}
+.left{position:relative;overflow:hidden;padding:42px 35px;color:white;background:linear-gradient(145deg,#2563eb,#5146e5 65%,#7955e8);display:flex;flex-direction:column;justify-content:space-between}
+.circle{position:absolute;border-radius:50%;background:#ffffff12}.one{width:250px;height:250px;right:-100px;top:-70px}.two{width:180px;height:180px;left:-80px;bottom:50px}
 .brand{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:800;position:relative}
 .logo{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#ffffff2e}
-.welcome{position:relative;margin:40px 0}
-.welcome h1{font-size:34px;line-height:1.25;margin-bottom:16px;letter-spacing:-1px}
-.welcome p{font-size:13px;color:#e0e7ff;line-height:1.8}
-.points{position:relative;display:grid;gap:22px}
-.point{display:flex;align-items:center;gap:13px;font-size:13px;color:#f1f5ff}
-.point i{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#ffffff24;font-size:16px;transition:.25s}
-.point:hover i{transform:translateY(-4px) rotate(-5deg)}
+.welcome{position:relative;margin:40px 0}.welcome h1{font-size:34px;line-height:1.25;margin-bottom:16px;letter-spacing:-1px}.welcome p{font-size:13px;color:#e0e7ff;line-height:1.8}
+.points{position:relative;display:grid;gap:22px}.point{display:flex;align-items:center;gap:13px;font-size:13px;color:#f1f5ff}
+.point i{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#ffffff24;font-size:16px}
 .footer{position:relative;margin-top:35px;font-size:11px;color:#dbe5ff}
 .right{padding:38px 42px;display:flex;flex-direction:column;justify-content:center}
 .back{color:#64748b;text-decoration:none;font-size:12px;margin-bottom:22px;width:fit-content}
-.back:hover{color:#2563eb}
-h2{font-size:28px;letter-spacing:-.7px;margin-bottom:8px}
-.subtitle{font-size:12px;color:#78839a;line-height:1.7;margin-bottom:22px}
-.field{margin-bottom:15px}
-label{display:block;font-size:12px;font-weight:700;color:#34415c;margin-bottom:8px}
-.wrap{position:relative}
-.wrap>i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8a96ad;font-size:13px}
-input,select{
-  width:100%;padding:13px 40px;border:1.5px solid #e3e8f2;border-radius:11px;
-  outline:none;font-family:inherit;font-size:12px;color:#24304a;background:#fcfdff;transition:.2s
-}
-select{padding-left:40px;appearance:none}
-input:focus,select:focus{border-color:#4781f5;box-shadow:0 0 0 4px #3b82f319;background:#fff}
-input::placeholder{color:#a4adbd}
+h2{font-size:28px;letter-spacing:-.7px;margin-bottom:8px}.subtitle{font-size:12px;color:#78839a;line-height:1.7;margin-bottom:22px}
+.field{margin-bottom:15px}label{display:block;font-size:12px;font-weight:700;color:#34415c;margin-bottom:8px}
+.wrap{position:relative}.wrap>i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8a96ad;font-size:13px}
+input,select{width:100%;padding:13px 40px;border:1.5px solid #e3e8f2;border-radius:11px;outline:none;font-family:inherit;font-size:12px;color:#24304a;background:#fcfdff}
+select{padding-left:40px}input:focus,select:focus{border-color:#4781f5;box-shadow:0 0 0 4px #3b82f319}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;background:none;color:#8a96ad;cursor:pointer}
 .terms{display:flex;align-items:flex-start;gap:9px;font-size:11px;color:#718096;line-height:1.6;margin:2px 0 18px}
 .terms input{width:14px;height:14px;margin-top:2px;flex-shrink:0;accent-color:#3269e8}
 .terms label{font-size:11px;font-weight:400;margin:0;color:#718096}
 .terms a,.signin a{color:#3269e8;text-decoration:none;font-weight:700}
-.create{
-  width:100%;padding:14px;border:0;border-radius:12px;
-  background:linear-gradient(100deg,#2563eb,#6250e8);color:white;
-  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
-  box-shadow:0 8px 20px #375bdc3b;transition:.25s
-}
-.create:hover{transform:translateY(-2px);box-shadow:0 12px 25px #375bdc4d}
-.message{display:none;margin-top:13px;padding:12px;border-radius:10px;background:#fff7e6;color:#8a5700;font-size:11px;line-height:1.6}
+.create{width:100%;padding:14px;border:0;border-radius:12px;background:linear-gradient(100deg,#2563eb,#6250e8);color:white;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px #375bdc3b}
+.create:disabled{opacity:.6;cursor:wait}
+.message{display:none;margin-top:13px;padding:12px;border-radius:10px;background:#fff7e6;color:#8a5700;font-size:11px;line-height:1.7;overflow-wrap:anywhere}
+.message.success{background:#e8f8ed;color:#176b3b}.message.error{background:#fff0f0;color:#b42332}
 .signin{text-align:center;font-size:11px;color:#7a859b;margin-top:19px}
-@media(max-width:700px){
- body{padding:14px}
- .container{grid-template-columns:1fr;max-width:440px;margin:auto}
- .left{padding:24px 25px}
- .welcome{margin:25px 0}
- .welcome h1{font-size:27px}
- .points{grid-template-columns:1fr 1fr;gap:12px}
- .point{font-size:11px;gap:8px}
- .point i{width:34px;height:34px}
- .footer{margin-top:22px}
- .right{padding:27px 24px}
- h2{font-size:25px}
-}
+@media(max-width:700px){body{padding:14px}.container{grid-template-columns:1fr;max-width:440px}.left{padding:24px 25px}.welcome{margin:25px 0}.welcome h1{font-size:27px}.points{grid-template-columns:1fr 1fr;gap:12px}.point{font-size:11px;gap:8px}.point i{width:34px;height:34px}.footer{margin-top:22px}.right{padding:27px 24px}h2{font-size:25px}}
 @media(max-width:360px){.grid{grid-template-columns:1fr;gap:0}}
 </style>
 </head>
 <body>
 <div class="container">
+<section class="left">
+<div class="circle one"></div><div class="circle two"></div>
+<div class="brand"><div class="logo"><i class="fa-solid fa-graduation-cap"></i></div><span>CampusConnect</span></div>
+<div>
+<div class="welcome"><h1>Join Your<br>Campus<br>Community.</h1><p>Create your account to stay connected with college notices, services and campus activities.</p></div>
+<div class="points">
+<div class="point"><i class="fa-solid fa-clipboard-list"></i><span>Track Complaints</span></div>
+<div class="point"><i class="fa-solid fa-bullhorn"></i><span>View Notices</span></div>
+<div class="point"><i class="fa-solid fa-magnifying-glass"></i><span>Lost & Found</span></div>
+<div class="point"><i class="fa-solid fa-bell"></i><span>Campus Updates</span></div>
+</div>
+</div>
+<div class="footer">© 2026 CampusConnect · Your campus, connected.</div>
+</section>
 
-  <section class="left">
-    <div class="circle one"></div><div class="circle two"></div>
-    <div class="brand">
-      <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
-      <span>CampusConnect</span>
-    </div>
+<section class="right">
+<a href="login.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+<h2>Create Account ✨</h2>
+<p class="subtitle">Enter your details to get started with CampusConnect.</p>
 
-    <div>
-      <div class="welcome">
-        <h1>Join Your<br>Campus<br>Community.</h1>
-        <p>Create your account to stay connected with college notices, services and campus activities.</p>
-      </div>
-      <div class="points">
-        <div class="point"><i class="fa-solid fa-clipboard-list"></i><span>Track Complaints</span></div>
-        <div class="point"><i class="fa-solid fa-bullhorn"></i><span>View Notices</span></div>
-        <div class="point"><i class="fa-solid fa-magnifying-glass"></i><span>Lost & Found</span></div>
-        <div class="point"><i class="fa-solid fa-bell"></i><span>Campus Updates</span></div>
-      </div>
-    </div>
-
-    <div class="footer">© 2026 CampusConnect · Your campus, connected.</div>
-  </section>
-
-  <section class="right">
-    <a href="login.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
-    <h2>Create Account ✨</h2>
-    <p class="subtitle">Enter your details to get started with CampusConnect.</p>
-
-    <form id="registerForm">
-      <div class="field">
-        <label for="name">Full Name</label>
-        <div class="wrap">
-          <i class="fa-regular fa-user"></i>
-          <input id="name" type="text" placeholder="Enter your full name" required>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="email">College Email Address</label>
-        <div class="wrap">
-          <i class="fa-regular fa-envelope"></i>
-          <input id="email" type="email" placeholder="Enter your email address" required>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="field">
-          <label for="studentId">Roll / Student ID</label>
-          <div class="wrap">
-            <i class="fa-regular fa-id-card"></i>
-            <input id="studentId" type="text" placeholder="Student ID" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="course">Course</label>
-          <div class="wrap">
-            <i class="fa-solid fa-book-open"></i>
-            <select id="course" required>
-              <option value="">Select course</option>
-              <option>B.Sc. Computer Science</option>
-              <option>B.Sc. Information Technology</option>
-              <option>B.Com.</option>
-              <option>B.A.</option>
-              <option>B.Sc. Other</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="password">Create Password</label>
-        <div class="wrap">
-          <i class="fa-solid fa-lock"></i>
-          <input id="password" type="password" placeholder="At least 8 characters" minlength="8" required>
-          <button class="password-toggle" type="button" id="togglePassword" aria-label="Show password">
-            <i class="fa-regular fa-eye"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="terms">
-        <input type="checkbox" id="terms" required>
-        <label for="terms">I agree to the terms of use and confirm that my details are correct.</label>
-      </div>
-
-      <button type="submit" class="create">Create Account <i class="fa-solid fa-arrow-right"></i></button>
-      <div class="message" id="message"></div>
-    </form>
-
-    <p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
-  </section>
+<form id="registerForm">
+<div class="field"><label for="name">Full Name</label><div class="wrap"><i class="fa-regular fa-user"></i><input id="name" type="text" maxlength="100" placeholder="Enter your full name" required></div></div>
+<div class="field"><label for="email">College Email Address</label><div class="wrap"><i class="fa-regular fa-envelope"></i><input id="email" type="email" maxlength="254" placeholder="Enter your email address" required></div></div>
+<div class="grid">
+<div class="field"><label for="studentId">Roll / Student ID</label><div class="wrap"><i class="fa-regular fa-id-card"></i><input id="studentId" type="text" maxlength="50" placeholder="Student ID" required></div></div>
+<div class="field"><label for="course">Course</label><div class="wrap"><i class="fa-solid fa-book-open"></i><select id="course" required><option value="">Select course</option><option>B.Sc. Computer Science</option><option>B.Sc. Information Technology</option><option>B.Com.</option><option>B.A.</option><option>B.Sc. Other</option><option>Other</option></select></div></div>
+</div>
+<div class="field"><label for="password">Create Password</label><div class="wrap"><i class="fa-solid fa-lock"></i><input id="password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required><button class="password-toggle" type="button" id="togglePassword" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div></div>
+<div class="terms"><input type="checkbox" id="terms" required><label for="terms">I agree to the terms of use and confirm that my details are correct.</label></div>
+<button type="submit" class="create" id="createButton">Create Account <i class="fa-solid fa-arrow-right"></i></button>
+<div class="message" id="message" role="status"></div>
+</form>
+<p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
+</section>
 </div>
 
 <script>
-document.getElementById("togglePassword").addEventListener("click", function(){
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+const configured = SUPABASE_URL.startsWith("https://") &&
+  !SUPABASE_URL.includes("PASTE_") &&
+  SUPABASE_KEY.trim() !== "" &&
+  !SUPABASE_KEY.includes("PASTE_");
+
+const db = configured
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+const form = document.getElementById("registerForm");
+const message = document.getElementById("message");
+const createButton = document.getElementById("createButton");
+
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + (type || "");
+  message.style.display = "block";
+}
+
+document.getElementById("togglePassword").addEventListener("click", function() {
   const password = document.getElementById("password");
   const icon = this.querySelector("i");
-  if(password.type === "password"){
-    password.type = "text";
-    icon.className = "fa-regular fa-eye-slash";
-    this.setAttribute("aria-label","Hide password");
-  }else{
-    password.type = "password";
-    icon.className = "fa-regular fa-eye";
-    this.setAttribute("aria-label","Show password");
-  }
+  const show = password.type === "password";
+  password.type = show ? "text" : "password";
+  icon.className = show ? "fa-regular fa-eye-slash" : "fa-regular fa-eye";
+  this.setAttribute("aria-label", show ? "Hide password" : "Show password");
 });
 
-document.getElementById("registerForm").addEventListener("submit", function(event){
+form.addEventListener("submit", async function(event) {
   event.preventDefault();
-  const message = document.getElementById("message");
-  message.style.display = "block";
-  message.textContent = "Registration form looks good! Account creation and secure data storage will work after we connect Supabase.";
+
+  if (!db) {
+    showMessage("Supabase URL aur Publishable Key code mein add karo.", "error");
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const studentId = document.getElementById("studentId").value.trim();
+  const course = document.getElementById("course").value;
+  const password = document.getElementById("password").value;
+
+  if (!name || !email || !studentId || !course || password.length < 8) {
+    showMessage("Please fill all fields correctly. Password must be at least 8 characters.", "error");
+    return;
+  }
+
+  createButton.disabled = true;
+  createButton.textContent = "Creating account...";
+
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name,
+          student_id: studentId,
+          course: course
+        },
+        emailRedirectTo: location.origin + location.pathname.replace(/[^/]*$/, "login.html")
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      showMessage("This email may already be registered. Please sign in or use another email.", "error");
+    } else if (data.session) {
+      showMessage("Account created successfully! You can now sign in.", "success");
+      form.reset();
+    } else {
+      showMessage("Registration submitted! Check your email to confirm your account, then sign in.", "success");
+      form.reset();
+    }
+  } catch (error) {
+    showMessage(error.message || "Registration failed. Please try again.", "error");
+  } finally {
+    createButton.disabled = false;
+    createButton.innerHTML = 'Create Account <i class="fa-solid fa-arrow-right"></i>';
+  }
 });
 </script>
 </body>
