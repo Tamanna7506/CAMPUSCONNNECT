@@ -226,7 +226,7 @@ form.addEventListener("submit", async function(event) {
           student_id: studentId,
           course: course
         },
-        emailRedirectTo: window.location.href.replace(/register\.html(?:\?.*)?$/i, "login.html")
+        emailRedirectTo: window.location.origin + window.location.pathname.replace(/[^/]*$/, "login.html")
       }
     });
 
