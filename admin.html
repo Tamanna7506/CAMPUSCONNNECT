@@ -3,820 +3,633 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin Control Centre | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,sans-serif;background:#f4f7fc;color:#1c2945}
+body{font-family:Inter,sans-serif;background:#f3f6fc;color:#1b2943}
 .layout{display:flex;min-height:100vh}
-.sidebar{width:245px;background:#fff;border-right:1px solid #e8edf5;padding:23px 16px;display:flex;flex-direction:column;flex-shrink:0}
-.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:#2459d9;padding:5px 8px 30px}
-.logo{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#7255e8);color:white;display:grid;place-items:center}
-.nav-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#9aa4b7;padding:0 12px 12px}
+.sidebar{width:245px;background:#fff;border-right:1px solid #e8edf5;padding:24px 15px;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;padding:0 8px 30px;font-size:19px;font-weight:800;color:#285de0}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#7857e9);display:grid;place-items:center;color:white}
+.nav-title{font-size:10px;font-weight:800;color:#a1abc0;letter-spacing:1px;padding:0 12px 12px}
 nav{display:grid;gap:6px}
-nav a{display:flex;align-items:center;gap:12px;padding:12px;text-decoration:none;color:#69758e;font-size:12px;font-weight:600;border-radius:10px}
+nav a{padding:13px 12px;display:flex;align-items:center;gap:12px;text-decoration:none;color:#718099;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer}
 nav a i{width:19px;text-align:center}
 nav a:hover,nav a.active{background:#edf3ff;color:#2863e9}
-.sidebar-bottom{margin-top:auto}
-.admin-profile{border-top:1px solid #edf0f6;padding:17px 5px 0;display:flex;gap:10px;align-items:center}
-.avatar{width:38px;height:38px;border-radius:50%;background:#e4eaff;color:#315ed7;display:grid;place-items:center}
-.admin-profile strong{font-size:11px;display:block}
-.admin-profile span{font-size:10px;color:#8a96aa;display:block;margin-top:4px}
-.main{flex:1;min-width:0;padding:27px 30px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:23px}
-.crumb{font-size:11px;color:#8a95a9;margin-bottom:7px}
-.topbar h1{font-size:23px;letter-spacing:-.6px}
-.topright{display:flex;align-items:center;gap:10px}
-.connection{font-size:10px;font-weight:700;color:#168456;background:#e6f8ef;padding:8px 10px;border-radius:8px}
-.logout{border:1px solid #e3e8f1;background:white;color:#5d6b83;border-radius:9px;padding:9px 12px;font:600 11px Inter;cursor:pointer}
-.welcome{background:linear-gradient(110deg,#245fe7,#5951e5 70%,#7960eb);color:white;padding:25px 27px;border-radius:18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.welcome h2{font-size:21px;margin-bottom:8px}
-.welcome p{font-size:12px;line-height:1.8;color:#e2e8ff;max-width:580px}
-.welcome>i{font-size:43px;color:#ffffffc9}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 13px}
-.section-head h3{font-size:15px}
-.section-head span{font-size:10px;color:#8a95a9}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
-.stat{background:white;border:1px solid #edf0f7;border-radius:14px;padding:16px}
-.stat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
-.stat-icon{width:37px;height:37px;border-radius:11px;display:grid;place-items:center;font-size:15px}
-.blue{background:#eaf1ff;color:#3470eb}
-.purple{background:#f0eaff;color:#8054df}
-.orange{background:#fff1e4;color:#e68a34}
-.green{background:#e4f8ed;color:#24996a}
-.stat small{display:block;color:#8994a9;font-size:10px;margin-bottom:7px}
-.stat strong{font-size:24px}
-.stat .note{font-size:10px;color:#9aa4b7;margin-top:5px}
-.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
-.quick{background:#fff;border:1px solid #edf0f7;border-radius:14px;padding:17px;display:flex;gap:13px;align-items:flex-start}
-.quick-icon{width:39px;height:39px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
-.quick h4{font-size:12px;margin:2px 0 6px}
-.quick p{font-size:10px;color:#8390a5;line-height:1.6}
-.quick a{display:inline-block;margin-top:10px;text-decoration:none;color:#3266e6;font-size:10px;font-weight:700}
-.panel{background:#fff;border:1px solid #edf0f7;border-radius:15px;padding:19px;margin-top:19px}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.panel-head h3{font-size:14px}
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.tools input,.tools select{border:1px solid #e0e6f0;border-radius:8px;padding:9px 10px;background:#fff;font:11px Inter;color:#43516b;min-width:130px}
-.primary-btn,.small-btn{border:0;border-radius:8px;padding:9px 12px;background:#edf3ff;color:#3266e6;font:700 10px Inter;cursor:pointer}
-.primary-btn{background:#2863e9;color:#fff}
-.small-btn:hover{background:#dfe9ff}
-.primary-btn:disabled,.small-btn:disabled{opacity:.55;cursor:not-allowed}
-.record{border-top:1px solid #edf0f7;padding:15px 0;display:grid;gap:9px}
-.record:first-child{border-top:0}
-.record h4{font-size:12px}
-.record p{font-size:11px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
-.meta{font-size:10px;color:#8a95a9}
-.record-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.record-actions select,.reply-form textarea{padding:8px;border:1px solid #dfe5f0;border-radius:8px;background:#fff;font:10px Inter;color:#43516b}
-.reply-form{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
-.reply-form textarea{flex:1;min-width:210px;min-height:38px;resize:vertical}
-.empty{font-size:11px;color:#8390a5;padding:15px 0}
-.activity-row{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-top:1px solid #edf0f7}
-.activity-dot{width:8px;height:8px;border-radius:50%;background:#6484eb;margin-top:5px;flex-shrink:0}
-.activity-row strong{font-size:11px}
-.activity-row p{font-size:10px;color:#8a95a9;margin-top:4px;line-height:1.6}
-.message{display:none;padding:11px 13px;border-radius:9px;margin-bottom:15px;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
-.footer{text-align:center;color:#a0aabd;font-size:10px;margin:24px 0 5px}
-@media(max-width:1000px){
-.sidebar{width:210px}
-.main{padding:22px 18px}
-.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+.side-bottom{margin-top:auto;border-top:1px solid #edf0f5;padding-top:17px}
+.admin-info{display:flex;gap:10px;align-items:center}
+.admin-avatar{width:38px;height:38px;border-radius:50%;background:#e9edff;color:#465fdd;display:grid;place-items:center}
+.admin-info strong{font-size:11px;display:block}
+.admin-info small{font-size:10px;color:#91a0b5}
+.main{margin-left:245px;width:calc(100% - 245px);padding:28px 32px;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:15px}
+.crumb{font-size:11px;color:#92a0b5;margin-bottom:7px}
+.topbar h1{font-size:24px;letter-spacing:-.7px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.connection{font-size:10px;color:#15976a;background:#e6f8ef;padding:9px 12px;border-radius:9px;font-weight:700}
+.btn{border:0;border-radius:9px;padding:10px 13px;cursor:pointer;font:600 11px Inter}
+.primary{background:#315fe5;color:white}
+.secondary{background:#edf2ff;color:#315fe5}
+.danger{background:#fff0f0;color:#c33c49}
+.success{background:#e8f8ef;color:#16865b}
+#message{display:none;padding:12px 15px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.hero{background:linear-gradient(110deg,#235ce8,#6551e5 72%,#805de8);padding:27px 29px;border-radius:18px;color:white;display:flex;justify-content:space-between;align-items:center;margin-bottom:27px}
+.hero h2{font-size:22px;margin-bottom:9px}
+.hero p{font-size:12px;color:#e1e8ff;line-height:1.8;max-width:600px}
+.hero>i{font-size:45px;color:#ffffffbd}
+.section-heading{display:flex;justify-content:space-between;align-items:center;margin:23px 0 14px}
+.section-heading h3{font-size:15px}
+.section-heading span{font-size:10px;color:#8e9bb0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{background:white;border:1px solid #e9edf5;border-radius:15px;padding:18px}
+.stat-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px}
+.blue{background:#eaf1ff;color:#3971ed}
+.purple{background:#f0eaff;color:#8255dc}
+.orange{background:#fff1e5;color:#e68b35}
+.green{background:#e4f8ed;color:#26976a}
+.stat small{display:block;color:#8b98ad;font-size:10px;margin-bottom:7px}
+.stat strong{font-size:25px}
+.stat p{font-size:10px;color:#9aa5b8;margin-top:6px}
+.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.module{background:#fff;border:1px solid #e9edf5;border-radius:15px;padding:19px;cursor:pointer;transition:.2s}
+.module:hover{transform:translateY(-3px);box-shadow:0 10px 25px #233e7710}
+.module-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:13px;font-size:17px}
+.module h4{font-size:13px;margin-bottom:7px}
+.module p{font-size:10px;color:#8491a7;line-height:1.7;min-height:34px}
+.module a{display:inline-block;margin-top:13px;color:#315fe5;text-decoration:none;font-size:10px;font-weight:700}
+.panel{background:#fff;border:1px solid #e8edf5;border-radius:16px;padding:21px;margin-top:24px;scroll-margin-top:20px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-head h3{font-size:15px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap}
+.toolbar input,.toolbar select,.field input,.field select,.field textarea,.reply-input{border:1px solid #dfe5ef;border-radius:9px;padding:10px 12px;font:11px Inter;outline:none;background:#fff;color:#34415b}
+.toolbar input{min-width:190px}
+.toolbar select{min-width:110px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{text-align:left;background:#f7f9fd;color:#8290a6;font-size:10px;padding:13px}
+td{border-bottom:1px solid #edf0f5;padding:14px 13px;font-size:11px;color:#53617a}
+td strong{color:#263650}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:9px;font-weight:700;background:#fff3df;color:#b67b22}
+.status.active,.status.resolved{background:#e6f8ed;color:#21895c}
+.status.suspended,.status.closed{background:#fff0f0;color:#bd414b}
+.status.inprogress{background:#edf2ff;color:#4568cf}
+.table-action{border:0;padding:7px 9px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;margin-right:4px}
+.empty{padding:25px;text-align:center;color:#92a0b3;font-size:12px}
+.record{border-top:1px solid #edf0f5;padding:17px 0;display:grid;gap:10px}
+.record h4{font-size:13px}
+.record p{font-size:11px;color:#738099;line-height:1.7;overflow-wrap:anywhere}
+.record-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.record-actions select{padding:8px;border:1px solid #dfe5ef;border-radius:8px;font:11px Inter}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
+.field input,.field textarea{width:100%}
+.field textarea{min-height:75px;resize:vertical}
+.activity-item{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #edf0f5}
+.activity-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:#edf2ff;color:#4568dc;display:grid;place-items:center}
+.activity-item strong{font-size:11px}
+.activity-item p{font-size:10px;color:#8794a8;margin-top:5px}
+.modal{display:none;position:fixed;inset:0;background:#17243d80;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal-box{background:white;border-radius:17px;padding:24px;width:100%;max-width:480px;max-height:85vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h3{font-size:17px}
+.close{border:0;background:#f0f2f7;border-radius:8px;padding:8px;cursor:pointer}
+.detail-row{padding:12px 0;border-bottom:1px solid #edf0f5;font-size:11px}
+.detail-row span{color:#8b98ad;display:block;margin-bottom:5px}
+.detail-row strong{overflow-wrap:anywhere}
+#studentModal .modal-box{max-width:510px}
+.footer{text-align:center;color:#a1aabd;font-size:10px;padding:25px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.module-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){
+.sidebar{position:static;width:100%;padding:13px}
 .layout{display:block}
-.sidebar{width:100%;padding:13px 14px;border:0;border-bottom:1px solid #e9edf5}
-.brand{padding:0 4px 13px}
-.nav-label,.sidebar-bottom{display:none}
-nav{display:flex;overflow-x:auto;gap:5px}
-nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
-.main{padding:18px 13px}
-.topbar h1{font-size:19px}
-.welcome{padding:19px}
-.welcome h2{font-size:18px}
-.welcome>i{font-size:29px}
+.brand{padding-bottom:12px}
+.nav-title,.side-bottom{display:none}
+nav{display:flex;overflow-x:auto}
+nav a{white-space:nowrap;padding:10px}
+.main{margin:0;width:100%;padding:18px 13px}
+.hero{padding:20px}
+.hero h2{font-size:18px}
+.hero>i{font-size:27px}
 .stats{gap:9px}
-.stat{padding:12px}
+.stat{padding:13px}
 .stat strong{font-size:21px}
-.quick-grid{grid-template-columns:1fr}
-.panel{padding:14px}
-.topright{gap:6px}
-.connection{display:none}
+.module-grid{grid-template-columns:1fr}
+.topbar h1{font-size:20px}
 }
 </style>
 </head>
+
 <body>
 <div class="layout">
 
 <aside class="sidebar">
   <div class="brand">
     <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
-    <span>CampusConnect</span>
+    CampusConnect
   </div>
-
-  <div class="nav-label">ADMIN CONTROL</div>
-
+  <div class="nav-title">ADMINISTRATION</div>
   <nav>
     <a class="active" href="#overview"><i class="fa-solid fa-chart-line"></i> Overview</a>
-    <a href="#complaintPanel"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
-    <a href="#lostPanel"><i class="fa-solid fa-box-open"></i> Lost & Found</a>
+    <a href="#students"><i class="fa-solid fa-users"></i> Students</a>
+    <a href="#complaints"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
+    <a href="#lostfound"><i class="fa-solid fa-box-open"></i> Lost & Found</a>
     <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
   </nav>
-
-  <div class="sidebar-bottom">
-    <div class="admin-profile">
-      <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
-      <div>
-        <strong id="adminName">College Admin</strong>
-        <span id="adminEmail">Administrator</span>
-      </div>
+  <div class="side-bottom">
+    <div class="admin-info">
+      <div class="admin-avatar"><i class="fa-solid fa-user-shield"></i></div>
+      <div><strong>College Admin</strong><small>Administrator</small></div>
     </div>
+    <button class="btn secondary" style="width:100%;margin-top:14px" onclick="signOut()">Sign out</button>
   </div>
 </aside>
 
-<main class="main" id="overview">
+<main class="main">
 
 <header class="topbar">
   <div>
     <div class="crumb">CampusConnect / Administration</div>
     <h1>Admin Control Centre</h1>
   </div>
-  <div class="topright">
-    <span class="connection" id="connectionState">Checking connection</span>
-    <button class="logout" id="logoutBtn">
-      <i class="fa-solid fa-right-from-bracket"></i> Sign out
-    </button>
+  <div class="top-actions">
+    <span class="connection" id="connection">Connecting...</span>
   </div>
 </header>
 
-<div class="message" id="message" role="status" aria-live="polite"></div>
+<div id="message" role="status"></div>
 
-<section class="welcome">
-  <div>
-    <h2>Welcome to your control centre</h2>
-    <p>Monitor campus activity, manage student complaints, review lost and found reports, and keep college announcements up to date from one place.</p>
+<section id="overview">
+  <div class="hero">
+    <div>
+      <h2>Welcome to your Control Centre</h2>
+      <p>Monitor student activity, manage accounts, resolve complaints, review lost and found reports, and control college announcements from one place.</p>
+    </div>
+    <i class="fa-solid fa-chart-pie"></i>
   </div>
-  <i class="fa-solid fa-chart-pie"></i>
-</section>
 
-<div class="section-head">
-  <h3>Campus at a glance</h3>
-  <span id="lastUpdated">Live Supabase data</span>
-</div>
+  <div class="section-heading">
+    <h3>Campus Overview</h3>
+    <span>Live Supabase data</span>
+  </div>
 
-<section class="stats">
-
-  <article class="stat">
-    <div class="stat-top">
-      <div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
-      <span class="meta">All records</span>
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+      <small>Registered Students</small>
+      <strong id="statStudents">—</strong>
+      <p>All student accounts</p>
     </div>
-    <small>Total complaints</small>
-    <strong id="totalComplaints">—</strong>
-    <div class="note" id="complaintBreakdown">Awaiting data</div>
-  </article>
-
-  <article class="stat">
-    <div class="stat-top">
-      <div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div>
-      <span class="meta">Needs attention</span>
+    <div class="stat">
+      <div class="stat-icon orange"><i class="fa-solid fa-clock"></i></div>
+      <small>Pending Complaints</small>
+      <strong id="statPending">—</strong>
+      <p>Need attention</p>
     </div>
-    <small>Open complaints</small>
-    <strong id="openComplaints">—</strong>
-    <div class="note">Pending or in progress</div>
-  </article>
-
-  <article class="stat">
-    <div class="stat-top">
+    <div class="stat">
       <div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-      <span class="meta">Announcements</span>
+      <small>Published Notices</small>
+      <strong id="statNotices">—</strong>
+      <p>College announcements</p>
     </div>
-    <small>Published notices</small>
-    <strong id="totalNotices">—</strong>
-    <div class="note">College updates</div>
-  </article>
-
-  <article class="stat">
-    <div class="stat-top">
+    <div class="stat">
       <div class="stat-icon green"><i class="fa-solid fa-box-open"></i></div>
-      <span class="meta">Item reports</span>
+      <small>Lost & Found Reports</small>
+      <strong id="statLost">—</strong>
+      <p>All submitted reports</p>
     </div>
-    <small>Lost & Found reports</small>
-    <strong id="totalLostFound">—</strong>
-    <div class="note" id="lostBreakdown">Awaiting data</div>
-  </article>
+  </section>
 
+  <div class="section-heading">
+    <h3>Management Modules</h3>
+    <span>Administration tools</span>
+  </div>
+
+  <section class="module-grid">
+    <article class="module" onclick="go('students')">
+      <div class="module-icon blue"><i class="fa-solid fa-users"></i></div>
+      <h4>Student Management</h4>
+      <p>View registrations, search students, inspect profiles and manage accounts.</p>
+      <a href="#students">Open Student Management →</a>
+    </article>
+    <article class="module" onclick="go('complaints')">
+      <div class="module-icon orange"><i class="fa-solid fa-clipboard-check"></i></div>
+      <h4>Complaint Control</h4>
+      <p>Review student complaints and update their progress and resolution.</p>
+      <a href="#complaints">Manage Complaints →</a>
+    </article>
+    <article class="module" onclick="go('lostfound')">
+      <div class="module-icon green"><i class="fa-solid fa-box-open"></i></div>
+      <h4>Lost & Found Desk</h4>
+      <p>Review item reports, reply to students and update item status.</p>
+      <a href="#lostfound">Manage Reports →</a>
+    </article>
+    <article class="module" onclick="location.href='notices.html'">
+      <div class="module-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
+      <h4>Notice Publishing</h4>
+      <p>Publish announcements, attach images and manage existing notices.</p>
+      <a href="notices.html">Open Notice Manager →</a>
+    </article>
+    <article class="module" onclick="refreshAll()">
+      <div class="module-icon blue"><i class="fa-solid fa-arrows-rotate"></i></div>
+      <h4>Refresh Analytics</h4>
+      <p>Fetch the latest records and update campus statistics.</p>
+      <a href="javascript:void(0)">Refresh Data →</a>
+    </article>
+  </section>
 </section>
 
-<div class="section-head">
-  <h3>Management shortcuts</h3>
-  <span>Open a module</span>
-</div>
-
-<section class="quick-grid">
-
-  <article class="quick">
-    <div class="quick-icon blue"><i class="fa-solid fa-clipboard-check"></i></div>
-    <div>
-      <h4>Complaint management</h4>
-      <p>Review issues submitted by students and update their progress.</p>
-      <a href="#complaintPanel">Manage complaints <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-  </article>
-
-  <article class="quick">
-    <div class="quick-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div>
-    <div>
-      <h4>Lost & Found desk</h4>
-      <p>Review item reports, respond to students, and update item status.</p>
-      <a href="#lostPanel">Manage reports <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-  </article>
-
-  <article class="quick">
-    <div class="quick-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-    <div>
-      <h4>Notice publishing</h4>
-      <p>Publish college announcements and manage existing notices.</p>
-      <a href="notices.html">Open notice manager <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-  </article>
-
-</section>
-
-<section class="panel" id="complaintPanel">
-
+<!-- STUDENT MANAGEMENT -->
+<section class="panel" id="students">
   <div class="panel-head">
-    <h3><i class="fa-solid fa-clipboard-list" style="color:#3266e6;margin-right:7px"></i>Student complaints</h3>
-
-    <div class="tools">
-      <input id="complaintSearch" type="search" placeholder="Search complaints...">
-
-      <select id="complaintFilter">
-        <option value="All">All statuses</option>
-        <option>Pending</option>
-        <option>In Progress</option>
-        <option>Resolved</option>
+    <h3><i class="fa-solid fa-users" style="color:#3569e8"></i> Student Management</h3>
+    <div class="toolbar">
+      <input id="studentSearch" placeholder="Search name, email, roll no." oninput="renderStudents()">
+      <select id="studentFilter" onchange="renderStudents()">
+        <option value="All">All Accounts</option>
+        <option value="Active">Active</option>
+        <option value="Suspended">Suspended</option>
       </select>
-
-      <button class="small-btn" id="refreshBtn">
-        <i class="fa-solid fa-rotate"></i> Refresh
-      </button>
+      <button class="btn secondary" onclick="loadStudents()">Refresh</button>
     </div>
   </div>
-
-  <div id="complaints">
-    <p class="empty">Loading complaints...</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>STUDENT</th>
+          <th>ROLL / ID</th>
+          <th>COURSE</th>
+          <th>STATUS</th>
+          <th>REGISTERED</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="studentRows">
+        <tr><td colspan="6" class="empty">Loading students...</td></tr>
+      </tbody>
+    </table>
   </div>
-
 </section>
 
-<section class="panel" id="lostPanel">
-
+<!-- COMPLAINT MANAGEMENT -->
+<section class="panel" id="complaints">
   <div class="panel-head">
-    <h3><i class="fa-solid fa-box-open" style="color:#e68a34;margin-right:7px"></i>Lost & Found reports</h3>
-
-    <div class="tools">
-      <input id="lostSearch" type="search" placeholder="Search item reports...">
-
-      <select id="lostFilter">
-        <option value="All">All statuses</option>
-        <option>Open</option>
-        <option>Returned</option>
-        <option>Claimed</option>
-        <option>Closed</option>
-      </select>
-
-      <button class="small-btn" id="refreshLostBtn">
-        <i class="fa-solid fa-rotate"></i> Refresh
-      </button>
-    </div>
+    <h3><i class="fa-solid fa-clipboard-list" style="color:#3569e8"></i> Complaint Management</h3>
+    <button class="btn secondary" onclick="loadComplaints()">Refresh</button>
   </div>
-
-  <div id="lostReports">
-    <p class="empty">Loading item reports...</p>
-  </div>
-
+  <div id="complaintRows"><p class="empty">Loading complaints...</p></div>
 </section>
 
+<!-- LOST AND FOUND MANAGEMENT -->
+<section class="panel" id="lostfound">
+  <div class="panel-head">
+    <h3><i class="fa-solid fa-box-open" style="color:#29966b"></i> Lost & Found Management</h3>
+    <button class="btn secondary" onclick="loadLost()">Refresh</button>
+  </div>
+  <div id="lostRows"><p class="empty">Loading reports...</p></div>
+</section>
+
+<!-- RECENT ACTIVITY -->
 <section class="panel">
   <div class="panel-head">
-    <h3><i class="fa-solid fa-clock-rotate-left" style="color:#536be7;margin-right:7px"></i>Recent campus activity</h3>
-    <span class="meta">Latest complaints and item reports</span>
+    <h3><i class="fa-solid fa-clock-rotate-left" style="color:#6555dd"></i> Recent Campus Activity</h3>
+    <span style="font-size:10px;color:#8794a8">Latest database records</span>
   </div>
-
-  <div id="activity">
-    <p class="empty">Activity will appear here after loading.</p>
-  </div>
+  <div id="activity"><p class="empty">Loading activity...</p></div>
 </section>
 
 <div class="footer">© 2026 CampusConnect · Administration Portal</div>
-
 </main>
+</div>
+
+<!-- STUDENT DETAILS MODAL -->
+<div class="modal" id="studentModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Student Profile</h3>
+      <button class="close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="studentDetails"></div>
+  </div>
 </div>
 
 <script>
 const SUPABASE_URL="https://nezrjrcxjeftsibqtcqy.supabase.co";
 const SUPABASE_KEY="sb_publishable_qUx0J0GAxsyI7u77u1Z1yw_CKSnYIK7";
-
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-let complaintRows=[],lostRows=[];
-
-const $=id=>document.getElementById(id);
+let students=[];
+let complaints=[];
+let lostItems=[];
+let currentAdmin=null;
 
 function safe(v){
-  return String(v??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
+ return String(v??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function notify(t,ok=false){
+ const m=document.getElementById("message");
+ m.textContent=t;
+ m.style.display="block";
+ m.style.background=ok?"#e6f8ed":"#fff0f0";
+ m.style.color=ok?"#16764c":"#b42332";
+}
+function go(id){
+ document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+function badge(s){
+ const v=String(s||"Open").toLowerCase().replace(/\s/g,"");
+ return `<span class="status ${safe(v)}">${safe(s||"Open")}</span>`;
+}
+function date(v){
+ return v?new Date(v).toLocaleDateString():"—";
+}
+function detail(label,value){
+ return `<div class="detail-row"><span>${safe(label)}</span><strong>${safe(value||"Not available")}</strong></div>`;
 }
 
-function notice(text,ok=false){
-  const box=$("message");
-  box.textContent=text;
-  box.style.display="block";
-  box.style.background=ok?"#e8f8ee":"#fff0f0";
-  box.style.color=ok?"#176b3a":"#a32020";
-}
-
-function dateText(v){
-  return v?new Date(v).toLocaleString():"Date not available";
-}
-
-async function verifyAdmin(){
-
-  const {data,error}=await db.auth.getUser();
-
-  if(error||!data?.user){
-    window.location.href="login.html";
-    return false;
-  }
-
-  const user=data.user;
-
-  if(String(user.user_metadata?.role||"").toLowerCase()!=="admin"){
-    await db.auth.signOut();
-    alert("This page is only available to an administrator account.");
-    window.location.href="login.html";
-    return false;
-  }
-
-  $("adminName").textContent=
-    user.user_metadata?.full_name||"College Admin";
-
-  $("adminEmail").textContent=
-    user.email||"Administrator";
-
-  return true;
-}
-
-async function loadDashboard(){
-
-  $("connectionState").textContent="Refreshing data";
-
-  $("complaints").innerHTML=
-    '<p class="empty">Loading complaints...</p>';
-
-  $("lostReports").innerHTML=
-    '<p class="empty">Loading reports...</p>';
-
-  const [cr,nr,lr]=await Promise.all([
-
-    db.from("complaints")
-      .select("*")
-      .order("created_at",{ascending:false}),
-
-    db.from("notices")
-      .select("id",{count:"exact",head:true}),
-
-    db.from("lost_found")
-      .select("*")
-      .order("created_at",{ascending:false})
-
-  ]);
-
-  if(cr.error){
-
-    $("complaints").innerHTML=
-      '<p class="empty">Could not load complaints: '+
-      safe(cr.error.message)+'</p>';
-
-    $("totalComplaints").textContent="!";
-
-    notice(
-      "Complaint data could not be loaded. Check the complaints table SELECT policy: "+
-      cr.error.message
-    );
-
-  }else{
-
-    complaintRows=cr.data||[];
-
-    renderComplaints();
-
-    $("totalComplaints").textContent=complaintRows.length;
-
-    const active=complaintRows.filter(c=>
-      !["Resolved","Closed"].includes(
-        String(c.status||"Pending")
-      )
-    ).length;
-
-    $("openComplaints").textContent=active;
-
-    $("complaintBreakdown").textContent=
-      (complaintRows.length-active)+" resolved or closed";
-  }
-
-  $("totalNotices").textContent=
-    nr.error?"—":(nr.count??0);
-
-  if(lr.error){
-
-    lostRows=[];
-
-    $("lostReports").innerHTML=
-      '<p class="empty">Could not load item reports: '+
-      safe(lr.error.message)+'</p>';
-
-    $("totalLostFound").textContent="!";
-
-  }else{
-
-    lostRows=lr.data||[];
-
-    renderLost();
-
-    $("totalLostFound").textContent=lostRows.length;
-
-    $("lostBreakdown").textContent=
-      lostRows.filter(x=>
-        String(x.status||"Open")==="Open"
-      ).length+" currently open";
-  }
-
-  renderActivity();
-
-  const failed=cr.error||nr.error||lr.error;
-
-  $("connectionState").textContent=
-    failed?"Some data unavailable":"Database connected";
-
-  $("lastUpdated").textContent=
-    "Last updated: "+new Date().toLocaleTimeString();
-
-  if(!failed){
-    notice("Dashboard refreshed successfully.",true);
-  }else if(!cr.error){
-    notice("Some dashboard sections could not be loaded. Check the relevant Supabase SELECT policies.");
-  }
-}
-
-function renderComplaints(){
-
-  const q=$("complaintSearch").value.trim().toLowerCase();
-  const f=$("complaintFilter").value;
-
-  const rows=complaintRows.filter(c=>
-    (f==="All"||String(c.status||"Pending")===f)&&
-    [
-      c.title,c.description,c.student_name,
-      c.student_email,c.category,c.location
-    ].some(v=>String(v||"").toLowerCase().includes(q))
-  );
-
-  if(!rows.length){
-    $("complaints").innerHTML=
-      '<p class="empty">No complaints match this search or filter.</p>';
-    return;
-  }
-
-  $("complaints").innerHTML=rows.map(c=>`
-
-    <article class="record">
-
-      <h4>
-        ${safe(c.title||"Untitled complaint")}
-        <span class="meta">#${safe(c.id)}</span>
-      </h4>
-
-      <p>${safe(c.description||"")}</p>
-
-      <p>
-        <b>Student:</b> ${safe(c.student_name||"Not provided")}
-        · ${safe(c.student_email||"")}
-        <br>
-        <b>Category:</b> ${safe(c.category||"—")}
-        · <b>Location:</b> ${safe(c.location||"—")}
-      </p>
-
-      <div class="record-actions">
-
-        <span class="meta">Status</span>
-
-        <select id="cs-${safe(c.id)}">
-          <option ${c.status==="Pending"?"selected":""}>Pending</option>
-          <option ${c.status==="In Progress"?"selected":""}>In Progress</option>
-          <option ${c.status==="Resolved"?"selected":""}>Resolved</option>
-        </select>
-
-        <button class="small-btn"
-          onclick="saveComplaintStatus(${Number(c.id)})">
-          Save status
-        </button>
-
-        <span class="meta">
-          ${safe(dateText(c.created_at))}
-        </span>
-
-      </div>
-
-      ${c.photo_url?
-        `<p class="meta">Attachment path: ${safe(c.photo_url)}</p>`:""
-      }
-
-    </article>
-
-  `).join("");
-}
-
-async function saveComplaintStatus(id){
-
-  const status=$("cs-"+id)?.value;
-
-  if(!status)return;
-
-  const {error}=await db.from("complaints")
-    .update({status})
-    .eq("id",id);
-
-  if(error){
-
-    notice(
-      "Could not update complaint #"+id+": "+
-      error.message+
-      ". Check the complaints UPDATE policy."
-    );
-
-    return;
-  }
-
-  notice("Complaint #"+id+" status updated.",true);
-
-  await loadDashboard();
-}
-
-function renderLost(){
-
-  const q=$("lostSearch").value.trim().toLowerCase();
-  const f=$("lostFilter").value;
-
-  const rows=lostRows.filter(x=>
-    (f==="All"||String(x.status||"Open")===f)&&
-    [
-      x.item_name,x.report_type,x.reporter_name,
-      x.contact_email,x.location,x.description
-    ].some(v=>String(v||"").toLowerCase().includes(q))
-  );
-
-  if(!rows.length){
-
-    $("lostReports").innerHTML=
-      '<p class="empty">No item reports match this search or filter.</p>';
-
-    return;
-  }
-
-  $("lostReports").innerHTML=rows.map(x=>`
-
-    <article class="record">
-
-      <h4>
-        ${safe(x.item_name||"Untitled item")}
-        <span class="meta">
-          #${safe(x.id)} · ${safe(x.report_type||"Item")}
-        </span>
-      </h4>
-
-      <p>${safe(x.description||"")}</p>
-
-      <p>
-        <b>Reported by:</b> ${safe(x.reporter_name||"—")}
-        · ${safe(x.contact_email||"")}
-        <br>
-        <b>Location:</b> ${safe(x.location||"—")}
-        · <b>Item date:</b> ${safe(x.item_date||"—")}
-      </p>
-
-      <div class="record-actions">
-
-        <span class="meta">Status</span>
-
-        <select id="ls-${safe(x.id)}">
-          <option ${x.status==="Open"?"selected":""}>Open</option>
-          <option ${x.status==="Returned"?"selected":""}>Returned</option>
-          <option ${x.status==="Claimed"?"selected":""}>Claimed</option>
-          <option ${x.status==="Closed"?"selected":""}>Closed</option>
-        </select>
-
-        <button class="small-btn"
-          onclick="saveLostStatus(${Number(x.id)})">
-          Save status
-        </button>
-
-        <span class="meta">${safe(dateText(x.created_at))}</span>
-
-      </div>
-
-      <form class="reply-form"
-        onsubmit="sendLostReply(event,${Number(x.id)})">
-
-        <textarea id="reply-${safe(x.id)}"
-          placeholder="Write a reply to this student..."></textarea>
-
-        <button class="primary-btn" type="submit">
-          Send reply
-        </button>
-
-      </form>
-
-      <div id="replies-${safe(x.id)}" class="meta">
-        Replies load when available.
-      </div>
-
-    </article>
-
-  `).join("");
-
-  rows.forEach(x=>loadReplies(x.id));
-}
-
-async function saveLostStatus(id){
-
-  const status=$("ls-"+id)?.value;
-
-  if(!status)return;
-
-  const {error}=await db.from("lost_found")
-    .update({status})
-    .eq("id",id);
-
-  if(error){
-
-    notice(
-      "Could not update item #"+id+": "+
-      error.message+
-      ". Check the lost_found UPDATE policy."
-    );
-
-    return;
-  }
-
-  notice("Lost & Found item #"+id+" updated.",true);
-
-  await loadDashboard();
-}
-
-async function sendLostReply(event,id){
-
-  event.preventDefault();
-
-  const field=$("reply-"+id);
-  const reply=field.value.trim();
-
-  if(!reply){
-    notice("Please type a reply before sending.");
-    return;
-  }
-
-  const {data:auth}=await db.auth.getUser();
-  const user=auth?.user;
-
-  if(!user){
-    notice("Your admin session expired. Please sign in again.");
-    return;
-  }
-
-  const payload={
-    lost_found_id:String(id),
-    user_id:user.id,
-    user_name:user.user_metadata?.full_name||user.email||"College Admin",
-    user_role:"Admin",
-    reply_text:reply
-  };
-
-  const {error}=await db.from("lost_found_replies")
-    .insert([payload]);
-
-  if(error){
-
-    notice(
-      "Reply could not be sent: "+
-      error.message+
-      ". Check INSERT policy on lost_found_replies."
-    );
-
-    return;
-  }
-
-  field.value="";
-
-  notice("Reply sent for item #"+id+".",true);
-
-  await loadReplies(id);
-}
-
-async function loadReplies(id){
-
-  const box=$("replies-"+id);
-
-  if(!box)return;
-
-  const {data,error}=await db.from("lost_found_replies")
-    .select("user_name,user_role,reply_text,created_at")
-    .eq("lost_found_id",String(id))
-    .order("created_at",{ascending:true});
-
-  if(error){
-    box.textContent="Replies are not available (check SELECT policy).";
-    return;
-  }
-
-  box.innerHTML=data?.length
-    ?data.map(r=>`
-      <p style="margin-top:7px">
-        <b>${safe(r.user_name)} (${safe(r.user_role||"User")}):</b>
-        ${safe(r.reply_text)}
-        <span class="meta">${safe(dateText(r.created_at))}</span>
-      </p>
-    `).join("")
-    :"No replies yet.";
-}
-
-function renderActivity(){
-
-  const all=[
-
-    ...complaintRows.map(x=>({
-      kind:"Complaint",
-      title:x.title||"Student complaint",
-      date:x.created_at,
-      detail:(x.student_name||x.student_email||"Student")+
-        " · "+(x.status||"Pending")
-    })),
-
-    ...lostRows.map(x=>({
-      kind:"Lost & Found",
-      title:x.item_name||"Item report",
-      date:x.created_at,
-      detail:(x.reporter_name||"Campus member")+
-        " · "+(x.status||"Open")
-    }))
-
-  ].sort((a,b)=>
-    new Date(b.date||0)-new Date(a.date||0)
-  ).slice(0,7);
-
-  $("activity").innerHTML=all.length
-    ?all.map(a=>`
-      <div class="activity-row">
-        <span class="activity-dot"></span>
-        <div>
-          <strong>${safe(a.kind)}: ${safe(a.title)}</strong>
-          <p>
-            ${safe(a.detail)} · ${safe(dateText(a.date))}
-          </p>
-        </div>
-      </div>
-    `).join("")
-    :'<p class="empty">No campus activity has been recorded yet.</p>';
-}
-
-$("complaintSearch").addEventListener("input",renderComplaints);
-$("complaintFilter").addEventListener("change",renderComplaints);
-$("lostSearch").addEventListener("input",renderLost);
-$("lostFilter").addEventListener("change",renderLost);
-
-$("refreshBtn").addEventListener("click",loadDashboard);
-$("refreshLostBtn").addEventListener("click",loadDashboard);
-
-$("logoutBtn").addEventListener("click",async()=>{
+async function checkAdmin(){
+ const {data,error}=await db.auth.getSession();
+ if(error||!data.session){
+  location.href="login.html";
+  return false;
+ }
+ const user=data.session.user;
+ const role=String(user.user_metadata?.role||"").toLowerCase();
+ if(role!=="admin"){
   await db.auth.signOut();
-  window.location.href="login.html";
-});
+  alert("Admin access required. Please sign in with your administrator account.");
+  location.href="login.html";
+  return false;
+ }
+ currentAdmin=user;
+ document.getElementById("connection").textContent="Database connected";
+ return true;
+}
+
+async function loadStudents(){
+ const body=document.getElementById("studentRows");
+ body.innerHTML='<tr><td colspan="6" class="empty">Loading student records...</td></tr>';
+
+ const {data,error}=await db.from("student_accounts")
+  .select("*").order("created_at",{ascending:false});
+
+ if(error){
+  body.innerHTML=`<tr><td colspan="6" class="empty">${safe(error.message)}</td></tr>`;
+  notify("Student records could not load. Check student_accounts SELECT policy: "+error.message);
+  return;
+ }
+ students=data||[];
+ document.getElementById("statStudents").textContent=students.length;
+ renderStudents();
+}
+
+function renderStudents(){
+ const q=document.getElementById("studentSearch").value.toLowerCase().trim();
+ const f=document.getElementById("studentFilter").value;
+ const list=students.filter(s=>{
+  const text=[s.full_name,s.email,s.student_id,s.course].join(" ").toLowerCase();
+  return text.includes(q)&&(f==="All"||s.account_status===f);
+ });
+ const body=document.getElementById("studentRows");
+
+ if(!list.length){
+  body.innerHTML='<tr><td colspan="6" class="empty">No matching student accounts found.</td></tr>';
+  return;
+ }
+
+ body.innerHTML=list.map(s=>`
+ <tr>
+  <td><strong>${safe(s.full_name||"Student")}</strong><br><span style="color:#8794a8">${safe(s.email)}</span></td>
+  <td>${safe(s.student_id||"—")}</td>
+  <td>${safe(s.course||"—")}</td>
+  <td>${badge(s.account_status)}</td>
+  <td>${date(s.created_at)}</td>
+  <td>
+   <button class="table-action secondary" onclick="viewStudent('${safe(s.user_id)}')">View</button>
+   <button class="table-action ${s.account_status==="Suspended"?"success":"danger"}"
+    onclick="changeStudentStatus('${safe(s.user_id)}','${s.account_status==="Suspended"?"Active":"Suspended"}')">
+    ${s.account_status==="Suspended"?"Reactivate":"Suspend"}
+   </button>
+  </td>
+ </tr>`).join("");
+}
+
+function viewStudent(id){
+ const s=students.find(x=>x.user_id===id);
+ if(!s)return;
+ document.getElementById("studentDetails").innerHTML=
+  detail("Full Name",s.full_name)+
+  detail("Email Address",s.email)+
+  detail("Roll / Student ID",s.student_id)+
+  detail("Course",s.course)+
+  detail("Account Status",s.account_status)+
+  detail("Registration Date",s.created_at?new Date(s.created_at).toLocaleString():"—")+
+  `<div style="margin-top:17px">
+   <button class="btn ${s.account_status==="Suspended"?"success":"danger"}"
+    onclick="changeStudentStatus('${safe(s.user_id)}','${s.account_status==="Suspended"?"Active":"Suspended"}')">
+    ${s.account_status==="Suspended"?"Reactivate Account":"Suspend Account"}
+   </button>
+  </div>`;
+ document.getElementById("studentModal").style.display="flex";
+}
+function closeModal(){
+ document.getElementById("studentModal").style.display="none";
+}
+
+async function changeStudentStatus(id,status){
+ const s=students.find(x=>x.user_id===id);
+ if(!s)return;
+ const action=status==="Suspended"?"suspend":"reactivate";
+ if(!confirm(`Are you sure you want to ${action} ${s.full_name||"this student"}?`))return;
+
+ const {error}=await db.from("student_accounts")
+  .update({account_status:status,updated_at:new Date().toISOString()})
+  .eq("user_id",id);
+
+ if(error){
+  notify("Account status update failed: "+error.message);
+  return;
+ }
+ notify(`Student account ${status==="Suspended"?"suspended":"reactivated"} successfully.`,true);
+ closeModal();
+ await loadStudents();
+ addActivity(`${s.full_name||"Student"} account ${status.toLowerCase()}`);
+}
+
+async function loadComplaints(){
+ const holder=document.getElementById("complaintRows");
+ holder.innerHTML='<p class="empty">Loading complaints...</p>';
+
+ const {data,error}=await db.from("complaints").select("*").order("created_at",{ascending:false});
+ if(error){
+  holder.innerHTML=`<p class="empty">${safe(error.message)}</p>`;
+  return;
+ }
+ complaints=data||[];
+ const pending=complaints.filter(c=>!["resolved","closed"].includes(String(c.status||"").toLowerCase())).length;
+ document.getElementById("statPending").textContent=pending;
+
+ if(!complaints.length){
+  holder.innerHTML='<p class="empty">No complaints have been submitted.</p>';
+  return;
+ }
+
+ holder.innerHTML=complaints.map(c=>`
+ <article class="record">
+  <h4>${safe(c.title||"Complaint")} &nbsp; ${badge(c.status)}</h4>
+  <p>${safe(c.description)}</p>
+  <p><strong>Student:</strong> ${safe(c.student_name)} · ${safe(c.student_email)}<br>
+  <strong>Category:</strong> ${safe(c.category)} · <strong>Location:</strong> ${safe(c.location)}<br>
+  <strong>Date:</strong> ${date(c.created_at)}</p>
+  ${c.photo_url?`<p><a href="${safe(c.photo_url)}" target="_blank" rel="noopener">View uploaded photograph</a></p>`:""}
+  <div class="record-actions">
+   <select id="cs-${Number(c.id)}">
+    ${["Pending","In Progress","Resolved","Closed"].map(x=>`<option ${c.status===x?"selected":""}>${x}</option>`).join("")}
+   </select>
+   <button class="btn primary" onclick="updateComplaint(${Number(c.id)})">Save Status</button>
+  </div>
+ </article>`).join("");
+}
+
+async function updateComplaint(id){
+ const status=document.getElementById("cs-"+id).value;
+ const {error}=await db.from("complaints").update({status}).eq("id",id);
+ if(error){notify("Could not update complaint: "+error.message);return;}
+ notify("Complaint status updated.",true);
+ await loadComplaints();
+}
+
+async function loadLost(){
+ const holder=document.getElementById("lostRows");
+ holder.innerHTML='<p class="empty">Loading lost and found reports...</p>';
+
+ const {data,error}=await db.from("lost_found").select("*").order("created_at",{ascending:false});
+ if(error){
+  holder.innerHTML=`<p class="empty">${safe(error.message)}</p>`;
+  return;
+ }
+ lostItems=data||[];
+ document.getElementById("statLost").textContent=lostItems.length;
+
+ if(!lostItems.length){
+  holder.innerHTML='<p class="empty">No lost and found reports found.</p>';
+  return;
+ }
+
+ const repliesResult=await db.from("lost_found_replies").select("*").order("created_at",{ascending:true});
+ const replies=repliesResult.error?[]:(repliesResult.data||[]);
+
+ holder.innerHTML=lostItems.map(item=>{
+  const itemReplies=replies.filter(r=>String(r.lost_found_id)===String(item.id));
+  return `
+  <article class="record">
+   <h4>${safe(item.item_name)} · ${safe(item.report_type)} ${badge(item.status)}</h4>
+   <p><strong>Reported by:</strong> ${safe(item.reporter_name)}<br>
+   <strong>Contact:</strong> ${safe(item.contact_email)}<br>
+   <strong>Location:</strong> ${safe(item.location)}<br>
+   <strong>Item date:</strong> ${safe(item.item_date)}<br>
+   <strong>Description:</strong> ${safe(item.description)}</p>
+   ${item.photo_url?`<p><a href="${safe(item.photo_url)}" target="_blank" rel="noopener">View item photograph</a></p>`:""}
+   <div style="background:#f7f9fd;border-radius:10px;padding:12px">
+    <strong style="font-size:11px">Conversation (${itemReplies.length})</strong>
+    ${itemReplies.length?itemReplies.map(r=>`
+     <p style="margin-top:9px"><strong>${safe(r.user_name)} (${safe(r.user_role||"Student")}):</strong> ${safe(r.reply_text)}
+     <br><small>${date(r.created_at)}</small></p>`).join(""):'<p style="margin-top:8px">No replies yet.</p>'}
+   </div>
+   <div class="field">
+    <label for="reply-${Number(item.id)}">Reply to this report</label>
+    <textarea class="reply-input" id="reply-${Number(item.id)}" placeholder="Write an official response to the student..."></textarea>
+   </div>
+   <div class="record-actions">
+    <button class="btn primary" onclick="sendLostReply(${Number(item.id)})">Send Reply</button>
+    <select id="ls-${Number(item.id)}">
+     ${["Open","In Progress","Resolved","Closed"].map(x=>`<option ${item.status===x?"selected":""}>${x}</option>`).join("")}
+    </select>
+    <button class="btn secondary" onclick="updateLostStatus(${Number(item.id)})">Update Status</button>
+   </div>
+  </article>`;
+ }).join("");
+}
+
+async function sendLostReply(id){
+ const input=document.getElementById("reply-"+id);
+ const reply=input.value.trim();
+ if(!reply){notify("Please write a reply first.");return;}
+ const {data:{user}}=await db.auth.getUser();
+ const {error}=await db.from("lost_found_replies").insert({
+  lost_found_id:String(id),
+  user_id:user.id,
+  user_name:user.user_metadata?.full_name||"College Admin",
+  user_role:"Admin",
+  reply_text:reply
+ });
+ if(error){notify("Could not send reply: "+error.message);return;}
+ notify("Reply sent successfully.",true);
+ await loadLost();
+}
+
+async function updateLostStatus(id){
+ const status=document.getElementById("ls-"+id).value;
+ const {error}=await db.from("lost_found").update({status}).eq("id",id);
+ if(error){notify("Could not update report: "+error.message);return;}
+ notify("Lost & Found status updated.",true);
+ await loadLost();
+}
+
+async function loadNotices(){
+ const {count,error}=await db.from("notices").select("id",{count:"exact",head:true});
+ document.getElementById("statNotices").textContent=error?"—":(count??0);
+}
+
+function addActivity(text){
+ const el=document.getElementById("activity");
+ const line=document.createElement("div");
+ line.className="activity-item";
+ line.innerHTML=`<div class="activity-icon"><i class="fa-solid fa-circle-check"></i></div><div><strong>${safe(text)}</strong><p>${new Date().toLocaleString()}</p></div>`;
+ el.prepend(line);
+}
+
+async function loadActivity(){
+ const holder=document.getElementById("activity");
+ const [s,c,l,n]=await Promise.all([
+  db.from("student_accounts").select("full_name,created_at").order("created_at",{ascending:false}).limit(3),
+  db.from("complaints").select("title,created_at").order("created_at",{ascending:false}).limit(3),
+  db.from("lost_found").select("item_name,created_at").order("created_at",{ascending:false}).limit(3),
+  db.from("notices").select("title,created_at").order("created_at",{ascending:false}).limit(3)
+ ]);
+ let events=[];
+ (s.data||[]).forEach(x=>events.push({label:"New student registered: "+(x.full_name||"Student"),date:x.created_at,icon:"fa-user-plus"}));
+ (c.data||[]).forEach(x=>events.push({label:"Complaint submitted: "+(x.title||"Complaint"),date:x.created_at,icon:"fa-clipboard-list"}));
+ (l.data||[]).forEach(x=>events.push({label:"Lost & Found report: "+(x.item_name||"Item"),date:x.created_at,icon:"fa-box-open"}));
+ (n.data||[]).forEach(x=>events.push({label:"Notice published: "+(x.title||"Notice"),date:x.created_at,icon:"fa-bullhorn"}));
+ events.sort((a,b)=>new Date(b.date)-new Date(a.date));
+ holder.innerHTML=events.length?events.slice(0,10).map(e=>`
+ <div class="activity-item">
+  <div class="activity-icon"><i class="fa-solid ${safe(e.icon)}"></i></div>
+  <div><strong>${safe(e.label)}</strong><p>${e.date?new Date(e.date).toLocaleString():"Date unavailable"}</p></div>
+ </div>`).join(""):'<p class="empty">No recent activity available.</p>';
+}
+
+async function refreshAll(){
+ await Promise.all([loadStudents(),loadComplaints(),loadLost(),loadNotices(),loadActivity()]);
+}
+async function signOut(){
+ await db.auth.signOut();
+ location.href="login.html";
+}
 
 (async()=>{
-  if(await verifyAdmin()){
-    await loadDashboard();
-  }
+ const allowed=await checkAdmin();
+ if(allowed){
+  await refreshAll();
+ }
 })();
 </script>
 </body>
