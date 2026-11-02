@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard | CampusConnect</title>
+<title>Admin Control Centre | CampusConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -34,7 +34,7 @@ nav a i{width:19px;text-align:center}
 .welcome{background:linear-gradient(110deg,#2563eb,#5851e5 70%,#8061ed);color:white;padding:25px 27px;border-radius:19px;margin-bottom:26px;display:flex;justify-content:space-between;align-items:center}
 .welcome h2{font-size:22px;margin-bottom:9px}
 .welcome p{font-size:12px;line-height:1.8;color:#e2e8ff}
-.welcome i{font-size:45px}
+.welcome i{font-size:42px}
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
 .section-head h3{font-size:15px}
 .section-head span{font-size:11px;color:#8a95a9}
@@ -49,29 +49,38 @@ nav a i{width:19px;text-align:center}
 .stat strong{font-size:23px}
 .note{font-size:10px;color:#9aa4b7;margin-top:6px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card,.complaint-list,.activity{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px}
+.card,.data-section{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px}
 .card h4{font-size:14px;margin:12px 0 8px}
 .card p{font-size:11px;color:#8390a5;line-height:1.8}
 .card button,.small-btn{margin-top:14px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
-.card-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center}
-#message{display:none;padding:12px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.7}
-.complaint-list{margin-top:25px}
-.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.danger-btn{background:#fff0f0!important;color:#c43d3d!important}
+.danger-btn:hover{background:#ffe0e0!important}
+.reply-btn{background:#e9f7ef!important;color:#198754!important}
+#message{display:none;padding:12px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.data-section{margin-top:25px}
+.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
 .list-top h3{font-size:15px}
-.complaint{border-top:1px solid #edf0f7;padding:18px 0;display:grid;gap:10px}
-.complaint h4{font-size:14px}
-.complaint p{font-size:12px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
+.search-box,.filter-select{padding:10px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:12px Inter}
+.search-box{max-width:230px;width:100%}
+.record{border-top:1px solid #edf0f7;padding:19px 0;display:grid;gap:10px}
+.record h4{font-size:14px}
+.record p{font-size:12px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
 .meta{font-size:10px;color:#8a95a9}
-.status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.status-row select{padding:8px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:11px Inter}
-.photo-box{margin:10px 0}
-.photo-box img{width:100%;max-width:350px;max-height:260px;object-fit:contain;border-radius:12px;border:1px solid #e5eaf2;background:#f4f6fa;display:block}
-.photo-label{font-size:11px;font-weight:700;color:#42516a;margin-bottom:8px}
-.photo-error{font-size:11px;color:#b45353;margin-top:6px}
+.record-photo{width:100%;max-width:350px;max-height:260px;object-fit:contain;border-radius:11px;border:1px solid #edf0f7;background:#f4f6fa;display:block}
+.photo-error{font-size:11px;color:#c43d3d}
+.status-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.status-row select{padding:9px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:11px Inter}
+.reply-area{background:#f7f9fe;border:1px solid #e8edf6;border-radius:12px;padding:14px;margin-top:8px}
+.reply-area h5{font-size:12px;margin-bottom:10px}
+.reply-item{background:white;border:1px solid #e9edf5;border-radius:9px;padding:11px;margin-bottom:9px}
+.reply-item p{font-size:12px;line-height:1.6;margin:7px 0}
+.reply-item strong{font-size:11px}
+.reply-item textarea,.reply-input{width:100%;padding:11px;border:1px solid #dce3f0;border-radius:8px;font:12px Inter;resize:vertical;min-height:65px}
+.reply-form{display:grid;gap:9px;margin-top:12px}
 .empty{font-size:12px;color:#8390a5;padding:18px 0}
 .footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:25px}
 @media(max-width:950px){.sidebar{width:200px}.main{padding:23px 18px}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px}.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}nav{display:flex;overflow-x:auto}nav a{white-space:nowrap;padding:10px;font-size:10px}.main{padding:20px 14px}.welcome h2{font-size:19px}.stats{gap:10px}.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px}.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}nav{display:flex;overflow-x:auto}nav a{white-space:nowrap;padding:10px;font-size:10px}.main{padding:20px 14px}.stats{gap:10px}.grid{grid-template-columns:1fr}.welcome h2{font-size:19px}}
 </style>
 </head>
 
@@ -83,15 +92,13 @@ nav a i{width:19px;text-align:center}
 <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
 <span>CampusConnect</span>
 </div>
-
-<div class="nav-label">ADMIN MENU</div>
+<div class="nav-label">ADMIN CONTROL</div>
 <nav>
-<a class="active" href="admin.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-<a href="#complaintList"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
-<a href="#lostList"><i class="fa-solid fa-magnifying-glass"></i> Lost & Found</a>
+<a class="active" href="admin.html"><i class="fa-solid fa-chart-line"></i> Overview</a>
+<a href="#complaintSection"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
+<a href="#lostSection"><i class="fa-solid fa-box-open"></i> Lost & Found</a>
 <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
 </nav>
-
 <div class="sidebar-bottom">
 <div class="admin-profile">
 <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
@@ -104,7 +111,7 @@ nav a i{width:19px;text-align:center}
 
 <header class="topbar">
 <div>
-<div class="crumb">Home / Administration</div>
+<div class="crumb">CampusConnect / Administration</div>
 <h1>Admin Control Centre</h1>
 </div>
 <span class="badge">Database Connected</span>
@@ -114,91 +121,89 @@ nav a i{width:19px;text-align:center}
 
 <section class="welcome">
 <div>
-<h2>Welcome, Administrator!</h2>
-<p>Manage campus complaints, announcements and lost and found reports from one central dashboard.</p>
+<h2>Welcome to your control centre</h2>
+<p>Monitor campus activity, manage student complaints, review lost and found reports, and keep college announcements up to date from one place.</p>
 </div>
 <i class="fa-solid fa-chart-pie"></i>
 </section>
 
-<div class="section-head"><h3>Campus Overview</h3><span>Live database statistics</span></div>
+<div class="section-head"><h3>Campus at a glance</h3><span>Live database statistics</span></div>
 
 <section class="stats">
 <div class="stat">
 <div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
-<small>Total Complaints</small>
+<small>Total complaints</small>
 <strong id="totalComplaints">—</strong>
-<div class="note">All reported issues</div>
+<div class="note">All records</div>
 </div>
-
+<div class="stat">
+<div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div>
+<small>Open complaints</small>
+<strong id="openComplaints">—</strong>
+<div class="note">Needs attention</div>
+</div>
 <div class="stat">
 <div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-<small>Active Notices</small>
+<small>Published notices</small>
 <strong id="totalNotices">—</strong>
-<div class="note">College announcements</div>
+<div class="note">Announcements</div>
 </div>
-
 <div class="stat">
-<div class="stat-icon orange"><i class="fa-solid fa-box-open"></i></div>
-<small>Lost & Found Reports</small>
+<div class="stat-icon green"><i class="fa-solid fa-box-open"></i></div>
+<small>Lost & Found reports</small>
 <strong id="totalLostFound">—</strong>
-<div class="note">All item reports</div>
-</div>
-
-<div class="stat">
-<div class="stat-icon green"><i class="fa-solid fa-image"></i></div>
-<small>Reports With Photos</small>
-<strong id="totalPhotos">—</strong>
-<div class="note">Uploaded evidence</div>
+<div class="note">Item reports</div>
 </div>
 </section>
 
-<div class="section-head"><h3>Management Centre</h3><span>Quick access</span></div>
+<div class="section-head"><h3>Management shortcuts</h3><span>Open a module</span></div>
 
 <section class="grid">
-
 <article class="card">
-<div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
+<div class="stat-icon blue"><i class="fa-solid fa-clipboard-check"></i></div>
 <h4>Complaint Management</h4>
-<p>Review student complaints, view uploaded evidence and update complaint status.</p>
-<button onclick="document.getElementById('complaintList').scrollIntoView({behavior:'smooth'})">Manage Complaints</button>
+<p>Review issues submitted by students, view uploaded photos, update progress and delete records.</p>
+<button onclick="document.getElementById('complaintSection').scrollIntoView({behavior:'smooth'})">Manage complaints →</button>
 </article>
-
 <article class="card">
-<div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div>
-<h4>Lost & Found Management</h4>
-<p>View lost and found reports, check uploaded photos and review item details.</p>
-<button onclick="document.getElementById('lostList').scrollIntoView({behavior:'smooth'})">Manage Reports</button>
+<div class="stat-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div>
+<h4>Lost & Found Desk</h4>
+<p>Review item reports, view photos, reply to students, manage replies and update item status.</p>
+<button onclick="document.getElementById('lostSection').scrollIntoView({behavior:'smooth'})">Manage reports →</button>
 </article>
-
 <article class="card">
-<div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-<h4>Notice Management</h4>
-<p>Publish and manage college announcements.</p>
-<button onclick="location.href='notices.html'">Open Notices</button>
+<div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
+<h4>Notice Publishing</h4>
+<p>Publish college announcements and manage existing notices.</p>
+<button onclick="location.href='notices.html'">Open notice manager →</button>
 </article>
-
 <article class="card">
-<div class="card-icon green"><i class="fa-solid fa-rotate"></i></div>
+<div class="stat-icon green"><i class="fa-solid fa-rotate"></i></div>
 <h4>Refresh Dashboard</h4>
-<p>Reload all records and photos from the database.</p>
-<button onclick="loadDashboard()">Refresh Data</button>
+<p>Reload complaints, notices, lost and found reports and replies.</p>
+<button onclick="loadDashboard()">Refresh data →</button>
 </article>
-
 </section>
 
-<section class="complaint-list" id="complaintList">
+<!-- COMPLAINTS -->
+
+<section class="data-section" id="complaintSection">
 <div class="list-top">
-<h3>Student Complaints</h3>
+<h3>Student complaints</h3>
 <button class="small-btn" onclick="loadDashboard()">Refresh</button>
 </div>
+<input class="search-box" id="complaintSearch" placeholder="Search complaints..." oninput="renderComplaints()">
 <div id="complaints"><p class="empty">Loading complaints...</p></div>
 </section>
 
-<section class="complaint-list" id="lostList">
+<!-- LOST AND FOUND -->
+
+<section class="data-section" id="lostSection">
 <div class="list-top">
-<h3>Lost & Found Reports</h3>
+<h3>Lost & Found management</h3>
 <button class="small-btn" onclick="loadLostFound()">Refresh</button>
 </div>
+<input class="search-box" id="lostSearch" placeholder="Search item reports..." oninput="renderLostFound()">
 <div id="lostReports"><p class="empty">Loading reports...</p></div>
 </section>
 
@@ -211,208 +216,402 @@ nav a i{width:19px;text-align:center}
 const SUPABASE_URL = "https://nezrjrcxjeftsibqtcqy.supabase.co";
 const SUPABASE_KEY = "sb_publishable_qUx0J0GAxsyI7u77u1Z1yw_CKSnYIK7";
 
-// Supabase Storage bucket ID
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 const PHOTO_BUCKET = "campus-photos";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let complaintsData = [];
+let lostData = [];
 
-function safe(value) {
- return String(value ?? "").replace(/[&<>"']/g, ch => ({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[ch]));
+function safe(value){
+return String(value ?? "").replace(/[&<>"']/g,ch=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[ch]));
 }
 
-function showMessage(text, success=false) {
- const box=document.getElementById("message");
- box.textContent=text;
- box.style.display="block";
- box.style.background=success?"#e8f8ee":"#fff0f0";
- box.style.color=success?"#176b3a":"#a32020";
+function showMessage(text,success=false){
+const box=document.getElementById("message");
+box.textContent=text;
+box.style.display="block";
+box.style.background=success?"#e8f8ee":"#fff0f0";
+box.style.color=success?"#176b3a":"#a32020";
 }
 
-// Convert stored photo path into a public storage URL.
-function getPublicPhotoUrl(path) {
- if(!path) return null;
-
- if(/^https?:\/\//i.test(path)) return path;
-
- let cleanPath=String(path).replace(/^\/+/,"");
-
- // Remove bucket prefix if it is already included in the stored path.
- if(cleanPath.startsWith(PHOTO_BUCKET+"/")) {
-   cleanPath=cleanPath.substring(PHOTO_BUCKET.length+1);
- }
-
- const {data}=db.storage.from(PHOTO_BUCKET).getPublicUrl(cleanPath);
- return data?.publicUrl || null;
+function formatDate(value){
+if(!value)return "Not available";
+const d=new Date(value);
+return isNaN(d.getTime())?safe(value):d.toLocaleString();
 }
 
-// If public image loading fails, try a signed URL.
-async function retryPhoto(img) {
- if(img.dataset.retried==="yes") {
-   img.style.display="none";
-   const error=document.createElement("p");
-   error.className="photo-error";
-   error.textContent="Photo could not be displayed. Check Storage permissions and file path.";
-   img.parentElement.appendChild(error);
-   return;
- }
+// PHOTO DISPLAY
 
- img.dataset.retried="yes";
+async function getPhotoURL(value){
+if(!value)return null;
 
- let path=img.dataset.photo;
- if(!path) return;
+let path=String(value).trim();
 
- path=decodeURIComponent(path);
+if(/^https?:\/\//i.test(path))return path;
 
- if(path.startsWith(PHOTO_BUCKET+"/")) {
-   path=path.substring(PHOTO_BUCKET.length+1);
- }
+path=path.replace(/^\/+/,"");
 
- const {data,error}=await db.storage
-   .from(PHOTO_BUCKET)
-   .createSignedUrl(path,3600);
-
- if(!error && data?.signedUrl) {
-   img.src=data.signedUrl;
- } else {
-   img.style.display="none";
-   const errorText=document.createElement("p");
-   errorText.className="photo-error";
-   errorText.textContent="Photo unavailable: "+(error?.message || "Storage access denied");
-   img.parentElement.appendChild(errorText);
- }
+if(path.startsWith(PHOTO_BUCKET+"/")){
+path=path.substring(PHOTO_BUCKET.length+1);
 }
 
-function photoHTML(path,label) {
- if(!path) return "";
+const {data,error}=await db.storage
+.from(PHOTO_BUCKET)
+.createSignedUrl(path,3600);
 
- const url=getPublicPhotoUrl(path);
+if(!error && data?.signedUrl)return data.signedUrl;
 
- return `
- <div class="photo-box">
- <div class="photo-label">${safe(label)}</div>
- <img
- src="${safe(url)}"
- data-photo="${safe(path)}"
- alt="Uploaded report photo"
- loading="lazy"
- onerror="retryPhoto(this)">
- </div>`;
+const publicResult=db.storage.from(PHOTO_BUCKET).getPublicUrl(path);
+
+return publicResult.data?.publicUrl || null;
 }
 
-async function loadDashboard() {
- document.getElementById("complaints").innerHTML='<p class="empty">Loading complaints...</p>';
+async function photoHTML(value,label){
+if(!value)return '<p class="meta">No photo uploaded.</p>';
 
- const [complaintsResult,noticesResult,lostResult]=await Promise.all([
- db.from("complaints").select("*").order("created_at",{ascending:false}),
- db.from("notices").select("id",{count:"exact",head:true}),
- db.from("lost_found").select("id,photo_url",{count:"exact"})
- ]);
+const url=await getPhotoURL(value);
 
- if(complaintsResult.error) {
-   document.getElementById("complaints").innerHTML=
-   '<p class="empty">Could not load complaints: '+safe(complaintsResult.error.message)+'</p>';
-   showMessage("Check Supabase SELECT policies: "+complaintsResult.error.message);
-   return;
- }
+if(!url)return '<p class="photo-error">Photo could not load. Check Storage permissions.</p>';
 
- const complaints=complaintsResult.data||[];
-
- document.getElementById("totalComplaints").textContent=complaints.length;
- document.getElementById("totalNotices").textContent=noticesResult.error?"—":(noticesResult.count??0);
- document.getElementById("totalLostFound").textContent=lostResult.error?"—":(lostResult.count??0);
-
- const lostRows=lostResult.data||[];
- const complaintPhotoCount=complaints.filter(c=>c.photo_url).length;
- const lostPhotoCount=lostRows.filter(c=>c.photo_url).length;
-
- document.getElementById("totalPhotos").textContent=complaintPhotoCount+lostPhotoCount;
-
- if(!complaints.length) {
-   document.getElementById("complaints").innerHTML='<p class="empty">No complaints found.</p>';
- } else {
-   document.getElementById("complaints").innerHTML=complaints.map(c=>`
-   <article class="complaint">
-     <h4>${safe(c.title)} <span class="meta">#${safe(c.id)}</span></h4>
-     <p>${safe(c.description)}</p>
-     <p><strong>Student:</strong> ${safe(c.student_name)} · ${safe(c.student_email)}<br>
-     <strong>Category:</strong> ${safe(c.category)} ·
-     <strong>Location:</strong> ${safe(c.location)}</p>
-
-     ${photoHTML(c.photo_url,"Complaint Evidence Photo")}
-
-     <div class="status-row">
-       <span class="meta">Status:</span>
-       <select id="status-${safe(c.id)}">
-         <option value="Pending" ${c.status==="Pending"?"selected":""}>Pending</option>
-         <option value="In Progress" ${c.status==="In Progress"?"selected":""}>In Progress</option>
-         <option value="Resolved" ${c.status==="Resolved"?"selected":""}>Resolved</option>
-       </select>
-       <button class="small-btn" onclick="updateStatus(${Number(c.id)})">Save Status</button>
-     </div>
-     <p class="meta">${safe(c.created_at?new Date(c.created_at).toLocaleString():"")}</p>
-   </article>
-   `).join("");
- }
-
- await loadLostFound();
- showMessage("Dashboard data loaded successfully.",true);
+return `
+<div>
+<p class="meta">${safe(label)}</p>
+<a href="${safe(url)}" target="_blank" rel="noopener">
+<img class="record-photo" src="${safe(url)}" alt="${safe(label)}">
+</a>
+</div>`;
 }
 
-async function loadLostFound() {
- const holder=document.getElementById("lostReports");
- holder.innerHTML='<p class="empty">Loading reports...</p>';
+// DASHBOARD
 
- const {data,error}=await db.from("lost_found")
-   .select("*")
-   .order("created_at",{ascending:false});
+async function loadDashboard(){
 
- if(error) {
-   holder.innerHTML='<p class="empty">Could not load reports: '+safe(error.message)+'</p>';
-   return;
- }
+const [c,n,l]=await Promise.all([
+db.from("complaints").select("*").order("created_at",{ascending:false}),
+db.from("notices").select("id",{count:"exact",head:true}),
+db.from("lost_found").select("*").order("created_at",{ascending:false})
+]);
 
- if(!data || !data.length) {
-   holder.innerHTML='<p class="empty">No Lost & Found reports found.</p>';
-   return;
- }
-
- holder.innerHTML=data.map(item=>`
- <article class="complaint">
-   <h4>${safe(item.item_name)} <span class="meta">#${safe(item.id)}</span></h4>
-   <p><strong>Report Type:</strong> ${safe(item.report_type)}</p>
-   <p>${safe(item.description)}</p>
-   <p><strong>Reported by:</strong> ${safe(item.reporter_name)}</p>
-   <p><strong>Contact:</strong> ${safe(item.contact_email)}</p>
-   <p><strong>Location:</strong> ${safe(item.location)}</p>
-   <p><strong>Date:</strong> ${safe(item.item_date)}</p>
-
-   ${photoHTML(item.photo_url,"Lost & Found Uploaded Photo")}
-
-   <p><strong>Status:</strong> ${safe(item.status || "Open")}</p>
-   <p class="meta">${safe(item.created_at?new Date(item.created_at).toLocaleString():"")}</p>
- </article>
- `).join("");
+if(c.error){
+showMessage("Complaints error: "+c.error.message);
+return;
 }
 
-async function updateStatus(id) {
- const status=document.getElementById("status-"+id).value;
+complaintsData=c.data||[];
+lostData=l.data||[];
 
- const {error}=await db.from("complaints")
-   .update({status})
-   .eq("id",id);
+document.getElementById("totalComplaints").textContent=complaintsData.length;
+document.getElementById("openComplaints").textContent=
+complaintsData.filter(x=>!["Resolved","Closed"].includes(x.status)).length;
+document.getElementById("totalNotices").textContent=n.error?"—":(n.count??0);
+document.getElementById("totalLostFound").textContent=lostData.length;
 
- if(error) {
-   showMessage("Could not update status: "+error.message);
-   return;
- }
+await renderComplaints();
+await renderLostFound();
 
- showMessage("Complaint status updated successfully.",true);
- await loadDashboard();
+showMessage("Dashboard refreshed successfully.",true);
 }
+
+// COMPLAINTS
+
+async function renderComplaints(){
+
+const holder=document.getElementById("complaints");
+const search=(document.getElementById("complaintSearch").value||"").toLowerCase();
+
+const rows=complaintsData.filter(c=>
+[c.title,c.description,c.student_name,c.student_email,c.category,c.location]
+.join(" ").toLowerCase().includes(search)
+);
+
+if(!rows.length){
+holder.innerHTML='<p class="empty">No complaints found.</p>';
+return;
+}
+
+holder.innerHTML=rows.map(c=>`
+<article class="record">
+<h4>${safe(c.title)} <span class="meta">#${safe(c.id)}</span></h4>
+<p>${safe(c.description)}</p>
+<p>
+<strong>Student:</strong> ${safe(c.student_name)}<br>
+<strong>Email:</strong> ${safe(c.student_email)}<br>
+<strong>Category:</strong> ${safe(c.category)}<br>
+<strong>Location:</strong> ${safe(c.location)}
+</p>
+<div id="complaint-photo-${safe(c.id)}">
+${c.photo_url?'<p class="meta">Loading photo...</p>':'<p class="meta">No photo uploaded.</p>'}
+</div>
+<div class="status-row">
+<select id="cs-${safe(c.id)}">
+<option value="Pending" ${c.status==="Pending"?"selected":""}>Pending</option>
+<option value="In Progress" ${c.status==="In Progress"?"selected":""}>In Progress</option>
+<option value="Resolved" ${c.status==="Resolved"?"selected":""}>Resolved</option>
+</select>
+<button class="small-btn" onclick="updateComplaintStatus(${Number(c.id)})">Save status</button>
+<button class="small-btn danger-btn" onclick="deleteComplaint(${Number(c.id)})">Delete complaint</button>
+</div>
+<p class="meta">Submitted: ${formatDate(c.created_at)}</p>
+</article>
+`).join("");
+
+for(const c of rows){
+if(c.photo_url){
+const el=document.getElementById("complaint-photo-"+c.id);
+if(el)el.innerHTML=await photoHTML(c.photo_url,"Complaint photo");
+}
+}
+}
+
+async function updateComplaintStatus(id){
+const status=document.getElementById("cs-"+id).value;
+
+const {error}=await db.from("complaints")
+.update({status}).eq("id",id);
+
+if(error){
+showMessage("Status update failed: "+error.message);
+return;
+}
+
+showMessage("Complaint status updated.",true);
+await loadDashboard();
+}
+
+async function deleteComplaint(id){
+if(!confirm("Are you sure you want to permanently delete this complaint?"))return;
+
+const {error}=await db.from("complaints").delete().eq("id",id);
+
+if(error){
+showMessage("Delete failed: "+error.message);
+return;
+}
+
+showMessage("Complaint deleted successfully.",true);
+await loadDashboard();
+}
+
+// LOST AND FOUND
+
+async function loadLostFound(){
+const {data,error}=await db.from("lost_found")
+.select("*").order("created_at",{ascending:false});
+
+if(error){
+showMessage("Lost & Found error: "+error.message);
+return;
+}
+
+lostData=data||[];
+document.getElementById("totalLostFound").textContent=lostData.length;
+await renderLostFound();
+}
+
+async function renderLostFound(){
+
+const holder=document.getElementById("lostReports");
+const search=(document.getElementById("lostSearch").value||"").toLowerCase();
+
+const rows=lostData.filter(item=>
+[
+item.item_name,item.report_type,item.reporter_name,
+item.contact_email,item.location,item.description
+].join(" ").toLowerCase().includes(search)
+);
+
+if(!rows.length){
+holder.innerHTML='<p class="empty">No Lost & Found reports found.</p>';
+return;
+}
+
+holder.innerHTML=rows.map(item=>`
+<article class="record">
+
+<h4>${safe(item.item_name)} <span class="meta">#${safe(item.id)}</span></h4>
+
+<p><strong>Report Type:</strong> ${safe(item.report_type)}</p>
+<p>${safe(item.description)}</p>
+
+<p>
+<strong>Reported by:</strong> ${safe(item.reporter_name)}<br>
+<strong>Email:</strong> ${safe(item.contact_email)}<br>
+<strong>Location:</strong> ${safe(item.location)}<br>
+<strong>Item date:</strong> ${safe(item.item_date)}
+</p>
+
+<div id="lost-photo-${safe(item.id)}">
+${item.photo_url?'<p class="meta">Loading photo...</p>':'<p class="meta">No photo uploaded.</p>'}
+</div>
+
+<div class="status-row">
+<select id="ls-${safe(item.id)}">
+<option value="Open" ${item.status==="Open"?"selected":""}>Open</option>
+<option value="In Progress" ${item.status==="In Progress"?"selected":""}>In Progress</option>
+<option value="Resolved" ${item.status==="Resolved"?"selected":""}>Resolved</option>
+<option value="Returned" ${item.status==="Returned"?"selected":""}>Returned</option>
+<option value="Closed" ${item.status==="Closed"?"selected":""}>Closed</option>
+</select>
+<button class="small-btn" onclick="updateLostStatus(${Number(item.id)})">Save status</button>
+<button class="small-btn danger-btn" onclick="deleteLostReport(${Number(item.id)})">Delete report</button>
+</div>
+
+<div class="reply-area">
+<h5>Admin replies</h5>
+<div id="replies-${safe(item.id)}">
+<p class="meta">Loading replies...</p>
+</div>
+<div class="reply-form">
+<textarea id="reply-input-${safe(item.id)}" placeholder="Write a reply to the student..."></textarea>
+<button class="small-btn reply-btn" onclick="sendAdminReply(${Number(item.id)})">Send admin reply</button>
+</div>
+</div>
+
+<p class="meta">Submitted: ${formatDate(item.created_at)}</p>
+</article>
+`).join("");
+
+for(const item of rows){
+
+if(item.photo_url){
+const el=document.getElementById("lost-photo-"+item.id);
+if(el)el.innerHTML=await photoHTML(item.photo_url,"Lost & Found photo");
+}
+
+await loadReplies(item.id);
+}
+}
+
+// REPLY SYSTEM
+
+async function loadReplies(itemId){
+
+const holder=document.getElementById("replies-"+itemId);
+if(!holder)return;
+
+const {data,error}=await db.from("lost_found_replies")
+.select("*")
+.eq("lost_found_id",String(itemId))
+.order("created_at",{ascending:true});
+
+if(error){
+holder.innerHTML='<p class="photo-error">Could not load replies: '+safe(error.message)+'</p>';
+return;
+}
+
+if(!data || !data.length){
+holder.innerHTML='<p class="meta">No replies yet.</p>';
+return;
+}
+
+holder.innerHTML=data.map(reply=>`
+<div class="reply-item">
+<strong>${safe(reply.user_name)} (${safe(reply.user_role||"Student")})</strong>
+<p>${safe(reply.reply_text)}</p>
+<span class="meta">${formatDate(reply.created_at)}</span>
+<button class="small-btn danger-btn" onclick="deleteReply(${Number(reply.id)},${Number(itemId)})">Delete reply</button>
+</div>
+`).join("");
+}
+
+async function sendAdminReply(itemId){
+
+const input=document.getElementById("reply-input-"+itemId);
+const replyText=input.value.trim();
+
+if(!replyText){
+showMessage("Please write a reply first.");
+return;
+}
+
+const {error}=await db.from("lost_found_replies").insert([{
+lost_found_id:String(itemId),
+user_id:null,
+user_name:"Admin",
+user_role:"Admin",
+reply_text:replyText
+}]);
+
+if(error){
+showMessage("Could not send reply: "+error.message);
+return;
+}
+
+input.value="";
+showMessage("Admin reply sent successfully.",true);
+await loadReplies(itemId);
+}
+
+async function deleteReply(replyId,itemId){
+
+if(!confirm("Delete this reply permanently?"))return;
+
+const {error}=await db.from("lost_found_replies")
+.delete().eq("id",replyId);
+
+if(error){
+showMessage("Reply delete failed: "+error.message);
+return;
+}
+
+showMessage("Reply deleted successfully.",true);
+await loadReplies(itemId);
+}
+
+// UPDATE LOST AND FOUND STATUS
+
+async function updateLostStatus(id){
+
+const status=document.getElementById("ls-"+id).value;
+
+const {error}=await db.from("lost_found")
+.update({status}).eq("id",id);
+
+if(error){
+showMessage("Status update failed: "+error.message);
+return;
+}
+
+showMessage("Lost & Found status updated.",true);
+await loadDashboard();
+}
+
+// DELETE LOST AND FOUND REPORT AND ITS REPLIES
+
+async function deleteLostReport(id){
+
+if(!confirm("Permanently delete this report and all its replies?"))return;
+
+// Delete child replies first
+const {error:replyError}=await db.from("lost_found_replies")
+.delete()
+.eq("lost_found_id",String(id));
+
+if(replyError){
+showMessage("Could not delete report replies: "+replyError.message);
+return;
+}
+
+// Then delete the report
+const {error}=await db.from("lost_found")
+.delete().eq("id",id);
+
+if(error){
+showMessage("Report delete failed: "+error.message);
+return;
+}
+
+showMessage("Lost & Found report and its replies deleted.",true);
+await loadDashboard();
+}
+
+// INITIAL LOAD
 
 loadDashboard();
+
 </script>
 </body>
 </html>
