@@ -5,7 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard | CampusConnect</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -27,92 +26,52 @@ nav a i{width:19px;text-align:center}
 .avatar{width:38px;height:38px;border-radius:50%;background:#e4eaff;color:#315ed7;display:grid;place-items:center}
 .admin-profile strong{font-size:11px;display:block}
 .admin-profile span{font-size:10px;color:#8a96aa;display:block;margin-top:4px}
-
 .main{flex:1;min-width:0;padding:28px 30px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:27px}
 .crumb{font-size:11px;color:#8a95a9;margin-bottom:7px}
 .topbar h1{font-size:23px}
-.topright{display:flex;align-items:center;gap:12px}
 .badge{font-size:10px;font-weight:700;color:#1e9a68;background:#e6f8ef;padding:7px 10px;border-radius:8px}
-.top-avatar{width:39px;height:39px;border-radius:50%;background:#e9eaff;display:grid;place-items:center;color:#435bd4}
-
-.welcome{background:linear-gradient(110deg,#2563eb,#5851e5 70%,#8061ed);color:white;padding:25px 27px;border-radius:19px;margin-bottom:26px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.welcome{background:linear-gradient(110deg,#2563eb,#5851e5 70%,#8061ed);color:white;padding:25px 27px;border-radius:19px;margin-bottom:26px;display:flex;justify-content:space-between;align-items:center}
 .welcome h2{font-size:22px;margin-bottom:9px}
-.welcome p{font-size:12px;line-height:1.8;color:#e2e8ff;max-width:550px}
-.welcome i{font-size:45px;color:#ffffffcf}
-
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.welcome p{font-size:12px;line-height:1.8;color:#e2e8ff}
+.welcome i{font-size:45px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
 .section-head h3{font-size:15px}
 .section-head span{font-size:11px;color:#8a95a9}
-
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:28px}
 .stat{background:white;border:1px solid #edf0f7;border-radius:15px;padding:17px}
-.stat-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px;font-size:16px}
+.stat-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px}
 .blue{background:#eaf1ff;color:#3470eb}
 .purple{background:#f0eaff;color:#8054df}
 .orange{background:#fff1e4;color:#e68a34}
 .green{background:#e4f8ed;color:#24996a}
 .stat small{display:block;color:#8994a9;font-size:10px;margin-bottom:8px}
 .stat strong{font-size:23px}
-.stat .note{font-size:10px;color:#9aa4b7;margin-top:6px}
-
+.note{font-size:10px;color:#9aa4b7;margin-top:6px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;transition:.2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px #243d7510}
-.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
-.card-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:18px}
-.card h4{font-size:14px;margin-bottom:8px}
+.card,.complaint-list,.activity{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px}
+.card h4{font-size:14px;margin:12px 0 8px}
 .card p{font-size:11px;color:#8390a5;line-height:1.8}
-.card button,.action-btn{margin-top:17px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
-
-#message{display:none;padding:12px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
-
-.data-section{background:white;border:1px solid #edf0f7;border-radius:16px;padding:21px;margin-top:25px}
-.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+.card button,.small-btn{margin-top:14px;padding:10px 13px;border:0;border-radius:9px;background:#edf3ff;color:#3266e6;font:700 11px Inter;cursor:pointer}
+.card-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center}
+#message{display:none;padding:12px;border-radius:10px;margin-bottom:18px;font-size:12px;line-height:1.7}
+.complaint-list{margin-top:25px}
+.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
 .list-top h3{font-size:15px}
-.small-btn{border:0;background:#edf3ff;color:#3266e6;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:700;font-size:11px}
-.small-btn:hover{background:#dfe9ff}
-
-.search-box{padding:10px 12px;border:1px solid #dfe5f0;border-radius:8px;font:12px Inter;max-width:230px;width:100%}
-.filter-select{padding:10px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:12px Inter}
-
-.record{border-top:1px solid #edf0f7;padding:19px 0;display:grid;gap:10px}
-.record h4{font-size:14px}
-.record p{font-size:12px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
+.complaint{border-top:1px solid #edf0f7;padding:18px 0;display:grid;gap:10px}
+.complaint h4{font-size:14px}
+.complaint p{font-size:12px;color:#65728a;line-height:1.7;overflow-wrap:anywhere}
 .meta{font-size:10px;color:#8a95a9}
-.status-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.status-row select{padding:9px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:11px Inter}
-
-.record-photo{width:100%;max-width:300px;max-height:230px;object-fit:cover;border-radius:11px;border:1px solid #edf0f7;display:block;margin-top:5px}
-.photo-error{font-size:11px;color:#a32020}
-.photo-label{font-size:10px;color:#8491a5}
+.status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status-row select{padding:8px;border:1px solid #dfe5f0;border-radius:8px;background:white;font:11px Inter}
+.photo-box{margin:10px 0}
+.photo-box img{width:100%;max-width:350px;max-height:260px;object-fit:contain;border-radius:12px;border:1px solid #e5eaf2;background:#f4f6fa;display:block}
+.photo-label{font-size:11px;font-weight:700;color:#42516a;margin-bottom:8px}
+.photo-error{font-size:11px;color:#b45353;margin-top:6px}
 .empty{font-size:12px;color:#8390a5;padding:18px 0}
 .footer{text-align:center;color:#a0aabd;font-size:10px;margin-top:25px}
-
-@media(max-width:950px){
-.sidebar{width:200px}
-.main{padding:23px 18px}
-.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:650px){
-.layout{display:block}
-.sidebar{width:100%;padding:13px 14px;border-right:0;border-bottom:1px solid #e9edf5}
-.brand{padding:0 4px 13px}
-.nav-label,.sidebar-bottom{display:none}
-nav{display:flex;overflow-x:auto;gap:5px}
-nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
-.main{padding:20px 14px}
-.topbar h1{font-size:20px}
-.welcome{padding:21px}
-.welcome h2{font-size:19px}
-.welcome i{font-size:30px}
-.stats{gap:10px}
-.stat{padding:13px}
-.stat strong{font-size:21px}
-.grid{grid-template-columns:1fr}
-.card{padding:18px}
-.list-top{align-items:flex-start}
-}
+@media(max-width:950px){.sidebar{width:200px}.main{padding:23px 18px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px}.brand{padding:0 4px 13px}.nav-label,.sidebar-bottom{display:none}nav{display:flex;overflow-x:auto}nav a{white-space:nowrap;padding:10px;font-size:10px}.main{padding:20px 14px}.welcome h2{font-size:19px}.stats{gap:10px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -126,11 +85,10 @@ nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
 </div>
 
 <div class="nav-label">ADMIN MENU</div>
-
 <nav>
 <a class="active" href="admin.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-<a href="#complaintSection"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
-<a href="#lostSection"><i class="fa-solid fa-box-open"></i> Lost & Found</a>
+<a href="#complaintList"><i class="fa-solid fa-clipboard-list"></i> Complaints</a>
+<a href="#lostList"><i class="fa-solid fa-magnifying-glass"></i> Lost & Found</a>
 <a href="notices.html"><i class="fa-solid fa-bullhorn"></i> Notices</a>
 </nav>
 
@@ -149,29 +107,22 @@ nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
 <div class="crumb">Home / Administration</div>
 <h1>Admin Control Centre</h1>
 </div>
-<div class="topright">
 <span class="badge">Database Connected</span>
-<div class="top-avatar"><i class="fa-solid fa-user-shield"></i></div>
-</div>
 </header>
 
-<div id="message" role="status" aria-live="polite"></div>
+<div id="message"></div>
 
 <section class="welcome">
 <div>
-<h2>Welcome to your Control Centre</h2>
-<p>Monitor campus activity, manage student complaints, review lost and found reports, and keep college announcements up to date from one place.</p>
+<h2>Welcome, Administrator!</h2>
+<p>Manage campus complaints, announcements and lost and found reports from one central dashboard.</p>
 </div>
 <i class="fa-solid fa-chart-pie"></i>
 </section>
 
-<div class="section-head">
-<h3>Campus Overview</h3>
-<span>Live database statistics</span>
-</div>
+<div class="section-head"><h3>Campus Overview</h3><span>Live database statistics</span></div>
 
 <section class="stats">
-
 <div class="stat">
 <div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
 <small>Total Complaints</small>
@@ -181,7 +132,7 @@ nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
 
 <div class="stat">
 <div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-<small>Published Notices</small>
+<small>Active Notices</small>
 <strong id="totalNotices">—</strong>
 <div class="note">College announcements</div>
 </div>
@@ -194,116 +145,61 @@ nav a{white-space:nowrap;padding:10px;font-size:10px;gap:7px}
 </div>
 
 <div class="stat">
-<div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
-<small>Open Reports</small>
-<strong id="openReports">—</strong>
-<div class="note">Need attention</div>
+<div class="stat-icon green"><i class="fa-solid fa-image"></i></div>
+<small>Reports With Photos</small>
+<strong id="totalPhotos">—</strong>
+<div class="note">Uploaded evidence</div>
 </div>
-
 </section>
 
-<div class="section-head">
-<h3>Management Centre</h3>
-<span>Manage campus activities</span>
-</div>
+<div class="section-head"><h3>Management Centre</h3><span>Quick access</span></div>
 
 <section class="grid">
 
 <article class="card">
-<div class="card-head">
 <div class="card-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
-</div>
 <h4>Complaint Management</h4>
-<p>Review student complaints, view uploaded evidence photos and update complaint progress.</p>
-<button onclick="document.getElementById('complaintSection').scrollIntoView({behavior:'smooth'})">Manage Complaints →</button>
+<p>Review student complaints, view uploaded evidence and update complaint status.</p>
+<button onclick="document.getElementById('complaintList').scrollIntoView({behavior:'smooth'})">Manage Complaints</button>
 </article>
 
 <article class="card">
-<div class="card-head">
-<div class="card-icon orange"><i class="fa-solid fa-box-open"></i></div>
-</div>
-<h4>Lost & Found Desk</h4>
-<p>View reported items, see uploaded photos, review details and update item status.</p>
-<button onclick="document.getElementById('lostSection').scrollIntoView({behavior:'smooth'})">Manage Reports →</button>
+<div class="card-icon orange"><i class="fa-solid fa-magnifying-glass"></i></div>
+<h4>Lost & Found Management</h4>
+<p>View lost and found reports, check uploaded photos and review item details.</p>
+<button onclick="document.getElementById('lostList').scrollIntoView({behavior:'smooth'})">Manage Reports</button>
 </article>
 
 <article class="card">
-<div class="card-head">
 <div class="card-icon purple"><i class="fa-solid fa-bullhorn"></i></div>
-</div>
 <h4>Notice Management</h4>
-<p>Publish college announcements and manage existing notices.</p>
-<button onclick="location.href='notices.html'">Manage Notices →</button>
+<p>Publish and manage college announcements.</p>
+<button onclick="location.href='notices.html'">Open Notices</button>
 </article>
 
 <article class="card">
-<div class="card-head">
 <div class="card-icon green"><i class="fa-solid fa-rotate"></i></div>
-</div>
-<h4>Refresh Control Centre</h4>
-<p>Fetch the latest records and statistics from the college database.</p>
-<button onclick="loadDashboard()">Refresh Data →</button>
+<h4>Refresh Dashboard</h4>
+<p>Reload all records and photos from the database.</p>
+<button onclick="loadDashboard()">Refresh Data</button>
 </article>
 
 </section>
 
-<!-- COMPLAINT MANAGEMENT -->
-
-<section class="data-section" id="complaintSection">
-
+<section class="complaint-list" id="complaintList">
 <div class="list-top">
-<h3><i class="fa-solid fa-clipboard-list" style="color:#3266e6"></i> Student Complaints</h3>
+<h3>Student Complaints</h3>
 <button class="small-btn" onclick="loadDashboard()">Refresh</button>
 </div>
-
-<div class="list-top">
-<input class="search-box" id="complaintSearch" placeholder="Search complaints..." oninput="renderComplaints()">
-
-<select class="filter-select" id="complaintFilter" onchange="renderComplaints()">
-<option value="All">All Statuses</option>
-<option value="Pending">Pending</option>
-<option value="In Progress">In Progress</option>
-<option value="Resolved">Resolved</option>
-</select>
-</div>
-
-<div id="complaints">
-<p class="empty">Loading complaints...</p>
-</div>
-
+<div id="complaints"><p class="empty">Loading complaints...</p></div>
 </section>
 
-<!-- LOST AND FOUND MANAGEMENT -->
-
-<section class="data-section" id="lostSection">
-
+<section class="complaint-list" id="lostList">
 <div class="list-top">
-<h3><i class="fa-solid fa-box-open" style="color:#e68a34"></i> Lost & Found Reports</h3>
+<h3>Lost & Found Reports</h3>
 <button class="small-btn" onclick="loadLostFound()">Refresh</button>
 </div>
-
-<div class="list-top">
-<input class="search-box" id="lostSearch" placeholder="Search items..." oninput="renderLostFound()">
-
-<select class="filter-select" id="lostFilter" onchange="renderLostFound()">
-<option value="All">All Reports</option>
-<option value="Lost Item">Lost Items</option>
-<option value="Found Item">Found Items</option>
-</select>
-</div>
-
-<div id="lostReports">
-<p class="empty">Loading reports...</p>
-</div>
-
-</section>
-
-<section class="data-section">
-<h3 style="font-size:14px;margin-bottom:12px">Dashboard Information</h3>
-<p class="empty">
-Uploaded complaint and Lost & Found photographs are retrieved from Supabase Storage.
-If a photograph cannot be displayed, check the Storage bucket and its access policies.
-</p>
+<div id="lostReports"><p class="empty">Loading reports...</p></div>
 </section>
 
 <div class="footer">© 2026 CampusConnect · Administration Portal</div>
@@ -312,604 +208,211 @@ If a photograph cannot be displayed, check the Storage bucket and its access pol
 </div>
 
 <script>
-
-// SUPABASE CONNECTION
-
 const SUPABASE_URL = "https://nezrjrcxjeftsibqtcqy.supabase.co";
 const SUPABASE_KEY = "sb_publishable_qUx0J0GAxsyI7u77u1Z1yw_CKSnYIK7";
 
-const db = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+// Supabase Storage bucket ID
+const PHOTO_BUCKET = "campus-photos";
 
-let allComplaints = [];
-let allLostReports = [];
-
-// BUCKET NAME FALLBACK
-// Current bucket is CAMPUS-PHOTOS.
-// The older ZIP used campus-photos.
-
-const STORAGE_BUCKETS = [
-"CAMPUS-PHOTOS",
-"campus-photos"
-];
-
-// MESSAGE
-
-function showMessage(text, success=false) {
-const box = document.getElementById("message");
-box.textContent = text;
-box.style.display = "block";
-box.style.background = success ? "#e8f8ee" : "#fff0f0";
-box.style.color = success ? "#176b3a" : "#a32020";
-}
-
-// SAFE TEXT
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 function safe(value) {
-return String(value ?? "").replace(/[&<>"']/g, ch => ({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[ch]));
+ return String(value ?? "").replace(/[&<>"']/g, ch => ({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[ch]));
 }
 
-// PHOTO URL HANDLER
-
-function normalizePhotoPath(value) {
-if (!value) return null;
-
-let path = String(value).trim();
-
-if (!path) return null;
-
-// If the database already contains a complete URL
-if (/^https?:\/\//i.test(path)) {
-return {url:path, path:null};
+function showMessage(text, success=false) {
+ const box=document.getElementById("message");
+ box.textContent=text;
+ box.style.display="block";
+ box.style.background=success?"#e8f8ee":"#fff0f0";
+ box.style.color=success?"#176b3a":"#a32020";
 }
 
-// Remove bucket prefix if it is already included
-path = path.replace(/^\/+/, "");
+// Convert stored photo path into a public storage URL.
+function getPublicPhotoUrl(path) {
+ if(!path) return null;
 
-for (const bucket of STORAGE_BUCKETS) {
-const prefix = bucket + "/";
-if (path.startsWith(prefix)) {
-path = path.substring(prefix.length);
-}
-}
+ if(/^https?:\/\//i.test(path)) return path;
 
-return {url:null, path:path};
-}
+ let cleanPath=String(path).replace(/^\/+/,"");
 
-// GET PHOTO FROM STORAGE
+ // Remove bucket prefix if it is already included in the stored path.
+ if(cleanPath.startsWith(PHOTO_BUCKET+"/")) {
+   cleanPath=cleanPath.substring(PHOTO_BUCKET.length+1);
+ }
 
-async function getPhotoUrl(photoValue) {
-
-const normalized = normalizePhotoPath(photoValue);
-
-if (!normalized) return null;
-
-if (normalized.url) return normalized.url;
-
-for (const bucket of STORAGE_BUCKETS) {
-
-try {
-
-// First try public URL
-const publicResult = db.storage
-.from(bucket)
-.getPublicUrl(normalized.path);
-
-if (publicResult.data?.publicUrl) {
-return publicResult.data.publicUrl;
+ const {data}=db.storage.from(PHOTO_BUCKET).getPublicUrl(cleanPath);
+ return data?.publicUrl || null;
 }
 
-// If public URL is not available, try signed URL
-const signedResult = await db.storage
-.from(bucket)
-.createSignedUrl(normalized.path, 3600);
+// If public image loading fails, try a signed URL.
+async function retryPhoto(img) {
+ if(img.dataset.retried==="yes") {
+   img.style.display="none";
+   const error=document.createElement("p");
+   error.className="photo-error";
+   error.textContent="Photo could not be displayed. Check Storage permissions and file path.";
+   img.parentElement.appendChild(error);
+   return;
+ }
 
-if (!signedResult.error && signedResult.data?.signedUrl) {
-return signedResult.data.signedUrl;
+ img.dataset.retried="yes";
+
+ let path=img.dataset.photo;
+ if(!path) return;
+
+ path=decodeURIComponent(path);
+
+ if(path.startsWith(PHOTO_BUCKET+"/")) {
+   path=path.substring(PHOTO_BUCKET.length+1);
+ }
+
+ const {data,error}=await db.storage
+   .from(PHOTO_BUCKET)
+   .createSignedUrl(path,3600);
+
+ if(!error && data?.signedUrl) {
+   img.src=data.signedUrl;
+ } else {
+   img.style.display="none";
+   const errorText=document.createElement("p");
+   errorText.className="photo-error";
+   errorText.textContent="Photo unavailable: "+(error?.message || "Storage access denied");
+   img.parentElement.appendChild(errorText);
+ }
 }
 
-} catch(error) {
-console.log("Photo bucket check:", bucket, error.message);
+function photoHTML(path,label) {
+ if(!path) return "";
+
+ const url=getPublicPhotoUrl(path);
+
+ return `
+ <div class="photo-box">
+ <div class="photo-label">${safe(label)}</div>
+ <img
+ src="${safe(url)}"
+ data-photo="${safe(path)}"
+ alt="Uploaded report photo"
+ loading="lazy"
+ onerror="retryPhoto(this)">
+ </div>`;
 }
-
-}
-
-return null;
-}
-
-// PHOTO HTML
-
-async function createPhotoHTML(photoPath, label) {
-
-if (!photoPath) return "";
-
-const url = await getPhotoUrl(photoPath);
-
-if (!url) {
-return `
-<p class="photo-error">
-Photo could not be loaded. Check Storage bucket and SELECT policy.
-</p>`;
-}
-
-return `
-<div>
-<div class="photo-label">${safe(label)}</div>
-<a href="${safe(url)}" target="_blank" rel="noopener noreferrer">
-<img
-class="record-photo"
-src="${safe(url)}"
-alt="${safe(label)}"
-loading="lazy"
-onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
->
-</a>
-<p class="photo-error" style="display:none">
-Image could not be displayed.
-</p>
-</div>`;
-}
-
-// DATE
-
-function formatDate(value) {
-if (!value) return "Not available";
-
-const date = new Date(value);
-
-if (isNaN(date.getTime())) return safe(value);
-
-return date.toLocaleString();
-}
-
-// LOAD DASHBOARD
 
 async function loadDashboard() {
+ document.getElementById("complaints").innerHTML='<p class="empty">Loading complaints...</p>';
 
-document.getElementById("complaints").innerHTML =
-'<p class="empty">Loading complaints...</p>';
+ const [complaintsResult,noticesResult,lostResult]=await Promise.all([
+ db.from("complaints").select("*").order("created_at",{ascending:false}),
+ db.from("notices").select("id",{count:"exact",head:true}),
+ db.from("lost_found").select("id,photo_url",{count:"exact"})
+ ]);
 
-const [
-complaintsResult,
-noticesResult,
-lostResult
-] = await Promise.all([
+ if(complaintsResult.error) {
+   document.getElementById("complaints").innerHTML=
+   '<p class="empty">Could not load complaints: '+safe(complaintsResult.error.message)+'</p>';
+   showMessage("Check Supabase SELECT policies: "+complaintsResult.error.message);
+   return;
+ }
 
-db.from("complaints")
-.select("*")
-.order("created_at",{ascending:false}),
+ const complaints=complaintsResult.data||[];
 
-db.from("notices")
-.select("id",{count:"exact",head:true}),
+ document.getElementById("totalComplaints").textContent=complaints.length;
+ document.getElementById("totalNotices").textContent=noticesResult.error?"—":(noticesResult.count??0);
+ document.getElementById("totalLostFound").textContent=lostResult.error?"—":(lostResult.count??0);
 
-db.from("lost_found")
-.select("*")
-.order("created_at",{ascending:false})
+ const lostRows=lostResult.data||[];
+ const complaintPhotoCount=complaints.filter(c=>c.photo_url).length;
+ const lostPhotoCount=lostRows.filter(c=>c.photo_url).length;
 
-]);
+ document.getElementById("totalPhotos").textContent=complaintPhotoCount+lostPhotoCount;
 
-if (complaintsResult.error) {
+ if(!complaints.length) {
+   document.getElementById("complaints").innerHTML='<p class="empty">No complaints found.</p>';
+ } else {
+   document.getElementById("complaints").innerHTML=complaints.map(c=>`
+   <article class="complaint">
+     <h4>${safe(c.title)} <span class="meta">#${safe(c.id)}</span></h4>
+     <p>${safe(c.description)}</p>
+     <p><strong>Student:</strong> ${safe(c.student_name)} · ${safe(c.student_email)}<br>
+     <strong>Category:</strong> ${safe(c.category)} ·
+     <strong>Location:</strong> ${safe(c.location)}</p>
 
-showMessage(
-"Complaint loading failed: " + complaintsResult.error.message
-);
+     ${photoHTML(c.photo_url,"Complaint Evidence Photo")}
 
-document.getElementById("complaints").innerHTML =
-'<p class="empty">Could not load complaints.</p>';
+     <div class="status-row">
+       <span class="meta">Status:</span>
+       <select id="status-${safe(c.id)}">
+         <option value="Pending" ${c.status==="Pending"?"selected":""}>Pending</option>
+         <option value="In Progress" ${c.status==="In Progress"?"selected":""}>In Progress</option>
+         <option value="Resolved" ${c.status==="Resolved"?"selected":""}>Resolved</option>
+       </select>
+       <button class="small-btn" onclick="updateStatus(${Number(c.id)})">Save Status</button>
+     </div>
+     <p class="meta">${safe(c.created_at?new Date(c.created_at).toLocaleString():"")}</p>
+   </article>
+   `).join("");
+ }
 
-return;
+ await loadLostFound();
+ showMessage("Dashboard data loaded successfully.",true);
 }
-
-allComplaints = complaintsResult.data || [];
-
-if (lostResult.error) {
-
-allLostReports = [];
-
-showMessage(
-"Complaints loaded. Lost & Found loading failed: " +
-lostResult.error.message
-);
-
-} else {
-
-allLostReports = lostResult.data || [];
-
-showMessage("Dashboard data loaded successfully.",true);
-
-}
-
-document.getElementById("totalComplaints").textContent =
-allComplaints.length;
-
-document.getElementById("totalNotices").textContent =
-noticesResult.error ? "—" : (noticesResult.count ?? 0);
-
-document.getElementById("totalLostFound").textContent =
-allLostReports.length;
-
-const openComplaints = allComplaints.filter(c =>
-!["Resolved","Closed"].includes(c.status)
-).length;
-
-const openLost = allLostReports.filter(c =>
-!["Resolved","Closed","Returned","Claimed"].includes(c.status)
-).length;
-
-document.getElementById("openReports").textContent =
-openComplaints + openLost;
-
-await renderComplaints();
-await renderLostFound();
-
-}
-
-// RENDER COMPLAINTS
-
-async function renderComplaints() {
-
-const holder = document.getElementById("complaints");
-
-const search = (
-document.getElementById("complaintSearch").value || ""
-).toLowerCase();
-
-const filter = document.getElementById("complaintFilter").value;
-
-const records = allComplaints.filter(c => {
-
-const text = [
-c.title,
-c.description,
-c.student_name,
-c.student_email,
-c.category,
-c.location
-].join(" ").toLowerCase();
-
-const searchMatch = text.includes(search);
-
-const statusMatch =
-filter === "All" || c.status === filter;
-
-return searchMatch && statusMatch;
-
-});
-
-if (!records.length) {
-holder.innerHTML =
-'<p class="empty">No matching complaints found.</p>';
-return;
-}
-
-holder.innerHTML = records.map(c => `
-
-<article class="record">
-
-<h4>
-${safe(c.title)}
-<span class="meta">#${safe(c.id)}</span>
-</h4>
-
-<p>${safe(c.description)}</p>
-
-<p>
-<strong>Student:</strong> ${safe(c.student_name)}<br>
-<strong>Email:</strong> ${safe(c.student_email)}<br>
-<strong>Category:</strong> ${safe(c.category)}<br>
-<strong>Location:</strong> ${safe(c.location)}
-</p>
-
-<div id="complaint-photo-${safe(c.id)}">
-${c.photo_url
-? '<p class="meta">Loading uploaded photograph...</p>'
-: '<p class="meta">No photograph attached.</p>'}
-</div>
-
-<div class="status-row">
-
-<span class="meta">Complaint Status:</span>
-
-<select id="complaint-status-${safe(c.id)}">
-
-<option value="Pending" ${c.status==="Pending"?"selected":""}>
-Pending
-</option>
-
-<option value="In Progress" ${c.status==="In Progress"?"selected":""}>
-In Progress
-</option>
-
-<option value="Resolved" ${c.status==="Resolved"?"selected":""}>
-Resolved
-</option>
-
-</select>
-
-<button class="small-btn"
-onclick="updateComplaintStatus(${Number(c.id)})">
-Save Status
-</button>
-
-</div>
-
-<p class="meta">
-Submitted: ${formatDate(c.created_at)}
-</p>
-
-</article>
-
-`).join("");
-
-// Load photos separately
-
-for (const c of records) {
-
-if (c.photo_url) {
-
-const photoHolder = document.getElementById(
-"complaint-photo-" + c.id
-);
-
-if (photoHolder) {
-
-photoHolder.innerHTML = await createPhotoHTML(
-c.photo_url,
-"Complaint Evidence Photograph"
-);
-
-}
-
-}
-
-}
-
-}
-
-// UPDATE COMPLAINT STATUS
-
-async function updateComplaintStatus(id) {
-
-const select = document.getElementById(
-"complaint-status-" + id
-);
-
-if (!select) return;
-
-const status = select.value;
-
-const {error} = await db
-.from("complaints")
-.update({status:status})
-.eq("id",id);
-
-if (error) {
-
-showMessage("Could not update complaint: " + error.message);
-return;
-
-}
-
-showMessage("Complaint status updated successfully.",true);
-
-await loadDashboard();
-
-}
-
-// LOAD LOST AND FOUND
 
 async function loadLostFound() {
+ const holder=document.getElementById("lostReports");
+ holder.innerHTML='<p class="empty">Loading reports...</p>';
 
-document.getElementById("lostReports").innerHTML =
-'<p class="empty">Loading Lost & Found reports...</p>';
+ const {data,error}=await db.from("lost_found")
+   .select("*")
+   .order("created_at",{ascending:false});
 
-const {data,error} = await db
-.from("lost_found")
-.select("*")
-.order("created_at",{ascending:false});
+ if(error) {
+   holder.innerHTML='<p class="empty">Could not load reports: '+safe(error.message)+'</p>';
+   return;
+ }
 
-if (error) {
+ if(!data || !data.length) {
+   holder.innerHTML='<p class="empty">No Lost & Found reports found.</p>';
+   return;
+ }
 
-showMessage("Lost & Found loading failed: " + error.message);
+ holder.innerHTML=data.map(item=>`
+ <article class="complaint">
+   <h4>${safe(item.item_name)} <span class="meta">#${safe(item.id)}</span></h4>
+   <p><strong>Report Type:</strong> ${safe(item.report_type)}</p>
+   <p>${safe(item.description)}</p>
+   <p><strong>Reported by:</strong> ${safe(item.reporter_name)}</p>
+   <p><strong>Contact:</strong> ${safe(item.contact_email)}</p>
+   <p><strong>Location:</strong> ${safe(item.location)}</p>
+   <p><strong>Date:</strong> ${safe(item.item_date)}</p>
 
-document.getElementById("lostReports").innerHTML =
-'<p class="empty">Could not load reports.</p>';
+   ${photoHTML(item.photo_url,"Lost & Found Uploaded Photo")}
 
-return;
-
+   <p><strong>Status:</strong> ${safe(item.status || "Open")}</p>
+   <p class="meta">${safe(item.created_at?new Date(item.created_at).toLocaleString():"")}</p>
+ </article>
+ `).join("");
 }
 
-allLostReports = data || [];
+async function updateStatus(id) {
+ const status=document.getElementById("status-"+id).value;
 
-document.getElementById("totalLostFound").textContent =
-allLostReports.length;
+ const {error}=await db.from("complaints")
+   .update({status})
+   .eq("id",id);
 
-await renderLostFound();
+ if(error) {
+   showMessage("Could not update status: "+error.message);
+   return;
+ }
 
+ showMessage("Complaint status updated successfully.",true);
+ await loadDashboard();
 }
-
-// RENDER LOST AND FOUND
-
-async function renderLostFound() {
-
-const holder = document.getElementById("lostReports");
-
-const search = (
-document.getElementById("lostSearch").value || ""
-).toLowerCase();
-
-const filter = document.getElementById("lostFilter").value;
-
-const records = allLostReports.filter(item => {
-
-const text = [
-item.item_name,
-item.reporter_name,
-item.contact_email,
-item.location,
-item.description,
-item.report_type
-].join(" ").toLowerCase();
-
-const searchMatch = text.includes(search);
-
-const typeMatch =
-filter === "All" || item.report_type === filter;
-
-return searchMatch && typeMatch;
-
-});
-
-if (!records.length) {
-
-holder.innerHTML =
-'<p class="empty">No matching Lost & Found reports found.</p>';
-
-return;
-
-}
-
-holder.innerHTML = records.map(item => `
-
-<article class="record">
-
-<h4>
-${safe(item.item_name)}
-<span class="meta">#${safe(item.id)}</span>
-</h4>
-
-<p>
-<strong>Report Type:</strong> ${safe(item.report_type)}
-</p>
-
-<p>${safe(item.description)}</p>
-
-<p>
-<strong>Reported By:</strong> ${safe(item.reporter_name)}<br>
-<strong>Email:</strong> ${safe(item.contact_email)}<br>
-<strong>Location:</strong> ${safe(item.location)}<br>
-<strong>Item Date:</strong> ${safe(item.item_date)}<br>
-<strong>Current Status:</strong> ${safe(item.status)}
-</p>
-
-<div id="lost-photo-${safe(item.id)}">
-${item.photo_url
-? '<p class="meta">Loading uploaded photograph...</p>'
-: '<p class="meta">No photograph attached.</p>'}
-</div>
-
-<div class="status-row">
-
-<span class="meta">Update Status:</span>
-
-<select id="lost-status-${safe(item.id)}">
-
-<option value="Open" ${item.status==="Open"?"selected":""}>
-Open
-</option>
-
-<option value="In Progress" ${item.status==="In Progress"?"selected":""}>
-In Progress
-</option>
-
-<option value="Resolved" ${item.status==="Resolved"?"selected":""}>
-Resolved
-</option>
-
-<option value="Returned" ${item.status==="Returned"?"selected":""}>
-Returned
-</option>
-
-<option value="Closed" ${item.status==="Closed"?"selected":""}>
-Closed
-</option>
-
-</select>
-
-<button class="small-btn"
-onclick="updateLostStatus(${Number(item.id)})">
-Save Status
-</button>
-
-</div>
-
-<p class="meta">
-Submitted: ${formatDate(item.created_at)}
-</p>
-
-</article>
-
-`).join("");
-
-// Load uploaded Lost & Found photographs
-
-for (const item of records) {
-
-if (item.photo_url) {
-
-const photoHolder = document.getElementById(
-"lost-photo-" + item.id
-);
-
-if (photoHolder) {
-
-photoHolder.innerHTML = await createPhotoHTML(
-item.photo_url,
-"Lost & Found Item Photograph"
-);
-
-}
-
-}
-
-}
-
-}
-
-// UPDATE LOST AND FOUND STATUS
-
-async function updateLostStatus(id) {
-
-const select = document.getElementById("lost-status-" + id);
-
-if (!select) return;
-
-const status = select.value;
-
-const {error} = await db
-.from("lost_found")
-.update({status:status})
-.eq("id",id);
-
-if (error) {
-
-showMessage(
-"Could not update Lost & Found status: " + error.message
-);
-
-return;
-
-}
-
-showMessage("Lost & Found status updated successfully.",true);
-
-await loadDashboard();
-
-}
-
-// INITIAL LOAD
 
 loadDashboard();
-
 </script>
-
 </body>
 </html>
