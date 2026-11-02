@@ -1,450 +1,1133 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lost & Found | CampusConnect</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost & Found | CampusConnect</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f6ff;
-      color: #202b46;
-    }
-    header {
-      background: linear-gradient(135deg, #3459dc, #7047d7);
-      color: white;
-      padding: 22px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    header h2 { font-size: 25px; }
-    header a {
-      color: white;
-      text-decoration: none;
-      margin-left: 18px;
-      font-weight: bold;
-    }
-    .hero {
-      text-align: center;
-      padding: 35px 15px 20px;
-    }
-    .hero h1 { font-size: 32px; margin-bottom: 10px; }
-    .hero p { color: #68738d; }
-    .container {
-      max-width: 1050px;
-      margin: 20px auto 45px;
-      padding: 0 18px;
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 25px #263c7810;
-    }
-    .card h2 { font-size: 21px; margin-bottom: 20px; }
-    label {
-      display: block;
-      font-weight: bold;
-      font-size: 14px;
-      margin: 15px 0 7px;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #dce2f0;
-      border-radius: 9px;
-      font: inherit;
-      font-size: 14px;
-      outline: none;
-    }
-    input:focus, textarea:focus, select:focus {
-      border-color: #526de0;
-    }
-    textarea { resize: vertical; min-height: 90px; }
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-    .tab {
-      flex: 1;
-      padding: 11px 5px;
-      border: 1px solid #dce2f0;
-      border-radius: 9px;
-      background: white;
-      cursor: pointer;
-      font-weight: bold;
-      color: #52617e;
-    }
-    .tab.active {
-      background: #e9edff;
-      border-color: #536ee0;
-      color: #3454ce;
-    }
-    .submit {
-      width: 100%;
-      margin-top: 20px;
-      padding: 13px;
-      border: 0;
-      border-radius: 9px;
-      background: linear-gradient(135deg, #3459dc, #7047d7);
-      color: white;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    .submit:disabled { opacity: .6; cursor: wait; }
-    #message {
-      margin-top: 13px;
-      font-size: 14px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-    .success { color: #13804a; }
-    .error { color: #c62828; }
-    .report {
-      border: 1px solid #e7eaf3;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-      overflow-wrap: anywhere;
-    }
-    .report h3 { margin: 10px 0; font-size: 18px; }
-    .report p { margin-top: 8px; color: #65708a; line-height: 1.5; }
-    .report img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 9px;
-      margin-top: 12px;
-    }
-    .tag {
-      display: inline-block;
-      padding: 6px 10px;
-      background: #e9edff;
-      color: #3454ce;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .empty { color: #78839b; padding: 15px 0; line-height: 1.5; }
-    footer { text-align: center; padding: 22px; color: #78839b; }
-    @media (max-width: 760px) {
-      .container { grid-template-columns: 1fr; }
-      header { padding: 20px; }
-      header a { margin-left: 10px; }
-      .hero h1 { font-size: 27px; }
-    }
-  </style>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f6ff;
+  color: #202b46;
+}
+
+header {
+  background: linear-gradient(135deg,#3459dc,#7047d7);
+  color: white;
+  padding: 22px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+header h2 { font-size: 25px; }
+
+header a {
+  color: white;
+  text-decoration: none;
+  margin-left: 18px;
+  font-weight: bold;
+}
+
+.hero {
+  text-align: center;
+  padding: 35px 15px 20px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.hero p { color: #68738d; }
+
+.container {
+  max-width: 1050px;
+  margin: 20px auto 45px;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 6px 25px #263c7810;
+}
+
+.card h2 {
+  font-size: 21px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 15px 0 7px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dce2f0;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #526de0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  flex: 1;
+  padding: 11px 5px;
+  border: 1px solid #dce2f0;
+  border-radius: 9px;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  color: #52617e;
+}
+
+.tab.active {
+  background: #e9edff;
+  border-color: #536ee0;
+  color: #3454ce;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px;
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(135deg,#3459dc,#7047d7);
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+#message {
+  margin-top: 13px;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.success { color: #13804a; }
+.error { color: #c62828; }
+
+.report {
+  border: 1px solid #e7eaf3;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  overflow-wrap: anywhere;
+}
+
+.report h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.report p {
+  margin-top: 8px;
+  color: #65708a;
+  line-height: 1.5;
+}
+
+.report img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 9px;
+  margin-top: 12px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #e9edff;
+  color: #3454ce;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.empty {
+  color: #78839b;
+  padding: 15px 0;
+  line-height: 1.5;
+}
+
+.reply-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e7eaf3;
+}
+
+.reply-section h4 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.reply {
+  background: #f6f8ff;
+  border: 1px solid #e7eaf3;
+  border-radius: 9px;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.reply strong {
+  font-size: 13px;
+  color: #34415f;
+}
+
+.reply-role {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 7px;
+  margin-left: 5px;
+  border-radius: 5px;
+  background: #e4eaff;
+  color: #3454ce;
+}
+
+.reply p {
+  margin-top: 7px;
+  color: #53617b;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.reply small {
+  display: block;
+  margin-top: 7px;
+  color: #8994aa;
+  font-size: 11px;
+}
+
+.reply-form {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.reply-form textarea {
+  min-height: 65px;
+}
+
+.reply-form button {
+  justify-self: start;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #3459dc;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reply-form button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.reply-status {
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #78839b;
+}
+
+@media(max-width:760px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  header { padding: 20px; }
+
+  header a { margin-left: 10px; }
+
+  .hero h1 { font-size: 27px; }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <h2>CampusConnect</h2>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="student-dashboard.html">Dashboard</a>
-      <a href="notices.html">Notices</a>
-    </nav>
-  </header>
 
-  <section class="hero">
-    <h1>Lost & Found</h1>
-    <p>Lost something on campus or found an item? Report it here.</p>
-  </section>
+<header>
+  <h2>CampusConnect</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="student-dashboard.html">Dashboard</a>
+    <a href="notices.html">Notices</a>
+  </nav>
+</header>
 
-  <main class="container">
-    <section class="card">
-      <h2 id="formTitle">Report an Item</h2>
+<section class="hero">
+  <h1>Lost & Found</h1>
+  <p>Lost something on campus or found an item? Report it here.</p>
+</section>
 
-      <form id="itemForm">
-        <div class="tabs">
-          <button type="button" class="tab active" data-type="Lost Item">Lost Item</button>
-          <button type="button" class="tab" data-type="Found Item">Found Item</button>
-        </div>
+<main class="container">
 
-        <label for="itemName">Item Name *</label>
-        <input id="itemName" required maxlength="150"
-          placeholder="e.g. Blue water bottle">
+<section class="card">
 
-        <label for="ownerName">Your Name *</label>
-        <input id="ownerName" required maxlength="100"
-          placeholder="Enter your name">
+  <h2 id="formTitle">Report an Item</h2>
 
-        <label for="contact">Contact Email *</label>
-        <input id="contact" type="email" required maxlength="254"
-          placeholder="Enter your email">
+  <form id="itemForm">
 
-        <label for="location">Location *</label>
-        <input id="location" required maxlength="200"
-          placeholder="Where was it lost or found?">
+    <div class="tabs">
+      <button type="button" class="tab active" data-type="Lost Item">
+        Lost Item
+      </button>
 
-        <label for="date">Date *</label>
-        <input id="date" type="date" required>
+      <button type="button" class="tab" data-type="Found Item">
+        Found Item
+      </button>
+    </div>
 
-        <label for="description">Description *</label>
-        <textarea id="description" required maxlength="2000"
-          placeholder="Describe the item and other details"></textarea>
+    <label for="itemName">Item Name *</label>
+    <input id="itemName" required maxlength="150"
+      placeholder="e.g. Blue water bottle">
 
-        <label for="photo">Upload Photo (Optional)</label>
-        <input id="photo" type="file" accept="image/*">
-        <div id="preview"></div>
-        <button type="button" id="removePhoto"
-          style="display:none;margin-top:8px;cursor:pointer">
-          Remove Photo
-        </button>
+    <label for="ownerName">Your Name *</label>
+    <input id="ownerName" required maxlength="100"
+      placeholder="Enter your name">
 
-        <button class="submit" id="submitButton" type="submit">
-          Submit Report
-        </button>
-        <p id="message" role="status"></p>
-      </form>
-    </section>
+    <label for="contact">Contact Email *</label>
+    <input id="contact" type="email" required maxlength="254"
+      placeholder="Enter your email">
 
-    <section class="card">
-      <h2>Recent Reports</h2>
-      <p class="empty" id="loadingMessage">Loading reports...</p>
-      <div id="itemsList"></div>
-    </section>
-  </main>
+    <label for="location">Location *</label>
+    <input id="location" required maxlength="200"
+      placeholder="Where was it lost or found?">
 
-  <footer>© 2026 CampusConnect | College Support Portal</footer>
+    <label for="date">Date *</label>
+    <input id="date" type="date" required>
 
-  <script>
-    // Replace these two values with your Supabase project details.
-    const SUPABASE_URL = "https://nezrjrcxjeftsibqtcqy.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_qUx0J0GAxsyI7u77u1Z1yw_CKSnYIK7";
+    <label for="description">Description *</label>
+    <textarea id="description" required maxlength="2000"
+      placeholder="Describe the item and other details"></textarea>
 
-    const configured =
-      SUPABASE_URL.startsWith("https://") &&
-      !SUPABASE_URL.includes("PASTE_") &&
-      !SUPABASE_KEY.includes("PASTE_") &&
-      SUPABASE_KEY.trim() !== "";
+    <label for="photo">Upload Photo (Optional)</label>
+    <input id="photo" type="file" accept="image/*">
 
-    const db = configured
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-      : null;
+    <div id="preview"></div>
 
-    let selectedType = "Lost Item";
-    let previewUrl = null;
+    <button type="button" id="removePhoto"
+      style="display:none;margin-top:8px;cursor:pointer">
+      Remove Photo
+    </button>
 
-    const form = document.getElementById("itemForm");
-    const photoInput = document.getElementById("photo");
-    const preview = document.getElementById("preview");
-    const removePhoto = document.getElementById("removePhoto");
-    const message = document.getElementById("message");
-    const submitButton = document.getElementById("submitButton");
-    const itemsList = document.getElementById("itemsList");
-    const loadingMessage = document.getElementById("loadingMessage");
+    <button class="submit" id="submitButton" type="submit">
+      Submit Report
+    </button>
 
-    document.querySelectorAll(".tab").forEach(button => {
-      button.addEventListener("click", () => {
-        selectedType = button.dataset.type;
+    <p id="message" role="status"></p>
 
-        document.querySelectorAll(".tab").forEach(tab => {
-          tab.classList.toggle("active", tab === button);
-        });
+  </form>
 
-        document.getElementById("formTitle").textContent =
-          selectedType === "Lost Item"
-            ? "Report a Lost Item"
-            : "Report a Found Item";
+</section>
+
+<section class="card">
+
+  <h2>Recent Reports</h2>
+
+  <p class="empty" id="loadingMessage">
+    Loading reports...
+  </p>
+
+  <div id="itemsList"></div>
+
+</section>
+
+</main>
+
+<footer>
+  © 2026 CampusConnect | College Support Portal
+</footer>
+
+<script>
+
+// SUPABASE CONNECTION
+
+const SUPABASE_URL =
+"https://nezrjrcxjeftsibqtcqy.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_qUx0J0GAxsyI7u77u1Z1yw_CKSnYIK7";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let selectedType = "Lost Item";
+let previewUrl = null;
+let currentUser = null;
+
+
+// ELEMENTS
+
+const form = document.getElementById("itemForm");
+const photoInput = document.getElementById("photo");
+const preview = document.getElementById("preview");
+const removePhoto = document.getElementById("removePhoto");
+const message = document.getElementById("message");
+const submitButton = document.getElementById("submitButton");
+const itemsList = document.getElementById("itemsList");
+const loadingMessage = document.getElementById("loadingMessage");
+
+
+// CURRENT USER
+
+async function getCurrentUser() {
+
+  const { data, error } = await db.auth.getUser();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data.user || null;
+}
+
+
+// USER NAME
+
+function getUserName(user) {
+
+  return user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email?.split("@")[0] ||
+    "Campus Member";
+
+}
+
+
+// USER ROLE
+
+function getUserRole(user) {
+
+  const role =
+    user.app_metadata?.role ||
+    user.user_metadata?.role ||
+    user.user_metadata?.user_role ||
+    "Student";
+
+  return String(role).toLowerCase() === "admin"
+    ? "Admin"
+    : "Student";
+
+}
+
+
+// TABS
+
+document.querySelectorAll(".tab").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    selectedType = button.dataset.type;
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.toggle("active", tab === button);
+    });
+
+    document.getElementById("formTitle").textContent =
+      selectedType === "Lost Item"
+        ? "Report a Lost Item"
+        : "Report a Found Item";
+
+  });
+
+});
+
+
+// PHOTO PREVIEW
+
+photoInput.addEventListener("change", () => {
+
+  const file = photoInput.files[0];
+
+  preview.innerHTML = "";
+  removePhoto.style.display = "none";
+
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+  }
+
+  previewUrl = null;
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+
+    photoInput.value = "";
+    showMessage("Please select an image file.", true);
+    return;
+
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+
+    photoInput.value = "";
+    showMessage("Photo must be smaller than 5 MB.", true);
+    return;
+
+  }
+
+  previewUrl = URL.createObjectURL(file);
+
+  const img = document.createElement("img");
+
+  img.src = previewUrl;
+  img.alt = "Selected item photo";
+
+  img.style.cssText =
+    "width:100%;max-height:180px;object-fit:cover;margin-top:12px;border-radius:9px";
+
+  preview.appendChild(img);
+
+  removePhoto.style.display = "inline-block";
+
+});
+
+
+// REMOVE PHOTO
+
+removePhoto.addEventListener("click", () => {
+
+  photoInput.value = "";
+  preview.innerHTML = "";
+  removePhoto.style.display = "none";
+
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+  }
+
+  previewUrl = null;
+
+});
+
+
+// MESSAGE
+
+function showMessage(text, isError = false) {
+
+  message.textContent = text;
+
+  message.className = isError
+    ? "error"
+    : "success";
+
+}
+
+
+// UPLOAD PHOTO
+
+async function uploadPhoto(file) {
+
+  if (!file) return null;
+
+  const extension =
+    file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g, "");
+
+  const path =
+    "lost-found/" + Date.now() + "-" +
+    Math.random().toString(36).slice(2) + "." + extension;
+
+  const { error } = await db.storage
+    .from("campus-photos")
+    .upload(path, file, {
+      upsert: false,
+      contentType: file.type
+    });
+
+  if (error) {
+    throw new Error("Photo upload failed: " + error.message);
+  }
+
+  return path;
+
+}
+
+
+// SUBMIT REPORT
+
+form.addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+
+  showMessage("");
+
+  let photoPath = null;
+
+  try {
+
+    const file = photoInput.files[0];
+
+    photoPath = await uploadPhoto(file);
+
+    const report = {
+
+      report_type: selectedType,
+
+      item_name:
+        document.getElementById("itemName").value.trim(),
+
+      reporter_name:
+        document.getElementById("ownerName").value.trim(),
+
+      contact_email:
+        document.getElementById("contact").value.trim(),
+
+      location:
+        document.getElementById("location").value.trim(),
+
+      item_date:
+        document.getElementById("date").value,
+
+      description:
+        document.getElementById("description").value.trim(),
+
+      photo_url: photoPath,
+
+      status: "Open"
+
+    };
+
+    const { error } = await db
+      .from("lost_found")
+      .insert([report]);
+
+    if (error) throw error;
+
+    form.reset();
+
+    selectedType = "Lost Item";
+
+    document.querySelectorAll(".tab").forEach((tab, index) => {
+      tab.classList.toggle("active", index === 0);
+    });
+
+    document.getElementById("formTitle").textContent =
+      "Report a Lost Item";
+
+    preview.innerHTML = "";
+    removePhoto.style.display = "none";
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    previewUrl = null;
+
+    showMessage("Report submitted successfully!");
+
+    await loadReports();
+
+  } catch (error) {
+
+    showMessage(
+      "Could not submit report: " +
+      (error.message || "Please try again."),
+      true
+    );
+
+    console.error(error);
+
+  } finally {
+
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Report";
+
+  }
+
+});
+
+
+// DATE FORMAT
+
+function formatDate(value) {
+
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleString();
+
+}
+
+
+// ========================================
+// SUBMIT REPLY
+// ========================================
+
+async function submitReply(
+  reportId,
+  textarea,
+  button,
+  statusElement
+) {
+
+  const replyText = textarea.value.trim();
+
+  if (!replyText) {
+
+    statusElement.textContent =
+      "Please write a reply first.";
+
+    statusElement.className =
+      "reply-status error";
+
+    return;
+
+  }
+
+  if (!currentUser) {
+
+    statusElement.textContent =
+      "Please sign in to reply.";
+
+    statusElement.className =
+      "reply-status error";
+
+    return;
+
+  }
+
+  button.disabled = true;
+  button.textContent = "Sending...";
+
+  statusElement.textContent = "";
+
+  try {
+
+    const senderName = getUserName(currentUser);
+
+    const senderRole = getUserRole(currentUser);
+
+    // IMPORTANT:
+    // These column names exactly match
+    // your Supabase lost_found_replies table.
+
+    const { error } = await db
+      .from("lost_found_replies")
+      .insert([{
+
+        lost_found_id: String(reportId),
+
+        user_id: currentUser.id,
+
+        user_name: senderName,
+
+        user_role: senderRole,
+
+        reply_text: replyText
+
+      }]);
+
+    if (error) throw error;
+
+    textarea.value = "";
+
+    statusElement.textContent =
+      "Reply posted successfully.";
+
+    statusElement.className =
+      "reply-status success";
+
+    await loadReports();
+
+  } catch (error) {
+
+    console.error(error);
+
+    statusElement.textContent =
+      "Could not post reply: " +
+      (error.message || "Please try again.");
+
+    statusElement.className =
+      "reply-status error";
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Send Reply";
+
+  }
+
+}
+
+
+// ========================================
+// LOAD REPORTS AND REPLIES
+// ========================================
+
+async function loadReports() {
+
+  currentUser = await getCurrentUser();
+
+  loadingMessage.textContent = "Loading reports...";
+
+  itemsList.innerHTML = "";
+
+  const { data, error } = await db
+    .from("lost_found")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    loadingMessage.textContent =
+      "Could not load reports: " + error.message;
+
+    return;
+
+  }
+
+  if (!data || data.length === 0) {
+
+    loadingMessage.textContent =
+      "No reports yet. Be the first to report an item!";
+
+    return;
+
+  }
+
+  loadingMessage.textContent = "";
+
+  // FETCH ALL REPLIES
+
+  const reportIds = data.map(item => String(item.id));
+
+  let replies = [];
+
+  const { data: replyData, error: replyError } = await db
+    .from("lost_found_replies")
+    .select("id,lost_found_id,user_name,user_role,reply_text,created_at")
+    .in("lost_found_id", reportIds)
+    .order("created_at", { ascending: true });
+
+  if (replyError) {
+
+    console.error("Reply loading error:", replyError);
+
+    loadingMessage.textContent =
+      "Reports loaded, but replies could not be loaded: " +
+      replyError.message;
+
+  } else {
+
+    replies = replyData || [];
+
+  }
+
+
+  // DISPLAY REPORTS
+
+  for (const item of data) {
+
+    const card = document.createElement("article");
+
+    card.className = "report";
+
+
+    // TYPE
+
+    const tag = document.createElement("span");
+
+    tag.className = "tag";
+
+    tag.textContent = item.report_type || "Item";
+
+
+    // TITLE
+
+    const title = document.createElement("h3");
+
+    title.textContent = item.item_name || "Untitled item";
+
+
+    // DESCRIPTION
+
+    const description = document.createElement("p");
+
+    description.textContent = item.description || "";
+
+
+    // DETAILS
+
+    const details = document.createElement("p");
+
+    details.textContent =
+      "Location: " + (item.location || "Not specified") +
+      " | Date: " + (item.item_date || "Not specified") +
+      " | Status: " + (item.status || "Open");
+
+
+    // REPORTER
+
+    const reporter = document.createElement("p");
+
+    reporter.textContent =
+      "Reported by: " + (item.reporter_name || "Campus member");
+
+
+    card.append(
+      tag,
+      title,
+      description,
+      details,
+      reporter
+    );
+
+
+    // PHOTO
+
+    if (item.photo_url) {
+
+      const { data: signedData, error: signedError } =
+        await db.storage
+          .from("campus-photos")
+          .createSignedUrl(item.photo_url, 3600);
+
+      if (!signedError && signedData?.signedUrl) {
+
+        const img = document.createElement("img");
+
+        img.src = signedData.signedUrl;
+
+        img.alt = "Photo of " + (item.item_name || "reported item");
+
+        card.appendChild(img);
+
+      } else {
+
+        const photoNote = document.createElement("p");
+
+        photoNote.className = "empty";
+
+        photoNote.textContent =
+          "Photo is currently unavailable.";
+
+        card.appendChild(photoNote);
+
+      }
+
+    }
+
+
+    // =================================
+    // REPLIES SECTION
+    // =================================
+
+    const replySection = document.createElement("section");
+
+    replySection.className = "reply-section";
+
+
+    const replyHeading = document.createElement("h4");
+
+    replyHeading.textContent = "Replies and Discussion";
+
+    replySection.appendChild(replyHeading);
+
+
+    // FILTER REPLIES FOR THIS REPORT
+
+    const itemReplies = replies.filter(reply =>
+
+      String(reply.lost_found_id) === String(item.id)
+
+    );
+
+
+    if (itemReplies.length > 0) {
+
+      itemReplies.forEach(reply => {
+
+        const replyCard = document.createElement("div");
+
+        replyCard.className = "reply";
+
+
+        const author = document.createElement("strong");
+
+        author.textContent =
+          reply.user_name || "Campus Member";
+
+
+        const role = document.createElement("span");
+
+        role.className = "reply-role";
+
+        role.textContent =
+          reply.user_role || "Student";
+
+
+        const body = document.createElement("p");
+
+        body.textContent = reply.reply_text || "";
+
+
+        const time = document.createElement("small");
+
+        time.textContent = formatDate(reply.created_at);
+
+
+        replyCard.append(
+          author,
+          role,
+          body,
+          time
+        );
+
+        replySection.appendChild(replyCard);
+
       });
-    });
 
-    photoInput.addEventListener("change", () => {
-      const file = photoInput.files[0];
-      preview.innerHTML = "";
-      removePhoto.style.display = "none";
+    } else {
 
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      previewUrl = null;
+      const noReplies = document.createElement("p");
 
-      if (!file) return;
+      noReplies.className = "empty";
 
-      if (!file.type.startsWith("image/")) {
-        photoInput.value = "";
-        showMessage("Please select an image file.", true);
-        return;
-      }
+      noReplies.textContent = "No replies yet.";
 
-      if (file.size > 5 * 1024 * 1024) {
-        photoInput.value = "";
-        showMessage("Photo must be smaller than 5 MB.", true);
-        return;
-      }
+      replySection.appendChild(noReplies);
 
-      previewUrl = URL.createObjectURL(file);
-      const img = document.createElement("img");
-      img.src = previewUrl;
-      img.alt = "Selected item photo";
-      img.style.cssText =
-        "width:100%;max-height:180px;object-fit:cover;margin-top:12px;border-radius:9px";
-      preview.appendChild(img);
-      removePhoto.style.display = "inline-block";
-    });
-
-    removePhoto.addEventListener("click", () => {
-      photoInput.value = "";
-      preview.innerHTML = "";
-      removePhoto.style.display = "none";
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      previewUrl = null;
-    });
-
-    function showMessage(text, isError = false) {
-      message.textContent = text;
-      message.className = isError ? "error" : "success";
     }
 
-    async function uploadPhoto(file) {
-      if (!file) return null;
 
-      const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g, "");
-      const path = "lost-found/" + Date.now() + "-" +
-        Math.random().toString(36).slice(2) + "." + extension;
+    // =================================
+    // REPLY FORM
+    // =================================
 
-      const { error } = await db.storage
-        .from("campus-photos")
-        .upload(path, file, { upsert: false, contentType: file.type });
+    const replyForm = document.createElement("form");
 
-      if (error) throw new Error("Photo upload failed: " + error.message);
+    replyForm.className = "reply-form";
 
-      // Store the path. For a private bucket, create a signed URL when displaying.
-      return path;
+
+    const replyInput = document.createElement("textarea");
+
+    replyInput.maxLength = 1500;
+
+    replyInput.placeholder = currentUser
+      ? "Write a helpful reply..."
+      : "Sign in to reply to this report.";
+
+    replyInput.required = true;
+
+    replyInput.disabled = !currentUser;
+
+
+    const replyButton = document.createElement("button");
+
+    replyButton.type = "submit";
+
+    replyButton.textContent = "Send Reply";
+
+    replyButton.disabled = !currentUser;
+
+
+    const replyStatus = document.createElement("p");
+
+    replyStatus.className = "reply-status";
+
+
+    if (!currentUser) {
+
+      replyStatus.textContent =
+        "Please sign in with your student or admin account to reply.";
+
     }
 
-    form.addEventListener("submit", async event => {
+
+    replyForm.append(
+      replyInput,
+      replyButton,
+      replyStatus
+    );
+
+
+    replyForm.addEventListener("submit", event => {
+
       event.preventDefault();
 
-      if (!db) {
-        showMessage("Add your Supabase project URL and publishable key in this file first.", true);
-        return;
-      }
+      submitReply(
+        item.id,
+        replyInput,
+        replyButton,
+        replyStatus
+      );
 
-      submitButton.disabled = true;
-      submitButton.textContent = "Submitting...";
-      showMessage("");
-
-      try {
-        const file = photoInput.files[0];
-        const photoPath = await uploadPhoto(file);
-
-        const report = {
-          report_type: selectedType,
-          item_name: document.getElementById("itemName").value.trim(),
-          reporter_name: document.getElementById("ownerName").value.trim(),
-          contact_email: document.getElementById("contact").value.trim(),
-          location: document.getElementById("location").value.trim(),
-          item_date: document.getElementById("date").value,
-          description: document.getElementById("description").value.trim(),
-          photo_url: photoPath,
-          status: "Open"
-        };
-
-        const { error } = await db.from("lost_found").insert([report]);
-
-        if (error) throw error;
-
-        form.reset();
-        selectedType = "Lost Item";
-        document.querySelectorAll(".tab").forEach((tab, index) => {
-          tab.classList.toggle("active", index === 0);
-        });
-        document.getElementById("formTitle").textContent = "Report a Lost Item";
-        preview.innerHTML = "";
-        removePhoto.style.display = "none";
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
-        previewUrl = null;
-
-        showMessage("Report submitted successfully!");
-        await loadReports();
-      } catch (error) {
-        showMessage("Could not submit report: " + (error.message || "Please try again."), true);
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Submit Report";
-      }
     });
 
-    async function loadReports() {
-      if (!db) {
-        loadingMessage.textContent = "Configure Supabase URL and publishable key to load reports.";
-        return;
-      }
 
-      loadingMessage.textContent = "Loading reports...";
-      itemsList.innerHTML = "";
+    replySection.appendChild(replyForm);
 
-      const { data, error } = await db
-        .from("lost_found")
-        .select("*")
-        .order("created_at", { ascending: false });
+    card.appendChild(replySection);
 
-      if (error) {
-        loadingMessage.textContent = "Could not load reports: " + error.message;
-        return;
-      }
+    itemsList.appendChild(card);
 
-      loadingMessage.textContent = data.length
-        ? ""
-        : "No reports yet. Be the first to report an item!";
+  }
 
-      for (const item of data) {
-        const card = document.createElement("article");
-        card.className = "report";
+}
 
-        const tag = document.createElement("span");
-        tag.className = "tag";
-        tag.textContent = item.report_type || "Item";
 
-        const title = document.createElement("h3");
-        title.textContent = item.item_name || "Untitled item";
+// INITIAL LOAD
 
-        const description = document.createElement("p");
-        description.textContent = item.description || "";
+loadReports();
 
-        const details = document.createElement("p");
-        details.textContent =
-          "Location: " + (item.location || "Not specified") +
-          " · Date: " + (item.item_date || "Not specified") +
-          " · Status: " + (item.status || "Open");
+</script>
 
-        const reporter = document.createElement("p");
-        reporter.textContent = "Reported by: " + (item.reporter_name || "Campus member");
-
-        card.append(tag, title, description, details, reporter);
-
-        if (item.photo_url) {
-          const { data: signedData, error: signedError } = await db.storage
-            .from("campus-photos")
-            .createSignedUrl(item.photo_url, 3600);
-
-          if (!signedError && signedData?.signedUrl) {
-            const img = document.createElement("img");
-            img.src = signedData.signedUrl;
-            img.alt = "Photo of " + (item.item_name || "reported item");
-            card.appendChild(img);
-          }
-        }
-
-        itemsList.appendChild(card);
-      }
-    }
-
-    loadReports();
-  </script>
 </body>
 </html>
