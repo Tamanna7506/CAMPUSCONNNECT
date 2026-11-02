@@ -241,6 +241,29 @@ loginForm.addEventListener("submit", async function (event) {
       throw new Error("This account is an Admin account. Please select Admin.");
     }
 
+if (selectedRole === "Student") {
+  const { data: account, error: accountError } = await db
+    .from("student_accounts")
+    .select("account_status")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (accountError) {
+    await db.auth.signOut();
+    throw new Error("Account status could not be verified. Please contact the administrator.");
+  }
+
+  if (!account) {
+    await db.auth.signOut();
+    throw new Error("Student account record not found. Please contact the administrator.");
+  }
+
+  if (account.account_status === "Suspended") {
+    await db.auth.signOut();
+    throw new Error("Your account has been suspended by the college administrator.");
+  }
+}
+
     showMessage("Login successful! Opening dashboard...", "success");
 
     window.location.href = selectedRole === "Admin"
